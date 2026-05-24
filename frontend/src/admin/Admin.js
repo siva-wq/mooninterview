@@ -34,10 +34,10 @@ function Admin() {
       setLoading(true);
 
       const usersRes =
-        await API.get("http://localhost:5000/api/users/cards");
+        await API.get("https://mooninterview.onrender.com//api/users/cards");
 
       const interviewsRes =
-        await API.get("http://localhost:5000/api/interviews");
+        await API.get("https://mooninterview.onrender.com//api/interviews");
 
       const interviews =
         interviewsRes.data;
