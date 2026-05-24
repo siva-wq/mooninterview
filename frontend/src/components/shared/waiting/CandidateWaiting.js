@@ -42,7 +42,7 @@ function CandidateWaiting() {
 
 
   
-  useEffect(() => {
+ useEffect(() => {
 
    const joinWaitingRoom = async () => {
 
@@ -71,7 +71,7 @@ function CandidateWaiting() {
 
    joinWaitingRoom();
 
-}, []);
+}, [interviewId, user?.name]);
   
   // ==========================================
   // SOCKET REALTIME EVENTS
