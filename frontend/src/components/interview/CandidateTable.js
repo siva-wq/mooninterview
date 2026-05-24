@@ -1,58 +1,39 @@
 import { useEffect, useState } from "react";
-
 import DashboardCard from "../dashboard/DashboardCard";
-
 import API from "../../api/axios";
-
 import socket from "../../socket";
-
 import SendMail from "./SendMail";
 
 function CandidateTable() {
 
-    const [candidates, setCandidates] =
-        useState([]);
+    const [candidates, setCandidates] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const [loading, setLoading] =
-        useState(true);
-
-    const [search, setSearch] =
-        useState("");
-
+    const [search, setSearch] = useState("");
     const [statusFilter, setStatusFilter] =
         useState("All Status");
 
     // ==========================================
-    // FETCH CANDIDATES + INTERVIEWS
+    // FETCH CANDIDATES
     // ==========================================
-    useEffect(() => {
-
-        fetchCandidates();
-
-    }, []);
-
     const fetchCandidates = async () => {
 
         try {
 
             setLoading(true);
 
-            // USERS
             const usersRes =
                 await API.get("/users");
 
-            // INTERVIEWS
             const interviewsRes =
                 await API.get("/interviews");
 
-            // FILTER CANDIDATES
             const candidateUsers =
                 usersRes.data.filter(
                     (user) =>
                         user.role === "candidate"
                 );
 
-            // MERGE INTERVIEW DATA
             const mergedData =
                 candidateUsers.map((candidate) => {
 
@@ -89,16 +70,15 @@ function CandidateTable() {
                             interview?.type ||
                             "Technical",
 
-                        ready:
-                            false
+                        ready: false
                     };
                 });
 
             setCandidates(mergedData);
 
-        } catch (err) {
+        } catch (error) {
 
-            console.log(err);
+            console.log(error);
 
         } finally {
 
@@ -107,13 +87,21 @@ function CandidateTable() {
     };
 
     // ==========================================
-    // REALTIME SOCKET EVENTS
+    // FETCH ON LOAD
+    // ==========================================
+    useEffect(() => {
+
+        fetchCandidates();
+
+    }, []);
+
+    // ==========================================
+    // SOCKET EVENTS
     // ==========================================
     useEffect(() => {
 
         socket.connect();
 
-        // NEW CANDIDATE
         socket.on(
             "new_candidate",
             (candidate) => {
@@ -129,12 +117,10 @@ function CandidateTable() {
                     },
 
                     ...prev
-
                 ]);
             }
         );
 
-        // CANDIDATE READY
         socket.on(
             "candidate_ready_status",
             (data) => {
@@ -157,7 +143,6 @@ function CandidateTable() {
             }
         );
 
-        // INTERVIEW STARTED
         socket.on(
             "interview_started",
             (data) => {
@@ -180,7 +165,6 @@ function CandidateTable() {
             }
         );
 
-        // INTERVIEW ENDED
         socket.on(
             "interview_ended",
             (data) => {
@@ -206,24 +190,15 @@ function CandidateTable() {
         return () => {
 
             socket.off("new_candidate");
-
-            socket.off(
-                "candidate_ready_status"
-            );
-
-            socket.off(
-                "interview_started"
-            );
-
-            socket.off(
-                "interview_ended"
-            );
+            socket.off("candidate_ready_status");
+            socket.off("interview_started");
+            socket.off("interview_ended");
         };
 
     }, []);
 
     // ==========================================
-    // FILTERING
+    // FILTER
     // ==========================================
     const filteredCandidates =
         candidates.filter((candidate) => {
@@ -269,22 +244,19 @@ function CandidateTable() {
     const scheduledCount =
         candidates.filter(
             (c) =>
-                c.status ===
-                "scheduled"
+                c.status === "scheduled"
         ).length;
 
     const completedCount =
         candidates.filter(
             (c) =>
-                c.status ===
-                "completed"
+                c.status === "completed"
         ).length;
 
     const pendingCount =
         candidates.filter(
             (c) =>
-                c.status ===
-                "Pending"
+                c.status === "Pending"
         ).length;
 
     // ==========================================
@@ -293,7 +265,6 @@ function CandidateTable() {
     const sendMail = async (candidate) => {
 
         await SendMail(candidate);
-
     };
 
     // ==========================================
@@ -331,6 +302,28 @@ function CandidateTable() {
             );
     };
 
+    // ==========================================
+    // LOADING UI
+    // ==========================================
+    if (loading) {
+
+        return (
+
+            <div className="
+                min-h-screen
+                flex
+                items-center
+                justify-center
+                text-2xl
+                font-bold
+            ">
+
+                Loading Candidates...
+
+            </div>
+        );
+    }
+
     return (
 
         <div className="min-h-screen bg-[#f5f7fb] p-6 space-y-6">
@@ -365,11 +358,9 @@ function CandidateTable() {
 
             </div>
 
-            {/* SEARCH + FILTER */}
+            {/* SEARCH */}
 
             <div className="flex flex-col md:flex-row justify-between gap-4">
-
-                {/* SEARCH */}
 
                 <input
                     type="text"
@@ -385,19 +376,10 @@ function CandidateTable() {
                         px-5
                         py-3
                         outline-none
-                        focus:ring-4
-                        focus:ring-blue-100
-                        focus:border-blue-400
-                        shadow-sm
-                        transition-all
-                        duration-300
                         w-full
                         md:w-80
-                        text-zinc-800
                     "
                 />
-
-                {/* FILTER */}
 
                 <select
                     value={statusFilter}
@@ -412,10 +394,6 @@ function CandidateTable() {
                         rounded-2xl
                         px-5
                         py-3
-                        outline-none
-                        focus:ring-4
-                        focus:ring-blue-100
-                        focus:border-blue-400
                     "
                 >
 
@@ -442,7 +420,8 @@ function CandidateTable() {
                 </select>
 
             </div>
-            {/* CANDIDATE TABLE */}
+
+            {/* TABLE */}
 
             <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
 
@@ -490,13 +469,10 @@ function CandidateTable() {
                                     <tr
                                         key={candidate._id}
                                         className="
-                            border-b
-                            hover:bg-zinc-50
-                            transition-all
-                        "
+                                            border-b
+                                            hover:bg-zinc-50
+                                        "
                                     >
-
-                                        {/* NAME */}
 
                                         <td className="p-4">
 
@@ -510,44 +486,34 @@ function CandidateTable() {
 
                                         </td>
 
-                                        {/* INTERVIEWER */}
-
                                         <td className="p-4">
                                             {candidate.interviewer}
                                         </td>
-
-                                        {/* DATE */}
 
                                         <td className="p-4">
                                             {formatDate(candidate.date)}
                                         </td>
 
-                                        {/* TIME */}
-
                                         <td className="p-4">
                                             {formatTime(candidate.date)}
                                         </td>
 
-                                        {/* STATUS */}
-
                                         <td className="p-4">
 
-                                            <span
-                                                className="
-                                    px-4
-                                    py-1
-                                    rounded-full
-                                    text-sm
-                                    bg-blue-100
-                                    text-blue-700
-                                "
-                                            >
+                                            <span className="
+                                                px-4
+                                                py-1
+                                                rounded-full
+                                                text-sm
+                                                bg-blue-100
+                                                text-blue-700
+                                            ">
+
                                                 {candidate.status}
+
                                             </span>
 
                                         </td>
-
-                                        {/* ACTIONS */}
 
                                         <td className="p-4">
 
@@ -556,14 +522,12 @@ function CandidateTable() {
                                                     sendMail(candidate)
                                                 }
                                                 className="
-                                    bg-black
-                                    text-white
-                                    px-4
-                                    py-2
-                                    rounded-xl
-                                    hover:bg-zinc-800
-                                    transition-all
-                                "
+                                                    bg-black
+                                                    text-white
+                                                    px-4
+                                                    py-2
+                                                    rounded-xl
+                                                "
                                             >
 
                                                 Send Email
