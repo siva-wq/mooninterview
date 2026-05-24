@@ -47,7 +47,7 @@ function CandidateReport() {
 
     fetchInterview();
 
-}, []);
+}, [id]);
 
   // ==========================================
   // SOCKET REALTIME REPORT UPDATES
