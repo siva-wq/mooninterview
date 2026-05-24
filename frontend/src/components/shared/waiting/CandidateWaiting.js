@@ -39,9 +39,7 @@ function CandidateWaiting() {
   // ==========================================
   // JOIN WAITING ROOM
   // ==========================================
-  useEffect(() => {
-   joinWaitingRoom();
-}, [joinWaitingRoom]);
+
 
   const joinWaitingRoom = async () => {
 
@@ -67,7 +65,10 @@ function CandidateWaiting() {
       console.log(err);
     }
   };
-
+  useEffect(() => {
+   joinWaitingRoom();
+}, [joinWaitingRoom]);
+  
   // ==========================================
   // SOCKET REALTIME EVENTS
   // ==========================================
