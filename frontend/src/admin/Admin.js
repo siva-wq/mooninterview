@@ -1,0 +1,326 @@
+import { useEffect, useState } from "react";
+
+import DashboardLayout from "../layouts/DashboardLayout";
+
+import DashboardCard from "../components/dashboard/DashboardCard";
+import RecentInterviews from "../components/dashboard/RecentInterviews";
+import Candidates from "../components/dashboard/Candidates";
+
+import API from "../api/axios";
+
+import socket from "../socket";
+
+function Admin() {
+
+  const [cards, setCards] =
+    useState(null);
+
+  const [loading, setLoading] =
+    useState(true);
+
+  // ==========================================
+  // FETCH DASHBOARD CARDS
+  // ==========================================
+  useEffect(() => {
+
+    fetchDashboardCards();
+
+  }, []);
+
+  const fetchDashboardCards = async () => {
+
+    try {
+
+      setLoading(true);
+
+      const usersRes =
+        await API.get("http://localhost:5000/api/users/cards");
+
+      const interviewsRes =
+        await API.get("http://localhost:5000/api/interviews");
+
+      const interviews =
+        interviewsRes.data;
+
+      // COMPLETED
+      const completed =
+        interviews.filter(
+          (item) =>
+            item.status === "completed"
+        );
+
+      // SELECTED
+      const selected =
+        completed.filter(
+          (item) =>
+            item.result === "selected"
+        );
+
+      // REJECTED
+      const rejected =
+        completed.filter(
+          (item) =>
+            item.result === "rejected"
+        );
+
+      setCards({
+
+        ...usersRes.data,
+
+        totalInterviews:
+          interviews.length,
+
+        scheduled:
+          interviews.filter(
+            (item) =>
+              item.status === "scheduled"
+          ).length,
+
+        ongoing:
+          interviews.filter(
+            (item) =>
+              item.status === "ongoing"
+          ).length,
+
+        completed:
+          completed.length,
+
+        selected:
+          selected.length,
+
+        rejected:
+          rejected.length,
+      });
+
+    } catch (err) {
+
+      console.log(err);
+
+    } finally {
+
+      setLoading(false);
+    }
+  };
+
+  // ==========================================
+  // SOCKET REALTIME EVENTS
+  // ==========================================
+  useEffect(() => {
+
+    socket.connect();
+
+    // NEW INTERVIEW
+    socket.on(
+      "new_interview_created",
+      () => {
+
+        fetchDashboardCards();
+      }
+    );
+
+    // INTERVIEW STARTED
+    socket.on(
+      "interview_started",
+      () => {
+
+        fetchDashboardCards();
+      }
+    );
+
+    // INTERVIEW ENDED
+    socket.on(
+      "interview_ended",
+      () => {
+
+        fetchDashboardCards();
+      }
+    );
+
+    // NEW CANDIDATE
+    socket.on(
+      "new_candidate",
+      () => {
+
+        fetchDashboardCards();
+      }
+    );
+
+    // REPORT UPDATED
+    socket.on(
+      "report_updated",
+      () => {
+
+        fetchDashboardCards();
+      }
+    );
+
+    // INTERVIEW DELETED
+    socket.on(
+      "interview_deleted",
+      () => {
+
+        fetchDashboardCards();
+      }
+    );
+
+    return () => {
+
+      socket.off(
+        "new_interview_created"
+      );
+
+      socket.off(
+        "interview_started"
+      );
+
+      socket.off(
+        "interview_ended"
+      );
+
+      socket.off(
+        "new_candidate"
+      );
+
+      socket.off(
+        "report_updated"
+      );
+
+      socket.off(
+        "interview_deleted"
+      );
+    };
+
+  }, []);
+
+  return (
+
+    <DashboardLayout>
+
+      {/* PAGE HEADER */}
+
+      <div className="mb-8">
+
+        <h1 className="text-3xl font-bold text-zinc-800">
+
+          Dashboard Overview
+
+        </h1>
+
+        <p className="text-zinc-500 mt-1">
+
+          Monitor interviews, candidates, and reports in real-time.
+
+        </p>
+
+      </div>
+
+      {/* LOADING */}
+
+      {
+        loading && (
+
+          <div className="bg-white p-6 rounded-2xl shadow-sm mb-6">
+
+            <p className="text-zinc-500">
+
+              Loading dashboard...
+
+            </p>
+
+          </div>
+        )
+      }
+
+      {/* STATS CARDS */}
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+
+        <DashboardCard
+          title="Total Interviews"
+          value={
+            cards?.totalInterviews || 0
+          }
+          increase="+12%"
+        />
+
+        <DashboardCard
+          title="Scheduled"
+          value={
+            cards?.scheduled || 0
+          }
+          increase="+5%"
+        />
+
+        <DashboardCard
+          title="Ongoing"
+          value={
+            cards?.ongoing || 0
+          }
+          increase="+7%"
+        />
+
+        <DashboardCard
+          title="Completed"
+          value={
+            cards?.completed || 0
+          }
+          increase="+18%"
+        />
+
+        <DashboardCard
+          title="Candidates"
+          value={
+            cards?.totalCandidates || 0
+          }
+          increase="+9%"
+        />
+
+        <DashboardCard
+          title="Selected Candidates"
+          value={
+            cards?.selected || 0
+          }
+          increase="+12%"
+        />
+
+        <DashboardCard
+          title="Rejected Candidates"
+          value={
+            cards?.rejected || 0
+          }
+          increase="+12%"
+        />
+
+        <DashboardCard
+          title="Interviewers"
+          value={
+            cards?.totalInterviewers || 0
+          }
+          increase="+4%"
+        />
+
+        <DashboardCard
+          title="Admins"
+          value={
+            cards?.totalAdmins || 0
+          }
+          increase="+2%"
+        />
+
+      </div>
+
+      {/* BOTTOM SECTION */}
+
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-8">
+
+        <RecentInterviews />
+
+        <Candidates />
+
+      </div>
+
+    </DashboardLayout>
+  );
+}
+
+export default Admin;
