@@ -28,7 +28,7 @@ function RecentInterviews() {
       setLoading(true);
 
       const res = await API.get(
-        "http://localhost:5000/api/interviews"
+        "https://mooninterview.onrender.com/api/interviews"
       );
 
       setInterviews(res.data);
