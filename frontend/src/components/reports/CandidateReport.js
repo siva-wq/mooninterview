@@ -21,31 +21,23 @@ function CandidateReport() {
   // ==========================================
  
 
-  const fetchInterview = async () => {
+  useEffect(() => {
 
-    try {
+    const fetchInterview = async () => {
 
-      setLoading(true);
+        try {
 
-      const res = await API.get(
-        `/interviews/${id}`
-      );
+            // API CALL HERE
 
-      setCandidate(res.data);
+        } catch (error) {
 
-    } catch (err) {
+            console.log(error);
+        }
+    };
 
-      console.log(err);
+    fetchInterview();
 
-    } finally {
-
-      setLoading(false);
-    }
-  };
-
-   useEffect(() => {
-   fetchInterview();
-}, [fetchInterview]);
+}, []);
 
   // ==========================================
   // SOCKET REALTIME REPORT UPDATES
