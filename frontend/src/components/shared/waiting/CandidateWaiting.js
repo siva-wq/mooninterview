@@ -40,10 +40,8 @@ function CandidateWaiting() {
   // JOIN WAITING ROOM
   // ==========================================
   useEffect(() => {
-
-    joinWaitingRoom();
-
-  }, []);
+   joinWaitingRoom();
+}, [joinWaitingRoom]);
 
   const joinWaitingRoom = async () => {
 
