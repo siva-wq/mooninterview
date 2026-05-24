@@ -40,7 +40,7 @@ function Navbar() {
 
     try {
 
-      const res = await API.get("http://localhost:5000/api/auth/me");
+      const res = await API.get("https://mooninterview.onrender.com/api/auth/me");
 
       setUser(res.data);
 
