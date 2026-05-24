@@ -8,22 +8,4 @@ function App() {
 }
 
 
-
-{/*
-
-function App() {
-
-  return (
-
-    <BrowserRouter>
-
-      <CandidateWaiting />
-
-    </BrowserRouter>
-  );
-}
-
-*/}
-
-
 export default App;
