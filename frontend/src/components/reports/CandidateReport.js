@@ -20,10 +20,8 @@ function CandidateReport() {
   // FETCH INTERVIEW REPORT
   // ==========================================
   useEffect(() => {
-
-    fetchInterview();
-
-  }, []);
+   fetchInterview();
+}, [fetchInterview]);
 
   const fetchInterview = async () => {
 
