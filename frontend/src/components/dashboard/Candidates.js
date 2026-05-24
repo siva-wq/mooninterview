@@ -26,7 +26,7 @@ function Candidates() {
 
       setLoading(true);
 
-      const res = await API.get("http://localhost:5000/api/users");
+      const res = await API.get("https://mooninterview.onrender.com/api/users");
 
       // FILTER ONLY CANDIDATES
       const filteredCandidates =
