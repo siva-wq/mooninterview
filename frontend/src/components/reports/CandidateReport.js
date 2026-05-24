@@ -27,12 +27,22 @@ function CandidateReport() {
 
         try {
 
-            // API CALL HERE
+      setLoading(true);
 
-        } catch (error) {
+      const res = await API.get(
+        `/interviews/${id}`
+      );
 
-            console.log(error);
-        }
+      setCandidate(res.data);
+
+    } catch (err) {
+
+      console.log(err);
+
+    } finally {
+
+      setLoading(false);
+    }
     };
 
     fetchInterview();
