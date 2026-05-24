@@ -41,33 +41,37 @@ function CandidateWaiting() {
   // ==========================================
 
 
-  const joinWaitingRoom = async () => {
-
-    try {
-
-      // SOCKET JOIN ROOM
-      socket.emit(
-        "join_room",
-        interviewId
-      );
-
-      // BACKEND JOIN
-      await API.post(
-        "/waiting/join",
-        {
-          candidateName: user?.name,
-          interviewId
-        }
-      );
-
-    } catch (err) {
-
-      console.log(err);
-    }
-  };
+  
   useEffect(() => {
+
+   const joinWaitingRoom = async () => {
+
+      try {
+
+         // SOCKET JOIN ROOM
+         socket.emit(
+            "join_room",
+            interviewId
+         );
+
+         // BACKEND JOIN
+         await API.post(
+            "/waiting/join",
+            {
+               candidateName: user?.name,
+               interviewId
+            }
+         );
+
+      } catch (err) {
+
+         console.log(err);
+      }
+   };
+
    joinWaitingRoom();
-}, [joinWaitingRoom]);
+
+}, []);
   
   // ==========================================
   // SOCKET REALTIME EVENTS
