@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -8,9 +8,11 @@ import socket from "../../../socket";
 
 function CandidateWaiting() {
 
+
+
   const navigate = useNavigate();
 
-  const { interviewId } = useParams();
+  const { roomId } = useParams();
 
   const [cameraPermission, setCameraPermission] =
     useState(false);
@@ -33,46 +35,53 @@ function CandidateWaiting() {
   const [message, setMessage] =
     useState("");
 
-  const user =
-    JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  useEffect(() => {
+
+    if (!user) {
+
+      navigate("/login");
+
+      return;
+    }
+
+  }, [user, navigate]);
 
   // ==========================================
   // JOIN WAITING ROOM
   // ==========================================
 
 
-  
- useEffect(() => {
+  const joinWaitingRoom = async () => {
 
-   const joinWaitingRoom = async () => {
+    try {
 
-      try {
+      // SOCKET JOIN ROOM
+      socket.emit(
+        "join_room",
+        roomId
+      );
 
-         // SOCKET JOIN ROOM
-         socket.emit(
-            "join_room",
-            interviewId
-         );
+      // BACKEND JOIN
+      await API.post(
+        "/waiting/join",
+        {
+          candidateName: user?.name,
+          roomId
+        }
+      );
 
-         // BACKEND JOIN
-         await API.post(
-            "/waiting/join",
-            {
-               candidateName: user?.name,
-               interviewId
-            }
-         );
+    } catch (err) {
 
-      } catch (err) {
+      console.log(err);
+    }
+  };
 
-         console.log(err);
-      }
-   };
+  useEffect(() => {
+    joinWaitingRoom();
+  }, [joinWaitingRoom]);
 
-   joinWaitingRoom();
-
-}, [interviewId, user?.name]);
-  
   // ==========================================
   // SOCKET REALTIME EVENTS
   // ==========================================
@@ -95,13 +104,15 @@ function CandidateWaiting() {
       (data) => {
 
         if (
-          data.roomId === interviewId
+          data.roomId === roomId
         ) {
 
           setApproved(true);
-
           setMessage(
             "Interviewer approved your interview."
+          );
+          navigate(
+            `/candidate/interview/${roomId}`
           );
         }
       }
@@ -135,7 +146,7 @@ function CandidateWaiting() {
       );
     };
 
-  }, [interviewId]);
+  }, [roomId]);
 
   // ==========================================
   // HANDLE PERMISSIONS
@@ -162,6 +173,29 @@ function CandidateWaiting() {
 
       setScreenPermission(true);
 
+      if(!screenPermission) {
+        console.log("Screen share permission not granted");
+        if (process.env.NODE_ENV !== "development") {
+          alert("Screen share permission not granted");
+        }
+        return;
+      }
+      else if (!cameraPermission || !micPermission) {
+        if (process.env.NODE_ENV !== "development") {
+          alert("Camera or microphone permission not granted");
+        }
+        return;
+      }
+      else if (!screenPermission) {
+        if (process.env.NODE_ENV !== "development") {
+          alert("Screen share permission not granted");
+        }
+        return;
+      }else{
+        console.log("All permissions granted");
+      }
+
+
       // BACKEND VERIFY
       const permissionsRes =
         await API.post(
@@ -176,6 +210,7 @@ function CandidateWaiting() {
       console.log(
         permissionsRes.data
       );
+      console.log(user);
 
       // READY STATUS
       const readyRes =
@@ -188,14 +223,16 @@ function CandidateWaiting() {
         );
 
       console.log(
-        readyRes.data
+        readyRes
       );
+
+ 
 
       // SOCKET READY EVENT
       socket.emit(
         "candidate_ready",
         {
-          roomId: interviewId,
+          roomId: roomId,
           candidateId: user?.id
         }
       );
@@ -209,10 +246,9 @@ function CandidateWaiting() {
     } catch (error) {
 
       console.log(error);
+      alert("There is a error while submitting Permissions");
 
-      alert(
-        "Please allow all permissions to continue."
-      );
+      
 
     } finally {
 
@@ -226,7 +262,7 @@ function CandidateWaiting() {
   const joinInterviewRoom = () => {
 
     navigate(
-      `/interview-room/${interviewId}`
+      `/interview-room/${roomId}`
     );
   };
 
@@ -328,7 +364,7 @@ function CandidateWaiting() {
 
               <h2 className="text-xl font-bold text-zinc-900 mt-2">
 
-                {interviewId}
+                {roomId}
 
               </h2>
 
@@ -446,7 +482,8 @@ function CandidateWaiting() {
 
                   Interviewer will allow you shortly.
 
-                </p>
+                </p><br />
+                <p>Note:This is the pre check of the requirements, you must turn-on camera and microphone in the interview room</p>
 
               </div>
             )
