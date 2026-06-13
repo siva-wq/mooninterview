@@ -9,6 +9,8 @@ import socket from "../../../socket";
 
 import { useNavigate } from "react-router-dom";
 
+import AdminRoom from "../room/AdminRoom";
+
 function AdminWaiting() {
 
   const navigate = useNavigate();
@@ -43,7 +45,8 @@ function AdminWaiting() {
         interviewsRes.data.filter(
           (item) =>
             item.status ===
-            "scheduled"
+            "scheduled" &&
+            item.ready === true
         );
 
       setCandidates(waitingCandidates);
@@ -67,30 +70,15 @@ function AdminWaiting() {
 
     // JOIN ADMIN ROOM
     socket.emit(
-      "join_room",
       "admin_waiting_room"
     );
 
     // NEW CANDIDATE READY
     socket.on(
       "candidate_ready_status",
-      (data) => {
+      () => {
 
-        setCandidates((prev) =>
-
-          prev.map((candidate) =>
-
-            candidate.candidate?._id ===
-            data.candidateId
-
-              ? {
-                  ...candidate,
-                  ready: true
-                }
-
-              : candidate
-          )
-        );
+        fetchWaitingCandidates();
       }
     );
 
@@ -189,6 +177,11 @@ function AdminWaiting() {
 
       // SOCKET EVENT
       socket.emit(
+        "join_room",
+        candidate.roomId
+      );
+
+      socket.emit(
         "start_interview",
         {
           roomId: candidate.roomId
@@ -197,7 +190,7 @@ function AdminWaiting() {
 
       // NAVIGATE
       navigate(
-        `/interview-room/${candidate.roomId}`
+        `/admin/interview/${candidate.roomId}`
       );
 
     } catch (err) {
