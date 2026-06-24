@@ -1,41 +1,79 @@
 const express = require('express');
 const router = express.Router();
-const authMiddleware = require('../middleware/authMiddleware');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
+const Organisation = require('../models/Organisation');
+const authMiddleware = require('../middleware/authMiddleware');
 
-// REGISTER
+// REGISTER ADMIN
 router.post('/register', async (req, res) => {
+
     try {
 
-        const { name, email, password, role } = req.body;
+        const {
+            name,
+            email,
+            password,
+            role,
+            organisation
+        } = req.body;
 
-        // Check user already exists
-        const existingUser = await User.findOne({ email });
+        // Check organisation exists
+        const organisationExists =
+            await Organisation.findById(organisation);
+        const OrganisationName = organisationExists?.title;
+
+        if (!organisationExists) {
+            return res.status(404).json({
+                message: 'Organisation not found'
+            });
+        }
+
+        // Check email already exists
+        const existingUser =
+            await User.findOne({
+                email: email.toLowerCase().trim()
+            });
 
         if (existingUser) {
             return res.status(400).json({
-                message: 'User already exists'
+                message: 'Email already exists'
+            });
+        }
+
+        // Check organisation already has admin
+        const existingAdmin =
+            await User.findOne({
+                organisation,
+                role: 'admin'
+            });
+
+        if (existingAdmin && role === 'admin') {
+            return res.status(400).json({
+                message:
+                    'Admin already exists for this organisation'
             });
         }
 
         // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword =
+            await bcrypt.hash(password, 10);
 
-        // Create new user
-        const newUser = new User({
+        // Create admin
+        const user = await User.create({
             name,
-            email,
+            email: email.toLowerCase().trim(),
             password: hashedPassword,
-            role
+            organisation,
+            OrganisationName,
+            role: role
         });
 
-        await newUser.save();
-
         res.status(201).json({
-            message: 'User registered successfully'
+            message: `${role} registered successfully`,
+            userId: user._id
         });
 
     } catch (error) {
@@ -47,53 +85,69 @@ router.post('/register', async (req, res) => {
         });
     }
 });
-
-
-// LOGIN
 router.post('/login', async (req, res) => {
 
     try {
 
-        const { email, password } = req.body;
+        const {
+            email,
+            password
+        } = req.body;
 
-        // Check user exists
-        const user = await User.findOne({ email });
+        const user = await User
+            .findOne({
+                email: email.toLowerCase().trim()
+            })
+            .populate('organisation');
 
         if (!user) {
             return res.status(400).json({
-                message: 'Invalid Email or Password'
+                message: 'Invalid credentials'
             });
         }
 
-        // Compare password
-        const isMatch = await bcrypt.compare(password, user.password);
+        if (!user.active) {
+            return res.status(403).json({
+                message: 'Account disabled'
+            });
+        }
+
+        const isMatch =
+            await bcrypt.compare(
+                password,
+                user.password
+            );
 
         if (!isMatch) {
             return res.status(400).json({
-                message: 'Invalid Password'
+                message: 'Invalid credentials'
             });
         }
+        console.log(user);
 
-        // Generate JWT Token
         const token = jwt.sign(
             {
                 id: user._id,
-                role: user.role
+                role: user.role,
+                organisation: user.organisation._id,
+                organisationName: user.organisation.title
             },
-            'mooninterviewsecret',
+            process.env.JWT_SECRET,
             {
                 expiresIn: '1h'
             }
         );
 
         res.status(200).json({
-            message: 'Login Successful',
+            message: 'Login successful',
             token,
             user: {
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                role: user.role
+                role: user.role,
+                organisation: user.organisation,
+                organisationName: user.organisation.title
             }
         });
 
@@ -106,33 +160,36 @@ router.post('/login', async (req, res) => {
         });
     }
 });
+router.get(
+    '/me',
+    authMiddleware,
+    async (req, res) => {
 
-// GET CURRENT LOGGED-IN USER
-router.get('/me', authMiddleware, async (req, res) => {
+        try {
 
-    try {
+            const user =
+                await User.findById(
+                    req.user.id
+                )
+                .select('-password')
+                .populate('organisation');
 
-        const user = await User.findById(req.user.id)
-            .select('-password');
+            if (!user) {
+                return res.status(404).json({
+                    message: 'User not found'
+                });
+            }
 
-        if (!user) {
+            res.status(200).json(user);
 
-            return res.status(404).json({
-                message: 'User not found'
+        } catch (error) {
+
+            console.log(error);
+
+            res.status(500).json({
+                message: 'Server Error'
             });
         }
-
-        res.status(200).json(user);
-
-    } catch (error) {
-
-        console.log(error);
-
-        res.status(500).json({
-            message: 'Server Error'
-        });
     }
-});
-
-
+);
 module.exports = router;

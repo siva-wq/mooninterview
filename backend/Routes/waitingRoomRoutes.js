@@ -1,12 +1,20 @@
 const express = require('express');
 const router = express.Router();
 
-const authMiddleware = require('../middleware/authMiddleware');
+const authMiddleware =
+    require('../middleware/authMiddleware');
+
+
+const Interview =
+    require('../models/Interview');
+
+const checkOrganisationExpiry = require('../middleware/checkOrganisationExpiry');
+
+router.use(checkOrganisationExpiry);
 
 
 // ==========================================
 // JOIN WAITING ROOM
-// LOGGED-IN USERS
 // ==========================================
 router.post(
     '/waiting/join',
@@ -16,15 +24,35 @@ router.post(
         try {
 
             const {
-                candidateName,
-                interviewId
+                roomId
             } = req.body;
 
+            if (!roomId) {
+                return res.status(400).json({
+                    message:
+                        'Room ID is required'
+                });
+            }
+
+            const interview =
+                await Interview.findOne({
+                    roomId: roomId,
+                    organisation:
+                        req.user.organisation
+                });
+
+            if (!interview) {
+                return res.status(404).json({
+                    message:
+                        'Room not found'
+                });
+            }
+
             res.status(200).json({
-                message: 'Candidate joined waiting room',
-                candidateName,
-                interviewId,
-                user: req.user
+                success: true,
+                message:
+                    'Candidate joined waiting room',
+                interview
             });
 
         } catch (error) {
@@ -41,7 +69,6 @@ router.post(
 
 // ==========================================
 // CHECK DEVICE PERMISSIONS
-// LOGGED-IN USERS
 // ==========================================
 router.post(
     '/waiting/permissions',
@@ -53,22 +80,28 @@ router.post(
             const {
                 camera,
                 microphone,
-                screenShare
+                screenShare,
+                resume
             } = req.body;
 
             if (
                 camera &&
                 microphone &&
-                screenShare
+                screenShare &&
+                resume
             ) {
 
                 return res.status(200).json({
-                    message: 'All permissions granted'
+                    success: true,
+                    message:
+                        'All permissions granted'
                 });
             }
 
-            res.status(400).json({
-                message: 'Permissions missing'
+            return res.status(400).json({
+                success: false,
+                message:
+                    'Permissions missing'
             });
 
         } catch (error) {
@@ -85,7 +118,6 @@ router.post(
 
 // ==========================================
 // CANDIDATE READY STATUS
-// LOGGED-IN USERS
 // ==========================================
 router.post(
     '/waiting/ready',
@@ -99,10 +131,41 @@ router.post(
                 ready
             } = req.body;
 
+            if (
+                !candidateId ||
+                typeof ready !== 'boolean'
+            ) {
+                return res.status(400).json({
+                    message:
+                        'Candidate ID and ready status are required'
+                });
+            }
+
+            const interview =
+                await Interview.findOne({
+                    candidate: candidateId,
+                    organisation:
+                        req.user.organisation
+                });
+
+            if (!interview) {
+
+                return res.status(404).json({
+                    message:
+                        'Interview not found'
+                });
+            }
+
+            interview.ready = ready;
+
+            await interview.save();
+
             res.status(200).json({
-                message: ready
-                    ? 'Candidate is ready'
-                    : 'Candidate is not ready',
+                success: true,
+                message:
+                    ready
+                        ? 'Candidate is ready'
+                        : 'Candidate is not ready',
                 candidateId
             });
 
@@ -116,6 +179,5 @@ router.post(
         }
     }
 );
-
 
 module.exports = router;
