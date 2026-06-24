@@ -10,7 +10,15 @@ const authMiddleware = (req, res, next) => {
         if (!authHeader) {
 
             return res.status(401).json({
-                message: 'No token provided'
+                type: "session",
+                message: "Session expired",
+            });
+        }
+
+        if (!authHeader.startsWith("Bearer ")) {
+            return res.status(401).json({
+                type: "session",
+                message: "Session expired"
             });
         }
 
@@ -31,7 +39,8 @@ const authMiddleware = (req, res, next) => {
         console.log(error);
 
         res.status(401).json({
-            message: 'Invalid token'
+            type: "session",
+            message: "Invalid token"
         });
     }
 };

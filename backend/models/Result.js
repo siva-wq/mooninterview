@@ -1,31 +1,56 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const resultSchema = new mongoose.Schema({
-
-    candidate:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'User',
+const resultSchema = new mongoose.Schema(
+  {
+    interview: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Interview",
+      required: true,
     },
 
-    interview:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Interview',
+    candidate: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
 
-    score:{
-        type:Number,
+    admin: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
 
-    feedback:{
-        type:String,
+    status: {
+      type: String,
+      enum: [
+        "selected",
+        "rejected",
+        "hold",
+      ],
+      required: true,
+    },
+    feedback: {
+      type: String,
+      trim: true,
+      default: "",
     },
 
-    status:{
-        type:String,
-        enum:['selected','rejected','pending'],
-        default:'pending',
-    }
+    recommendation: {
+      type: String,
+      enum: [
+        "strong_hire",
+        "hire",
+        "no_hire",
+      ],
+      default: "hire",
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-},{timestamps:true});
-
-module.exports = mongoose.model('Result', resultSchema);
+module.exports = mongoose.model(
+  "Result",
+  resultSchema
+);

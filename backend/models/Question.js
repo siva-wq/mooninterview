@@ -14,7 +14,13 @@ const questionSchema = new mongoose.Schema({
     difficulty:{
         type:String,
         enum:['easy','medium','hard'],
-    }
+    },
+
+    organisation: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Organisation',
+        required: true,
+    },
 
 },{timestamps:true});
 

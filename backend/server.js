@@ -13,6 +13,9 @@ const userRoutes = require('./Routes/UserRoutes');
 const interviewRoutes = require('./Routes/interviewRoutes');
 const waitingRoomRoutes = require('./Routes/waitingRoomRoutes');
 const emailRoutes = require('./Routes/emailRoute');
+const organisationRoutes = require('./Routes/OrganisationRoutes');
+const compilerRoutes = require('./Routes/compilerRoute');
+const ResultRoutes = require('./Routes/ResultRoutes');
 
 const interviewSocket = require('./sockets/interviewSocket');
 
@@ -61,6 +64,15 @@ app.use('/api', interviewRoutes);
 app.use('/api', waitingRoomRoutes);
 
 app.use('/api', emailRoutes);
+
+app.use('/api', organisationRoutes);
+
+app.use('/api/compiler', compilerRoutes);
+
+app.use('/api/result', ResultRoutes);
+
+
+
 
 // ==========================================
 // SOCKETS

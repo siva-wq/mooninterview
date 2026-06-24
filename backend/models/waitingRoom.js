@@ -11,6 +11,11 @@ const waitingRoomSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'Interview',
     },
+    organisation: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Organisation',
+        required: true,
+    },
 
     camera:{
         type:Boolean,

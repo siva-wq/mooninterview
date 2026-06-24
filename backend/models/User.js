@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
+        lowercase: true,
+        trim: true,
     },
 
     password: {
@@ -17,10 +19,21 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
 
+    organisation: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Organisation',
+        required: true,
+    },
+
     role: {
         type: String,
-        enum: ['admin', 'candidate'],
+        enum: ['admin', 'candidate', 'interviewer'],
         default: 'candidate',
+    },
+
+    active: {
+        type: Boolean,
+        default: true,
     },
 }, {
     timestamps: true,
