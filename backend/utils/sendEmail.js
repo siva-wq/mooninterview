@@ -8,6 +8,8 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+console.log("SMTP Connected");
+
 const sendEmail = async (to, subject, html) => {
   try{
   await transporter.sendMail({
@@ -19,6 +21,7 @@ const sendEmail = async (to, subject, html) => {
 
 
   console.log("Email sent successfully");
+  console.log(sendEmail);
 }
 catch(error) {
   console.error("Error sending email:", error);
