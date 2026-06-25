@@ -1,27 +1,36 @@
-const brevo = require("@getbrevo/brevo");
-
-const apiInstance = new brevo.TransactionalEmailsApi();
-
-apiInstance.setApiKey(
-  brevo.TransactionalEmailsApiApiKeys.apiKey,
-  process.env.BREVO_API_KEY
-);
+const axios = require("axios");
 
 const sendEmail = async (to, subject, html) => {
   try {
-    await apiInstance.sendTransacEmail({
-      sender: {
-        name: "MoonInterview",
-        email: process.env.GOOGLE_EMAIL, // Must be a verified sender in Brevo
+    const response = await axios.post(
+      "https://api.brevo.com/v3/smtp/email",
+      {
+        sender: {
+          name: "MoonInterview",
+          email: process.env.GOOGLE_EMAIL, // Must be a verified sender in Brevo
+        },
+        to: [
+          {
+            email: to,
+          },
+        ],
+        subject,
+        htmlContent: html,
       },
-      to: [{ email: to }],
-      subject,
-      htmlContent: html,
-    });
+      {
+        headers: {
+          "api-key": process.env.BREVO_API_KEY,
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-    console.log("Email sent successfully");
+    console.log("Email sent:", response.data);
   } catch (error) {
-    console.error("Brevo API Error:", error);
+    console.error(
+      "Brevo Error:",
+      error.response?.data || error.message
+    );
     throw error;
   }
 };
