@@ -6,8 +6,14 @@ const authMiddleware = (req, res, next) => {
 
         const authHeader =
             req.header('Authorization');
+ console.log("URL:", req.originalUrl);
+console.trace("AUTH MIDDLEWARE CALLED");
+        
+
+console.log("AUTH HEADER:", authHeader);
 
         if (!authHeader) {
+            console.log("No authorization header");
 
             return res.status(401).json({
                 type: "session",
