@@ -11,7 +11,7 @@ const WaitingRoom = require("../models/waitingRoom");
 
 const router = express.Router();
 
-router.post("/seed", async (req, res) => {
+router.get("/", async (req, res) => {
     try {
 
 
@@ -435,6 +435,9 @@ router.post("/seed", async (req, res) => {
                 interview:
                     interviews[0]._id,
 
+                admin:
+                    admins[0]._id,
+
                 organisation:
                     organisations[0]._id,
 
@@ -454,6 +457,9 @@ router.post("/seed", async (req, res) => {
                 interview:
                     interviews[2]._id,
 
+                admin:
+                    admins[1]._id,
+
                 organisation:
                     organisations[1]._id,
 
@@ -472,6 +478,9 @@ router.post("/seed", async (req, res) => {
 
                 interview:
                     interviews[3]._id,
+
+                admin:
+                    admins[1]._id,
 
                 organisation:
                     organisations[1]._id,
