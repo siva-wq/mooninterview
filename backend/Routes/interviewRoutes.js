@@ -39,9 +39,15 @@ router.get("/validate/:roomId", async (req, res) => {
       });
     }
 
-    // Link expiry check
-    // Valid for 1 hour after scheduled interview time
+    // ✅ Interview already completed
+    if (interview.status === "completed") {
+      return res.status(403).json({
+        type: "completed",
+        message: "Interview already completed",
+      });
+    }
 
+    // Link expiry check
     const interviewDateTime = new Date(
       `${interview.date.toISOString().split("T")[0]} ${interview.time}`
     );
