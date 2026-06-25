@@ -42,7 +42,7 @@ function CandidateReport() {
       }
     };
     fetchInterview();
-  }, [fetchInterview]);
+  }, [id]);
 
   // ==========================================
   // SOCKET REALTIME REPORT UPDATES
