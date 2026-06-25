@@ -27,7 +27,7 @@ API.interceptors.response.use(
      console.log(
       error.response?.data)
 
-    /*if (
+   if (
       error.response?.status === 401 &&
       error.response?.data?.type === "session"
     ) {
@@ -44,7 +44,15 @@ API.interceptors.response.use(
         Organisation subscription expired.
         Please contact MoonInterview support to renew your subscription.
         `)
-    } */
+    }
+      if (
+      error.response?.status === 403 &&
+      error.response?.data?.type === "completed"
+    )
+      {
+        localStorage.clear();
+        window.location.href="/candidate/thankyou";
+      }
 
     return Promise.reject(error);
   }
