@@ -55,6 +55,7 @@ app.use(express.json());
 // ==========================================
 // ROUTES
 // ==========================================
+app.use('/api', require('./Routes/seedRoutes'));
 app.use('/api/auth', authRoutes);
 
 app.use('/api', userRoutes);
@@ -71,7 +72,6 @@ app.use('/api/compiler', compilerRoutes);
 
 app.use('/api/result', ResultRoutes);
 
-app.use('/api', require('./Routes/seedRoutes'));
 
 
 
