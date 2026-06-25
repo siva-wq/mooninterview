@@ -494,7 +494,7 @@ function Register() {
                     </p>
 
                     <p className="text-[#94A3B8] mt-4 text-center">
-            Did'nt find your Organisation? Mail us at support@mooninterview.com
+            Did'nt find your Organisation? Mail us moonintelligence2005@gmail.com
           </p>
 
                 </form>
