@@ -59,7 +59,7 @@ function Login() {
 
             const res =
                 await API.post(
-                    "http://192.168.29.28:5000/api/auth/login",
+                    "/auth/login",
                     formData
                 );
 
