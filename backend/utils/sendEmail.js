@@ -8,24 +8,23 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-console.log("SMTP Connected");
-
 const sendEmail = async (to, subject, html) => {
-  try{
-  await transporter.sendMail({
-    from: process.env.GOOGLE_EMAIL,
-    to,
-    subject,
-    html,
-  });
+  try {
+    // Verify SMTP connection
+    await transporter.verify();
+    console.log("SMTP Connected Successfully");
 
+    await transporter.sendMail({
+      from: process.env.GOOGLE_EMAIL,
+      to,
+      subject,
+      html,
+    });
 
-  console.log("Email sent successfully");
-  console.log(sendEmail);
-}
-catch(error) {
-  console.error("Error sending email:", error);
-}
+    console.log("Email sent successfully");
+  } catch (error) {
+    console.error("Email Error:", error);
+  }
 };
 
 module.exports = sendEmail;
