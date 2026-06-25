@@ -6,7 +6,6 @@ import Sidebar from '../components/common/Sidebar';
 import DashboardCard from '../components/dashboard/DashboardCard';
 
 import ReportsTable from '../components/reports/ReportsTable';
-import AIEvalution from '../components/reports/AIEvalution';
 import CandidateReport from '../components/reports/CandidateReport';
 
 import API from '../api/axios';
@@ -600,10 +599,6 @@ function Reports() {
             />
 
           </div>
-
-          {/* AI EVALUATION */}
-
-          <AIEvalution />
 
         </div>
 

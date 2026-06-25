@@ -6,9 +6,10 @@ import API from "../../api/axios";
 
 import socket from "../../socket";
 
+import toast from "react-hot-toast"; 
+
 function ReportsTable({ setSelectedCandidate }) {
 
-  const navigate = useNavigate();
 
   const [reports, setReports] =
     useState([]);
@@ -166,17 +167,46 @@ function ReportsTable({ setSelectedCandidate }) {
 
   }, []);
 
-  // ==========================================
-  // OPEN REPORT
-  // ==========================================
-  const openReport = (candidate) => {
+  const updateResult = async (candidate,status) => {
+  try {
 
-    setSelectedCandidate(candidate);
+    console.log(candidate);
+    console.log(status);
 
-    navigate(
-      `/report/${candidate._id}`
-    );
-  };
+    await API.post(
+              "/result/setres",
+              {
+                roomId:candidate.roomId,
+                status:status,
+              }
+            );
+          fetchReports();
+            
+
+    await API.post(
+          "/send",
+          {
+            name: candidate.candidate.name,
+            email: candidate.candidate.email,
+            date: candidate.date,
+            time: candidate.time,
+            roomId: candidate.roomId,
+            type: status,
+          }
+        );
+
+      
+    
+
+    toast.success("Mail sent successfully");
+    
+
+  } catch (error) {
+
+    toast.error("Failed to send mail");
+
+  }
+};
 
   return (
 
@@ -232,6 +262,7 @@ function ReportsTable({ setSelectedCandidate }) {
               Result
             </th>
 
+
           </tr>
 
         </thead>
@@ -246,9 +277,7 @@ function ReportsTable({ setSelectedCandidate }) {
 
                 <tr
                   key={candidate._id}
-                  onClick={() =>
-                    openReport(candidate)
-                  }
+                  
                   className="
                     border-t
                     border-zinc-100
@@ -406,19 +435,37 @@ function ReportsTable({ setSelectedCandidate }) {
 
                           ? "bg-red-100 text-red-700"
 
-                          : "bg-yellow-100 text-yellow-700"
+                          : candidate.result === "pending"
+                            ? "bg-gray-100 text-gray-700"
+                            : "bg-gray-100 text-gray-700"
+
                         }
                       `}
                     >
 
-                      {
-                        candidate.result ||
-                        "Pending"
-                      }
+                      {candidate.result === "pending" ? (
+  <select
+  value={candidate.result}
+  onChange={(e) =>
+    updateResult(
+      candidate,
+      e.target.value
+    )
+  }
+>
+  <option value="pending">Pending</option>
+  <option value="selected">Selected</option>
+  <option value="rejected">Rejected</option>
+</select>
+) : (
+  <span>{candidate.result}</span>
+)}
 
                     </span>
 
                   </td>
+
+                  
 
                 </tr>
               ))

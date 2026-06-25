@@ -9,7 +9,7 @@ import socket from "../../../socket";
 
 import { useNavigate } from "react-router-dom";
 
-import AdminRoom from "../room/AdminRoom";
+
 
 function AdminWaiting() {
 
@@ -20,6 +20,9 @@ function AdminWaiting() {
 
   const [loading, setLoading] =
     useState(true);
+
+
+
 
   // ==========================================
   // FETCH WAITING CANDIDATES
@@ -44,9 +47,9 @@ function AdminWaiting() {
       const waitingCandidates =
         interviewsRes.data.filter(
           (item) =>
-            item.status ===
+            (item.status ===
             "scheduled" &&
-            item.ready === true
+            item.ready === true)
         );
 
       setCandidates(waitingCandidates);
@@ -69,55 +72,36 @@ function AdminWaiting() {
     socket.connect();
 
     // JOIN ADMIN ROOM
+    // JOIN ADMIN ROOM
+    const user = JSON.parse(
+      localStorage.getItem("user")
+    );
+
     socket.emit(
-      "admin_waiting_room"
+      "admin_waiting_room",
+      {
+        organisationId:
+          user.organisation
+      }
     );
 
     // NEW CANDIDATE READY
     socket.on(
       "candidate_ready_status",
-      () => {
-
+      (data) => {
         fetchWaitingCandidates();
       }
     );
 
-    // NEW INTERVIEW CREATED
-    socket.on(
-      "new_interview_created",
-      (newInterview) => {
-
-        if (
-          newInterview.status ===
-          "scheduled"
-        ) {
-
-          setCandidates((prev) => [
-
-            {
-              ...newInterview,
-              ready: false
-            },
-
-            ...prev
-
-          ]);
-        }
-      }
-    );
 
     // INTERVIEW STARTED
     socket.on(
       "interview_started",
       (data) => {
-
-        setCandidates((prev) =>
-
+        setCandidates(prev =>
           prev.filter(
-            (candidate) =>
-
-              candidate.roomId !==
-              data.roomId
+            candidate =>
+              candidate.roomId !== data.roomId
           )
         );
       }
@@ -145,9 +129,6 @@ function AdminWaiting() {
         "candidate_ready_status"
       );
 
-      socket.off(
-        "new_interview_created"
-      );
 
       socket.off(
         "interview_started"
@@ -178,7 +159,9 @@ function AdminWaiting() {
       // SOCKET EVENT
       socket.emit(
         "join_room",
-        candidate.roomId
+        {
+          roomId: candidate.roomId
+        }
       );
 
       socket.emit(

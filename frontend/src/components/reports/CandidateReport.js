@@ -19,13 +19,13 @@ function CandidateReport() {
   // ==========================================
   // FETCH INTERVIEW REPORT
   // ==========================================
- 
-
   useEffect(() => {
+   fetchInterview();
+}, [fetchInterview]);
 
-    const fetchInterview = async () => {
+  const fetchInterview = async () => {
 
-        try {
+    try {
 
       setLoading(true);
 
@@ -43,11 +43,7 @@ function CandidateReport() {
 
       setLoading(false);
     }
-    };
-
-    fetchInterview();
-
-}, [id]);
+  };
 
   // ==========================================
   // SOCKET REALTIME REPORT UPDATES

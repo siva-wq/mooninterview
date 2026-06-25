@@ -6,6 +6,24 @@ import socket from "../../../socket";
 
 import CodeEditor from "../../editor/CodeEditor";
 
+import API from "../../../api/axios";
+
+import toast from "react-hot-toast";
+import { ErrorHandler } from "../../errors/ErrorHandler";
+
+import {
+  Video,
+  Code2,
+  Monitor,
+  Mic,
+  MicOff,
+  Camera,
+  CameraOff,
+  PhoneOff,
+  ScreenShare,
+} from "lucide-react";
+
+
 function CandidateRoom() {
 
   const { roomId } = useParams();
@@ -18,12 +36,36 @@ function CandidateRoom() {
 
     if (!user) {
 
-      navigate("/login");
+      navigate(`/login/${roomId}`);
 
       return;
     }
 
   }, [user, navigate]);
+
+  useEffect(() => {
+
+    const checkInterview = async () => {
+      try {
+
+        await API.get(
+          `/validate/${roomId}`
+        );
+
+      } catch (error) {
+
+        ErrorHandler(
+          navigate,
+          error.response?.data?.type
+        );
+
+      }
+    };
+
+    checkInterview();
+
+  }, [roomId, navigate]);
+
 
   // ==========================================
   // STATES
@@ -75,9 +117,23 @@ function CandidateRoom() {
 
       const stream =
         await navigator.mediaDevices.getUserMedia({
-          video: true,
-          audio: true,
-        });
+          video: {
+            width: { min: 1280, ideal: 1280 },
+            height: { min: 720, ideal: 720 },
+            frameRate: { ideal: 30 }
+          },
+          audio: true
+        })
+      const track = stream.getVideoTracks()[0];
+
+      console.log(
+        "LOCAL CAMERA SETTINGS",
+        track.getSettings()
+      );
+
+      // const track = stream.getVideoTracks()[0];
+
+      //console.log(track.getSettings());
 
       localStreamRef.current =
         stream;
@@ -126,7 +182,7 @@ function CandidateRoom() {
           },
         ],
       });
-      console.log("Setting ontrack handler");
+    console.log("Setting ontrack handler");
     cameraPeer.current =
       peer;
     peer.onconnectionstatechange =
@@ -138,17 +194,14 @@ function CandidateRoom() {
         );
 
       };
-    peer.addTransceiver("audio", {
-      direction: "recvonly",
-    });
 
-    // ADD TRACKS
-    // RECEIVE ADMIN AUDIO
-    
-
-    // ADD CANDIDATE TRACKS
+    // ADD CANDIDATE TRACKS ONLY - let WebRTC handle transceivers automatically
     stream.getTracks().forEach(
       (track) => {
+        console.log(
+          "Sending stream:",
+          stream.getVideoTracks()[0].getSettings()
+        );
 
         peer.addTrack(
           track,
@@ -159,44 +212,24 @@ function CandidateRoom() {
 
     // RECEIVE REMOTE STREAM
     peer.ontrack = (event) => {
-      console.log("TRACK EVENT:", event.track.kind);
-
-      console.log(
-        "TRACK EVENT:",
-        event.track.kind
-      );
-
-      console.log(
-        "TRACK STATE:",
-        event.track.readyState
-      );
-
-      console.log(
-        "STREAMS:",
-        event.streams
-      );
+      console.log("=== CANDIDATE ONTRACK FIRED ===");
+      console.log("TRACK KIND:", event.track.kind);
+      console.log("TRACK ID:", event.track.id);
+      console.log("TRACK STATE:", event.track.readyState);
+      console.log("STREAMS:", event.streams);
+      console.log("STREAM ID:", event.streams[0]?.id);
+      console.log("Receivers:", peer.getReceivers().map(r => ({ kind: r.track?.kind, id: r.track?.id })));
+      console.log("Senders:", peer.getSenders().map(s => ({ kind: s.track?.kind, id: s.track?.id })));
 
       if (event.track.kind === "audio") {
-
-        console.log(
-          "ADMIN AUDIO RECEIVED"
-        );
+        console.log("AUDIO TRACK RECEIVED - checking if it's admin audio");
+        console.log("Is remote track?", !stream.getAudioTracks().includes(event.track));
 
         if (remoteAudioRef.current) {
-
-          remoteAudioRef.current.srcObject =
-            event.streams[0];
-
+          remoteAudioRef.current.srcObject = event.streams[0];
           remoteAudioRef.current.play()
-            .then(() =>
-              console.log("AUDIO PLAYING")
-            )
-            .catch(err =>
-              console.log(
-                "AUDIO ERROR",
-                err
-              )
-            );
+            .then(() => console.log("AUDIO PLAYING"))
+            .catch(err => console.log("AUDIO ERROR", err));
         }
       }
     };
@@ -296,7 +329,9 @@ function CandidateRoom() {
 
     socket.emit(
       "join_room",
-      roomId
+      {
+        roomId
+      }
     );
     socket.on(
       "request_offer",
@@ -484,6 +519,51 @@ function CandidateRoom() {
       }
     );
 
+    socket.on("interview_ended", () => {
+
+      toast.error("Interview has ended");
+
+      // Stop camera & mic
+      localStreamRef.current
+        ?.getTracks()
+        .forEach(track => track.stop());
+
+      // Stop screen share
+      screenStreamRef.current
+        ?.getTracks()
+        .forEach(track => track.stop());
+
+      // Close WebRTC connections
+      cameraPeer.current?.close();
+      screenPeer.current?.close();
+
+      navigate("/candidate/thankyou");
+    });
+
+    socket.on("candidateMicToggled", ({ enabled }) => {
+      const audioTrack =
+        localStreamRef.current
+          ?.getAudioTracks()[0];
+
+      if (
+        audioTrack
+      ) {
+
+        audioTrack.enabled = enabled;
+
+        setMicEnabled(
+          audioTrack.enabled
+        );
+
+      }
+
+      if (enabled) {
+        toast.success("admin enable your mic");
+      } else {
+        toast.error("admin disabled your mic");
+      }
+    });
+
     return () => {
 
       socket.off(
@@ -494,6 +574,7 @@ function CandidateRoom() {
       socket.off(
         "ice_candidate"
       );
+      socket.off("candidateMicToggled");
       cameraPeer.current?.close();
       screenPeer.current?.close();
 
@@ -637,18 +718,17 @@ function CandidateRoom() {
           videoTrack.enabled
         );
 
-        if (!videoTrack.enabled) {
 
-          socket.emit(
-            "camera_off",
-            {
-              roomId,
-              candidateName:
-                "Candidate"
-            }
-          );
 
-        }
+        socket.emit(
+          "camera_status",
+          {
+            roomId,
+            enabled: videoTrack.enabled
+          }
+        );
+
+
       }
     };
 
@@ -672,18 +752,13 @@ function CandidateRoom() {
         audioTrack.enabled
       );
 
-      if (!audioTrack.enabled) {
-
-        socket.emit(
-          "mic_off",
-          {
-            roomId,
-            candidateName:
-              "Candidate"
-          }
-        );
-
-      }
+      socket.emit(
+        "mic_status",
+        {
+          roomId,
+          enabled: audioTrack.enabled
+        }
+      );
 
     }
   };
@@ -712,19 +787,20 @@ function CandidateRoom() {
         <button
           onClick={() => setActiveTab("video")}
           className={`
-            w-14
-            h-14
-            rounded-2xl
-            text-xl
-            font-semibold
-            transition-all
-            ${activeTab === "video"
+    w-14
+    h-14
+    rounded-2xl
+    flex
+    items-center
+    justify-center
+    transition-all
+    ${activeTab === "video"
               ? "bg-blue-600 text-white shadow-lg"
               : "bg-zinc-100 text-zinc-600"
             }
-          `}
+  `}
         >
-          🎥
+          <Video size={24} />
         </button>
 
         <button
@@ -733,16 +809,17 @@ function CandidateRoom() {
             w-14
             h-14
             rounded-2xl
-            text-xl
-            font-semibold
+            flex
+            items-center
+            justify-center
             transition-all
             ${activeTab === "code"
-              ? "bg-emerald-600 text-white shadow-lg"
+              ? "bg-blue-600 text-white shadow-lg"
               : "bg-zinc-100 text-zinc-600"
             }
           `}
         >
-          💻
+          <Code2 size={24} />
         </button>
 
       </div>
@@ -776,37 +853,6 @@ function CandidateRoom() {
             <p className="text-sm text-zinc-500">
               AI Interview Session
             </p>
-
-          </div>
-
-          <div className="flex items-center gap-4">
-
-            <div
-              className="
-                bg-zinc-100
-                px-4
-                py-2
-                rounded-xl
-                text-zinc-700
-                font-medium
-              "
-            >
-              01:24:56
-            </div>
-
-            <button
-              className="
-                bg-red-600
-                hover:bg-red-700
-                text-white
-                px-5
-                py-2
-                rounded-xl
-                font-medium
-              "
-            >
-              End Interview
-            </button>
 
           </div>
 
@@ -868,11 +914,12 @@ function CandidateRoom() {
                     "
                 >
 
-                  {
-                    screenSharing
-                      ? "Sharing"
-                      : "Share Screen"
-                  }
+                  <div className="flex items-center gap-2">
+                    <ScreenShare size={18} />
+                    <span>
+                      {screenSharing ? "Sharing" : "Share Screen"}
+                    </span>
+                  </div>
 
                 </button>
 
@@ -928,62 +975,50 @@ function CandidateRoom() {
                 muted
                 playsInline
                 className="
-                    flex-1
-                    bg-black
-                    object-cover
+                    w-full h-full object-contain
                   "
               />
 
-              <div
-                className="
-                    p-4
-                    border-t
-                    border-zinc-200
-                    flex
-                    gap-3
-                  "
-              >
+              <div className="p-4 border-t border-zinc-200 flex justify-center gap-4">
 
+                {/* Camera Button */}
                 <button
                   onClick={toggleCamera}
-                  className="
-                      flex-1
-                      bg-blue-600
-                      hover:bg-blue-700
-                      text-white
-                      py-2
-                      rounded-xl
-                      font-medium
-                    "
+                  className={`
+                    w-12 h-12 rounded-full flex items-center justify-center
+                    transition-all
+                    ${cameraEnabled
+                      ? "bg-blue-600 hover:bg-blue-700 text-white"
+                      : "bg-red-500 hover:bg-red-600 text-white"
+                    }
+                  `}
+                  title={cameraEnabled ? "Turn Camera Off" : "Turn Camera On"}
                 >
-
-                  {
-                    cameraEnabled
-                      ? "Camera OFF"
-                      : "Camera ON"
-                  }
-
+                  {cameraEnabled ? (
+                    <Camera size={20} />
+                  ) : (
+                    <CameraOff size={20} />
+                  )}
                 </button>
 
+                {/* Mic Button */}
                 <button
                   onClick={toggleMic}
-                  className="
-                      flex-1
-                      bg-emerald-600
-                      hover:bg-emerald-700
-                      text-white
-                      py-2
-                      rounded-xl
-                      font-medium
-                    "
+                  className={`
+                    w-12 h-12 rounded-full flex items-center justify-center
+                    transition-all
+                    ${micEnabled
+                      ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+                      : "bg-red-500 hover:bg-red-600 text-white"
+                    }
+                  `}
+                  title={micEnabled ? "Mute Microphone" : "Unmute Microphone"}
                 >
-
-                  {
-                    micEnabled
-                      ? "Mic OFF"
-                      : "Mic ON"
-                  }
-
+                  {micEnabled ? (
+                    <Mic size={20} />
+                  ) : (
+                    <MicOff size={20} />
+                  )}
                 </button>
 
               </div>
@@ -1010,14 +1045,13 @@ function CandidateRoom() {
 
           <CodeEditor />
 
-        </div> 
+        </div>
 
         <audio
-  ref={remoteAudioRef}
-  autoPlay
-  playsInline
-  controls
-/>
+          ref={remoteAudioRef}
+          autoPlay
+          playsInline
+        />
 
       </div>
 

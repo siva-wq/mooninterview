@@ -1,108 +1,80 @@
 import { useEffect, useState } from "react";
+import {
+  CalendarDays,
+  Video,
+  User,
+  BadgeCheck,
+} from "lucide-react";
 
 import API from "../../api/axios";
-
 import socket from "../../socket";
 
 function RecentInterviews() {
-
   const [interviews, setInterviews] =
     useState([]);
 
   const [loading, setLoading] =
     useState(true);
 
-  // ==========================================
-  // FETCH INTERVIEWS
-  // ==========================================
   useEffect(() => {
-
     fetchInterviews();
-
   }, []);
 
   const fetchInterviews = async () => {
-
     try {
-
       setLoading(true);
 
       const res = await API.get(
-        "https://mooninterview.onrender.com/api/interviews"
+        "/interviews"
       );
 
       setInterviews(res.data);
-
-    } catch (err) {
-
-      console.log(err);
-
+    } catch (error) {
+      console.error(error);
     } finally {
-
       setLoading(false);
     }
   };
 
-  // ==========================================
-  // SOCKET REALTIME EVENTS
-  // ==========================================
   useEffect(() => {
-
     socket.connect();
 
-    // NEW INTERVIEW
     socket.on(
       "new_interview_created",
       (newInterview) => {
-
         setInterviews((prev) => [
-
           newInterview,
-
-          ...prev
-
+          ...prev,
         ]);
       }
     );
 
-    // INTERVIEW STARTED
     socket.on(
       "interview_started",
-      (data) => {
-
+      ({ roomId }) => {
         setInterviews((prev) =>
-
           prev.map((item) =>
-
-            item.roomId === data.roomId
-
+            item.roomId === roomId
               ? {
                   ...item,
-                  status: "ongoing"
+                  status: "ongoing",
                 }
-
               : item
           )
         );
       }
     );
 
-    // INTERVIEW ENDED
     socket.on(
       "interview_ended",
-      (data) => {
-
+      ({ roomId }) => {
         setInterviews((prev) =>
-
           prev.map((item) =>
-
-            item.roomId === data.roomId
-
+            item.roomId === roomId
               ? {
                   ...item,
-                  status: "completed"
+                  status: "completed",
                 }
-
               : item
           )
         );
@@ -110,171 +82,222 @@ function RecentInterviews() {
     );
 
     return () => {
-
       socket.off(
         "new_interview_created"
       );
-
       socket.off(
         "interview_started"
       );
-
       socket.off(
         "interview_ended"
       );
     };
-
   }, []);
 
-  // ==========================================
-  // FORMAT DATE
-  // ==========================================
-  const formatDate = (date) => {
-
-    return new Date(date)
-      .toLocaleDateString("en-IN", {
+  const formatDate = (date) =>
+    new Date(date).toLocaleDateString(
+      "en-IN",
+      {
         day: "numeric",
         month: "short",
-        year: "numeric"
-      });
+        year: "numeric",
+      }
+    );
+
+  const getStatusColor = (
+    status
+  ) => {
+    switch (status) {
+      case "completed":
+        return "bg-green-100 text-green-700 border border-green-200";
+
+      case "ongoing":
+        return "bg-yellow-100 text-yellow-700 border border-yellow-200";
+
+      case "scheduled":
+        return "bg-blue-100 text-blue-700 border border-blue-200";
+
+      default:
+        return "bg-gray-100 text-gray-600 border border-gray-200";
+    }
   };
 
+  const completedCount =
+    interviews.filter(
+      (item) =>
+        item.status ===
+        "completed"
+    ).length;
+
   return (
+    <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="flex items-center gap-2 text-xl font-semibold text-gray-900">
+            <Video
+              size={20}
+              className="text-blue-600"
+            />
+            Recent Interviews
+          </h2>
 
-    <div className="bg-white p-5 rounded-2xl">
-
-      <h2 className="text-black text-xl font-semibold mb-4">
-
-        Recent Interviews
-
-      </h2>
-
-      {/* LOADING */}
-
-      {
-        loading && (
-
-          <p className="text-zinc-400">
-
-            Loading interviews...
-
+          <p className="text-sm text-gray-500 mt-1">
+            Total Interviews:{" "}
+            {interviews.length}
           </p>
-        )
-      }
+        </div>
 
-      {/* INTERVIEW LIST */}
+        <div className="px-4 py-2 rounded-xl bg-green-50 border border-green-100">
+          <span className="font-semibold text-green-600">
+            {completedCount}
+          </span>
 
-      <div className="space-y-4">
-
-        {
-          !loading &&
-          interviews.length > 0 ? (
-
-            interviews.map((item) => (
-
-              <div
-                key={item._id}
-                className="bg-zinc-800 p-4 rounded-xl hover:bg-zinc-700 transition"
-              >
-
-                <div className="flex items-center justify-between">
-
-                  {/* LEFT */}
-
-                  <div>
-
-                    <h3 className="text-black font-medium text-lg">
-
-                      {
-                        item.candidate?.name ||
-                        "Candidate"
-                      }
-
-                    </h3>
-
-                    <p className="text-gray-400 text-sm mt-1">
-
-                      Interviewer:
-                      {" "}
-                      {
-                        item.interviewer?.name ||
-                        "N/A"
-                      }
-
-                    </p>
-
-                  </div>
-
-                  {/* STATUS */}
-
-                  <span
-                    className={`text-xs px-3 py-1 rounded-full capitalize
-
-                    ${
-                      item.status ===
-                      "completed"
-
-                        ? "bg-green-500/20 text-green-400"
-
-                        : item.status ===
-                          "scheduled"
-
-                        ? "bg-blue-500/20 text-blue-400"
-
-                        : item.status ===
-                          "ongoing"
-
-                        ? "bg-yellow-500/20 text-yellow-400"
-
-                        : "bg-zinc-500/20 text-zinc-400"
-                    }
-                  `}
-                  >
-
-                    {item.status}
-
-                  </span>
-
-                </div>
-
-                {/* BOTTOM */}
-
-                <div className="mt-4 flex items-center justify-between">
-
-                  <p className="text-blue-400 text-sm">
-
-                    {formatDate(item.date)}
-
-                  </p>
-
-                  <p className="text-zinc-400 text-xs">
-
-                    Room:
-                    {" "}
-                    {item.roomId}
-
-                  </p>
-
-                </div>
-
-              </div>
-            ))
-
-          ) : (
-
-            !loading && (
-
-              <p className="text-zinc-400">
-
-                No interviews found
-
-              </p>
-            )
-          )
-        }
-
+          <span className="ml-1 text-sm text-gray-500">
+            Completed
+          </span>
+        </div>
       </div>
 
+      {/* Loading */}
+      {loading && (
+        <div className="space-y-4">
+          {[1, 2, 3].map(
+            (item) => (
+              <div
+                key={item}
+                className="h-24 rounded-xl bg-gray-100 animate-pulse"
+              />
+            )
+          )}
+        </div>
+      )}
+
+      {/* Empty */}
+      {!loading &&
+        interviews.length ===
+          0 && (
+          <div className="py-12 text-center">
+            <Video
+              size={50}
+              className="mx-auto text-gray-300"
+            />
+
+            <h3 className="mt-4 text-lg font-medium text-gray-800">
+              No Interviews Found
+            </h3>
+
+            <p className="mt-1 text-sm text-gray-500">
+              Scheduled
+              interviews will
+              appear here.
+            </p>
+          </div>
+        )}
+
+      {/* List */}
+      {!loading &&
+        interviews.length >
+          0 && (
+          <div className="space-y-4 max-h-[550px] overflow-y-auto pr-2">
+            {interviews.map(
+              (item) => (
+                <div
+                  key={item._id}
+                  className="
+                    bg-white
+                    border
+                    border-gray-200
+                    rounded-xl
+                    p-5
+                    shadow-sm
+                    hover:shadow-md
+                    hover:border-blue-300
+                    transition-all
+                  "
+                >
+                  <div className="flex justify-between items-start">
+                    {/* Candidate Info */}
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-semibold text-lg">
+                        {item
+                          .candidate?.name?.charAt(
+                            0
+                          )
+                          ?.toUpperCase() ||
+                          "C"}
+                      </div>
+
+                      <div>
+                        <h3 className="text-gray-900 font-semibold text-lg">
+                          {
+                            item
+                              .candidate
+                              ?.name
+                          }
+                        </h3>
+
+                        <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
+                          <User
+                            size={
+                              14
+                            }
+                          />
+                          Interviewer:
+                          {
+                            item
+                              .interviewer
+                              ?.name
+                          }
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Status */}
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${getStatusColor(
+                        item.status
+                      )}`}
+                    >
+                      {
+                        item.status
+                      }
+                    </span>
+                  </div>
+
+                  {/* Footer */}
+                  <div className="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-sm text-blue-600">
+                      <CalendarDays
+                        size={
+                          14
+                        }
+                      />
+                      {formatDate(
+                        item.date
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-2 text-xs text-gray-400">
+                      <BadgeCheck
+                        size={
+                          14
+                        }
+                      />
+                      Room ID:
+                      {" "}
+                      {item.roomId?.slice(
+                        0,
+                        8
+                      )}
+                      ...
+                    </div>
+                  </div>
+                </div>
+              )
+            )}
+          </div>
+        )}
     </div>
   );
 }

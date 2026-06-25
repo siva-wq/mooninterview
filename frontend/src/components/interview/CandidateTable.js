@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import DashboardCard from "../dashboard/DashboardCard";
 import API from "../../api/axios";
 import socket from "../../socket";
 import SendMail from "./SendMail";
@@ -10,8 +9,11 @@ function CandidateTable() {
     const [loading, setLoading] = useState(true);
 
     const [search, setSearch] = useState("");
-    const [statusFilter, setStatusFilter] =
-        useState("All Status");
+    const [statusFilter, setStatusFilter] = useState("All Status");
+    const [scheduleData, setScheduleData] = useState({});
+    const [mailLoading, setMailLoading] =
+        useState({});
+
 
     // ==========================================
     // FETCH CANDIDATES
@@ -65,6 +67,7 @@ function CandidateTable() {
 
                         date:
                             interview?.date || "",
+                        time: interview?.time || "",
 
                         interviewType:
                             interview?.type ||
@@ -259,12 +262,88 @@ function CandidateTable() {
                 c.status === "Pending"
         ).length;
 
+
+    const handleScheduleChange = (
+        candidateId,
+        field,
+        value
+    ) => {
+
+        setScheduleData((prev) => ({
+
+            ...prev,
+
+            [candidateId]: {
+
+                ...prev[candidateId],
+
+                [field]: value
+
+            }
+
+        }));
+
+    };
+
+    const handleSchedule = async (candidate) => {
+
+        const selectedData =
+            scheduleData[candidate._id];
+
+        if (
+            !selectedData?.date ||
+            !selectedData?.time
+        ) {
+            alert(
+                "Please select date and time"
+            );
+            return;
+        }
+
+        try {
+
+            await API.post(
+                "/interviews",
+                {
+                    title: "Interview",
+                    candidate:
+                        candidate._id,
+
+                    date:
+                        selectedData.date,
+
+                    time:
+                        selectedData.time
+                }
+            );
+
+            fetchCandidates();
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+    };
     // ==========================================
     // SEND MAIL
     // ==========================================
     const sendMail = async (candidate) => {
+        console.log(candidate);
+        setMailLoading(prev => ({
+            ...prev,
+            [candidate._id]: "sending mail"
+        }));
 
-        await SendMail(candidate);
+        const send = await SendMail({ candidate, type: "Interview-invitation" });
+        console.log(send);
+        if (send.success) {
+            setMailLoading(prev => ({
+                ...prev,
+                [candidate._id]: "mail sent"
+            }));
+        }
+        console.log(send);
     };
 
     // ==========================================
@@ -288,18 +367,22 @@ function CandidateTable() {
     // ==========================================
     // FORMAT TIME
     // ==========================================
-    const formatTime = (date) => {
+    const formatTime = (time) => {
+        if (!time) return "N/A";
 
-        if (!date) return "N/A";
+        const [hours, minutes] = time.split(":");
 
-        return new Date(date)
-            .toLocaleTimeString(
-                "en-IN",
-                {
-                    hour: "2-digit",
-                    minute: "2-digit"
-                }
-            );
+        return new Date(
+            2000,
+            0,
+            1,
+            Number(hours),
+            Number(minutes)
+        ).toLocaleTimeString("en-IN", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+        });
     };
 
     // ==========================================
@@ -329,34 +412,6 @@ function CandidateTable() {
         <div className="min-h-screen bg-[#f5f7fb] p-6 space-y-6">
 
             {/* TOP CARDS */}
-
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-
-                <DashboardCard
-                    title="Total Candidates"
-                    value={totalCandidates}
-                    increase="+12%"
-                />
-
-                <DashboardCard
-                    title="Scheduled"
-                    value={scheduledCount}
-                    increase="+5%"
-                />
-
-                <DashboardCard
-                    title="Completed"
-                    value={completedCount}
-                    increase="+3%"
-                />
-
-                <DashboardCard
-                    title="Pending"
-                    value={pendingCount}
-                    increase="+2%"
-                />
-
-            </div>
 
             {/* SEARCH */}
 
@@ -491,11 +546,63 @@ function CandidateTable() {
                                         </td>
 
                                         <td className="p-4">
-                                            {formatDate(candidate.date)}
+
+                                            {candidate.date ? (
+
+                                                formatDate(candidate.date)
+
+                                            ) : (
+
+                                                <input
+                                                    type="date"
+                                                    className="
+                border
+                border-zinc-300
+                rounded-xl
+                px-3
+                py-2
+            "
+                                                    onChange={(e) =>
+                                                        handleScheduleChange(
+                                                            candidate._id,
+                                                            "date",
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+
+                                            )}
+
                                         </td>
 
                                         <td className="p-4">
-                                            {formatTime(candidate.date)}
+
+                                            {candidate.time ? (
+
+                                                formatTime(candidate.time)
+
+                                            ) : (
+
+                                                <input
+                                                    type="time"
+                                                    className="
+                                                        border
+                                                        border-zinc-300
+                                                        rounded-xl
+                                                        px-3
+                                                        py-2
+                                                    "
+                                                    onChange={(e) =>
+                                                        handleScheduleChange(
+                                                            candidate._id,
+                                                            "time",
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+
+                                            )}
+
                                         </td>
 
                                         <td className="p-4">
@@ -517,22 +624,41 @@ function CandidateTable() {
 
                                         <td className="p-4">
 
-                                            <button
-                                                onClick={() =>
-                                                    sendMail(candidate)
-                                                }
-                                                className="
-                                                    bg-black
-                                                    text-white
-                                                    px-4
-                                                    py-2
-                                                    rounded-xl
-                                                "
-                                            >
+                                            {!candidate.date ? (
 
-                                                Send Email
+                                                <button onClick={() => handleSchedule(candidate)}
+                                                    className="
+                                                        bg-blue-600
+                                                        text-white
+                                                        px-4
+                                                        py-2
+                                                        rounded-xl
+                                                    "
+                                                >
+                                                    Schedule
+                                                </button>
 
-                                            </button>
+                                            ) : (
+
+                                                <button
+                                                    onClick={() =>
+                                                        sendMail(candidate)
+                                                    }
+                                                    className="
+                                                        bg-black
+                                                        text-white
+                                                        px-4    
+                                                        py-2
+                                                        rounded-xl
+                                                    "
+                                                >
+                                                    {
+                                                        mailLoading[candidate._id]
+                                                        || "Send Mail"
+                                                    }
+                                                </button>
+
+                                            )}
 
                                         </td>
 

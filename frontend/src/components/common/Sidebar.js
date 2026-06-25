@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect,useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import {
@@ -14,7 +14,18 @@ function Sidebar() {
 
   const location = useLocation();
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(() => {
+  const saved = localStorage.getItem("sidebarOpen");
+  return saved !== null ? JSON.parse(saved) : true;
+});
+
+useEffect(() => {
+  localStorage.setItem(
+    "sidebarOpen",
+    JSON.stringify(open)
+  );
+}, [open]);
+
 
   const menu = [
     {

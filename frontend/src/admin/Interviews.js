@@ -61,12 +61,12 @@ function Interviews() {
                         "completed"
                 ).length;
 
-            // PENDING
-            const pendingInterviews =
+            // waiting
+            const waitingInterviews =
                 interviews.filter(
                     (item) =>
                         item.status ===
-                        "pending"
+                        "waiting"
                 ).length;
 
             // SCHEDULED
@@ -101,7 +101,7 @@ function Interviews() {
 
                 completedInterviews,
 
-                pendingInterviews,
+                waitingInterviews,
 
                 scheduledInterviews,
 
@@ -303,9 +303,9 @@ function Interviews() {
                             />
 
                             <DashboardCard
-                                title="Pending"
+                                title="waiting"
                                 value={
-                                    stats?.pendingInterviews || 0
+                                    stats?.waitingInterviews || 0
                                 }
                                 increase="+5%"
                             />

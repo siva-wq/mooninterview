@@ -16,6 +16,22 @@ import Candidate from "../candidate/Candidate";
 import AdminWaiting from "../components/shared/waiting/AdminWaiting";
 import CandidateWaiting from "../components/shared/waiting/CandidateWaiting";
 
+import AdminRoom from "../components/shared/room/AdminRoom";
+import CandidateRoom from "../components/shared/room/CandidateRoom";
+
+import ThankYou from "../candidate/ThankYou";
+import Result from "../admin/Result";
+
+import CodeEditor from "../components/editor/CodeEditor";
+
+//errors
+import LinkExpired from "../components/errors/LinkExpired";
+import Invalid from "../components/errors/Invalid";
+import SessionExpired from "../components/errors/SessionExpired";
+import NotFound from "../components/errors/NotFound";
+
+import Home from "../components/home/Home";
+
 function AppRoutes() {
 
   return (
@@ -26,10 +42,13 @@ function AppRoutes() {
 
         {/* PUBLIC ROUTES */}
 
-        <Route path="/" element={<div>Home</div>} />
+        <Route path="/" element={<Home/>} />
 
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+
+        {/*candidate login */}
+        <Route path="/login/:roomId" element={<Login />} />
 
 
         {/* CANDIDATE ROUTE */}
@@ -62,7 +81,7 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
-        
+
         <Route
           path="/admin/interviews"
           element={
@@ -71,7 +90,7 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
-        
+
         <Route
           path="/admin/reports"
           element={
@@ -81,7 +100,7 @@ function AppRoutes() {
           }
         />
 
-      {/* ADMIN WAITING ROUTE */}
+        {/* ADMIN WAITING ROUTE */}
         <Route
           path="/admin/waiting"
           element={
@@ -90,19 +109,93 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
-        
+
         {/* CANDIDATE WAITING ROUTE */}
-        
+
         <Route
-          path="/candidate/waiting"
+          path="/candidate/waiting/:roomId"
           element={
             <ProtectedRoute role="candidate">
               <CandidateWaiting />
             </ProtectedRoute>
           }
         />
-        
 
+
+        {/* CODE EDITOR ROUTE */}
+        <Route
+          path="/code-editor"
+          element={
+            <CodeEditor />
+          }
+        />
+
+
+
+        {/* ADMIN INTERVIEW ROUTE */}
+        <Route
+          path="/admin/interview/:roomId"
+          element={
+            <ProtectedRoute role="admin">
+              <AdminRoom />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* CANDIDATE INTERVIEW ROUTE */}
+        <Route
+          path="/candidate/interview/:roomId"
+          element={
+            <ProtectedRoute role="candidate">
+              <CandidateRoom />
+            </ProtectedRoute>
+          }
+        />
+
+        {/*Errors*/}
+        <Route
+          path="/invalid"
+          element={
+            <Invalid />
+          }
+        />
+        
+        <Route
+          path="/session-expired"
+          element={
+            <SessionExpired />
+          }
+        />
+        <Route
+          path="/link-expired"
+          element={
+            <LinkExpired />
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <NotFound/>
+          }
+        />
+
+
+        <Route
+        path="/candidate/thankyou"
+        element={
+            <ProtectedRoute role="candidate">
+              <ThankYou />
+            </ProtectedRoute>
+          }
+        />
+         <Route
+        path="/admin/result/:roomId"
+        element={
+          <ProtectedRoute role="admin">
+            <Result />
+          </ProtectedRoute>
+        }
+      />
       </Routes>
 
     </BrowserRouter>

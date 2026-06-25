@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import API from '../api/axios';
+import axios from "axios";
+
+import API from "../api/axios";
 
 import socket from '../socket';
 
@@ -12,6 +14,9 @@ function Register() {
 
     const [loading, setLoading] =
         useState(false);
+    const [organisations, setOrganisations] =
+    useState([]);
+
 
     const [formData, setFormData] =
         useState({
@@ -20,12 +25,28 @@ function Register() {
 
             email: '',
 
-            role: 'admin',
+            organisation:'',
+
+            role: '',
 
             password: '',
 
             confirmPassword: ''
         });
+
+    //fetch organisations
+    useEffect(() => {
+        const fetchOrganisations = async () => {
+            try {
+                const res = await API.get('/organisations');
+                console.log(res.data);
+                setOrganisations(res.data.organisations);
+            } catch (err) {
+                console.error('Error fetching organisations:', err);
+            }
+        };
+        fetchOrganisations();
+    }, []);
 
     // ==========================================
     // HANDLE INPUT CHANGE
@@ -71,17 +92,21 @@ function Register() {
                 email:
                     formData.email,
 
+                organisation:
+                    formData.organisation,
+
                 password:
                     formData.password,
 
                 role:
                     formData.role
             };
+            console.log(sendData)
 
             const res =
-                await API.post(
+                await axios.post(
 
-                    '/auth/register',
+                    'http://localhost:5000/api/auth/register',
 
                     sendData
                 );
@@ -154,40 +179,98 @@ function Register() {
 
         formData.name &&
         formData.email &&
+        formData.organisation &&
         formData.password &&
         formData.confirmPassword &&
         isPasswordMatch;
 
     return (
 
-        <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+        <div className="min-h-screen bg-[#0F172A] flex">
 
-            <div className="bg-white w-full max-w-md p-6 sm:p-8 rounded-2xl shadow-lg">
+    {/* LEFT SIDE */}
 
-                {/* HEADER */}
+    <div className="hidden lg:flex w-1/2 flex-col justify-center px-16 text-[#F8FAFC]">
 
-                <div className="text-center mb-8">
+      <h1 className="text-6xl font-bold mb-6">
+        <span className="bg-gradient-to-br from-[#B8860B] via-[#D4A017] to-[#FFD76A] bg-clip-text text-transparent">
+          Moon
+        </span>
+        <span className="text-[#7C3AED]">
+          Interview
+        </span>
+      </h1>
 
-                    <h1 className="text-3xl font-bold text-black">
+      <p className="text-2xl text-[#94A3B8] mb-10">
+        Smart Interviews. Better Hiring.
+      </p>
 
-                        Moon Interview
+      <div className="space-y-5 text-lg">
 
-                    </h1>
+        <div className="flex items-center gap-3">
+          <span className="text-[#FBBF24]">✓</span>
+          <span className="text-[#F8FAFC]">Live Video Interviews</span>
+        </div>
 
-                    <p className="text-gray-500 mt-2">
+        <div className="flex items-center gap-3">
+          <span className="text-[#FBBF24]">✓</span>
+          <span className="text-[#F8FAFC]">Real-Time Screen Sharing</span>
+        </div>
 
-                        Create your account
+        <div className="flex items-center gap-3">
+          <span className="text-[#FBBF24]">✓</span>
+          <span className="text-[#F8FAFC]">Integrated Code Editor</span>
+        </div>
 
-                    </p>
+        <div className="flex items-center gap-3">
+          <span className="text-[#FBBF24]">✓</span>
+          <span className="text-[#F8FAFC]">Resume Evaluation</span>
+        </div>
 
-                </div>
+        <div className="flex items-center gap-3">
+          <span className="text-[#FBBF24]">✓</span>
+          <span className="text-[#F8FAFC]">Automated Interview Workflow</span>
+        </div>
 
-                {/* FORM */}
+      </div>
 
-                <form
-                    onSubmit={Reg}
-                    className="flex flex-col gap-4"
-                >
+    </div>
+
+    {/* RIGHT SIDE */}
+
+    <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
+
+      <div
+        className="
+          w-full
+          max-w-md
+          bg-[#1E293B]
+          border
+          border-[#334155]
+          rounded-3xl
+          shadow-xl
+          p-10
+        "
+      >
+
+        <div className="text-center mb-8">
+
+          <h2 className="text-4xl font-bold text-[#F8FAFC]">
+            Create Account
+          </h2>
+
+          <p className="text-[#94A3B8] mt-3">
+            Join MoonInterview today
+          </p>
+
+        </div>
+
+        {/* FORM */}
+
+        <form
+            onSubmit={Reg}
+            className="flex flex-col gap-4"
+        >
 
                     {/* NAME */}
 
@@ -198,13 +281,17 @@ function Register() {
                         value={formData.name}
                         onChange={handleChange}
                         className="
-                            border
+                            border border-[#334155]
                             p-3
                             rounded-lg
                             outline-none
                             w-full
+                            bg-[#0F172A]
+                            text-[#F8FAFC]
+                            placeholder-[#64748B]
+                            focus:border-[#7C3AED]
                             focus:ring-2
-                            focus:ring-blue-500
+                            focus:ring-[#7C3AED]/30
                         "
                         required
                     />
@@ -218,16 +305,57 @@ function Register() {
                         value={formData.email}
                         onChange={handleChange}
                         className="
-                            border
+                            border border-[#334155]
                             p-3
                             rounded-lg
                             outline-none
                             w-full
+                            bg-[#0F172A]
+                            text-[#F8FAFC]
+                            placeholder-[#64748B]
+                            focus:border-[#7C3AED]
                             focus:ring-2
-                            focus:ring-blue-500
+                            focus:ring-[#7C3AED]/30
                         "
                         required
                     />
+
+                    {/*Organisations*/}
+                    <select
+                        name="organisation"
+                        value={formData.organisation}
+                        onChange={handleChange}
+                        className="
+                            border border-[#334155]
+                            p-3
+                            rounded-lg
+                            outline-none
+                            w-full
+                            bg-[#0F172A]
+                            text-[#F8FAFC]
+                        "
+                        required
+                    >
+
+                        <option value="">
+                            Select Organisation
+                        </option>
+
+                        {
+                            organisations.map(
+                                (org) => (
+
+                                    <option
+                                        key={org._id}
+                                        value={org._id}
+                                    >
+                                        {org.title}
+                                    </option>
+                                )
+                            )
+                        }
+
+                    </select>
 
                     {/* ROLE */}
 
@@ -236,13 +364,17 @@ function Register() {
                         value={formData.role}
                         onChange={handleChange}
                         className="
-                            border
+                            border border-[#334155]
                             p-3
                             rounded-lg
                             outline-none
                             w-full
+                            bg-[#0F172A]
+                            text-[#F8FAFC]
+                            placeholder-[#64748B]
+                            focus:border-[#7C3AED]
                             focus:ring-2
-                            focus:ring-blue-500
+                            focus:ring-[#7C3AED]/30
                         "
                     >
 
@@ -254,9 +386,6 @@ function Register() {
                             Candidate
                         </option>
 
-                        <option value="interviewer">
-                            Interviewer
-                        </option>
 
                     </select>
 
@@ -269,13 +398,17 @@ function Register() {
                         value={formData.password}
                         onChange={handleChange}
                         className="
-                            border
+                            border border-[#334155]
                             p-3
                             rounded-lg
                             outline-none
                             w-full
+                            bg-[#0F172A]
+                            text-[#F8FAFC]
+                            placeholder-[#64748B]
+                            focus:border-[#7C3AED]
                             focus:ring-2
-                            focus:ring-blue-500
+                            focus:ring-[#7C3AED]/30
                         "
                         required
                     />
@@ -289,13 +422,17 @@ function Register() {
                         value={formData.confirmPassword}
                         onChange={handleChange}
                         className="
-                            border
+                            border border-[#334155]
                             p-3
                             rounded-lg
                             outline-none
                             w-full
+                            bg-[#0F172A]
+                            text-[#F8FAFC]
+                            placeholder-[#64748B]
+                            focus:border-[#7C3AED]
                             focus:ring-2
-                            focus:ring-blue-500
+                            focus:ring-[#7C3AED]/30
                         "
                         required
                     />
@@ -306,7 +443,7 @@ function Register() {
                         formData.confirmPassword &&
                         !isPasswordMatch && (
 
-                            <p className="text-red-500 text-sm">
+                            <p className="text-[#EF4444] text-sm">
 
                                 Passwords do not match
 
@@ -335,9 +472,9 @@ function Register() {
                                 !isFormValid ||
                                 loading
 
-                                    ? "bg-gray-400 cursor-not-allowed"
+                                    ? "bg-gray-600 cursor-not-allowed"
 
-                                    : "bg-black hover:bg-gray-800"
+                                    : "bg-[#7C3AED] hover:bg-[#6D28D9] shadow-[0_0_25px_rgba(124,58,237,0.35)]"
                             }
                         `}
                     >
@@ -352,11 +489,21 @@ function Register() {
 
                     </button>
 
+                    <p className="text-[#94A3B8] mt-4 text-center">
+                        Already have an account? <span className="text-[#FBBF24]  cursor-pointer hover:underline" onClick={() => navigate('/login')}>Login here</span>
+                    </p>
+
+                    <p className="text-[#94A3B8] mt-4 text-center">
+            Did'nt find your Organisation? Mail us at support@mooninterview.com
+          </p>
+
                 </form>
 
-            </div>
+      </div>
 
-        </div>
+    </div>
+
+  </div>
     );
 }
 

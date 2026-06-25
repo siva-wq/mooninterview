@@ -6,9 +6,11 @@ import API from "../../../api/axios";
 
 import socket from "../../../socket";
 
+import uploadResume from "../../cloudinary/UploadResume";
+
+import {ErrorHandler} from "../../errors/ErrorHandler";
+
 function CandidateWaiting() {
-
-
 
   const navigate = useNavigate();
 
@@ -29,11 +31,12 @@ function CandidateWaiting() {
   const [loading, setLoading] =
     useState(false);
 
-  const [approved, setApproved] =
-    useState(false);
-
   const [message, setMessage] =
     useState("");
+
+  const [resumeFile, setResumeFile] = useState(null);
+  const [resumeUploaded, setResumeUploaded] =
+    useState(false);
 
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -48,6 +51,59 @@ function CandidateWaiting() {
 
   }, [user, navigate]);
 
+ useEffect(() => {
+
+    const checkInterview = async () => {
+      try {
+
+        await API.get(
+          `/validate/${roomId}`
+        );
+
+        const res = await API.get( `/interview/${roomId}` ); 
+        if ( res.data.status === "ongoing" ) { 
+          navigate( `/candidate/interview/${roomId}` );
+        }
+
+      } catch (error) {
+
+        ErrorHandler(
+          navigate,
+          error.response?.data?.type
+        );
+
+      }
+    };
+
+    checkInterview();
+
+  }, [roomId, navigate]);
+
+
+  useEffect(() => {
+
+  const checkInterview = async () => {
+
+    try {
+
+      await API.get(
+        `/interview/${roomId}`
+      );
+
+    } catch (error) {
+
+      localStorage.clear();
+
+      socket.disconnect();
+
+      navigate("/candidate/invalid");
+    }
+  };
+
+  checkInterview();
+
+}, [roomId, navigate]);
+
   // ==========================================
   // JOIN WAITING ROOM
   // ==========================================
@@ -60,14 +116,15 @@ function CandidateWaiting() {
       // SOCKET JOIN ROOM
       socket.emit(
         "join_room",
-        roomId
+        {
+          roomId: roomId
+        }
       );
 
       // BACKEND JOIN
       await API.post(
         "/waiting/join",
         {
-          candidateName: user?.name,
           roomId
         }
       );
@@ -80,7 +137,7 @@ function CandidateWaiting() {
 
   useEffect(() => {
     joinWaitingRoom();
-  }, [joinWaitingRoom]);
+  }, []);
 
   // ==========================================
   // SOCKET REALTIME EVENTS
@@ -106,8 +163,6 @@ function CandidateWaiting() {
         if (
           data.roomId === roomId
         ) {
-
-          setApproved(true);
           setMessage(
             "Interviewer approved your interview."
           );
@@ -122,8 +177,6 @@ function CandidateWaiting() {
     socket.on(
       "interview_ended",
       () => {
-
-        setApproved(false);
 
         setMessage(
           "Interview has ended."
@@ -148,123 +201,166 @@ function CandidateWaiting() {
 
   }, [roomId]);
 
+  const handleResumeChange = (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    setResumeFile(file);
+    //setResumeUploaded(true);
+
+  };
+  const handleResumeUpload = async () => {
+    try {
+
+      if (!resumeFile) {
+        alert("Please select a resume");
+        return;
+      }
+
+      const result = await uploadResume(
+        resumeFile,
+        user.id
+      );
+      console.log(result)
+
+      const response=await API.post(
+        "/candidate/update-resume",
+        {
+          id: user.id,
+          resumeUrl: result.secure_url
+        }
+      );
+
+      console.log(response);
+
+      setResumeUploaded(true);
+
+      alert("Resume uploaded successfully");
+
+    } catch (error) {
+
+      console.log(error);
+
+      alert("Resume upload failed in backend, try again");
+    }
+  };
+
   // ==========================================
   // HANDLE PERMISSIONS
   // ==========================================
   const handlePermissions = async () => {
+  try {
 
-    try {
+    setLoading(true);
 
-      setLoading(true);
+    // Resume check first
+    if (!resumeUploaded) {
+      alert("Please upload your resume first");
+      return;
+    }
 
-      // CAMERA + MIC
+    // Camera + Mic
+    const mediaStream =
       await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true,
       });
 
-      setCameraPermission(true);
-      setMicPermission(true);
-
-      // SCREEN SHARE
+    // Screen Share
+    const screenStream =
       await navigator.mediaDevices.getDisplayMedia({
         video: true,
       });
 
-      setScreenPermission(true);
+    // Validate permissions
+    const cameraGranted =
+      mediaStream.getVideoTracks().length > 0;
 
-      if(!screenPermission) {
-        console.log("Screen share permission not granted");
-        if (process.env.NODE_ENV !== "development") {
-          alert("Screen share permission not granted");
-        }
-        return;
-      }
-      else if (!cameraPermission || !micPermission) {
-        if (process.env.NODE_ENV !== "development") {
-          alert("Camera or microphone permission not granted");
-        }
-        return;
-      }
-      else if (!screenPermission) {
-        if (process.env.NODE_ENV !== "development") {
-          alert("Screen share permission not granted");
-        }
-        return;
-      }else{
-        console.log("All permissions granted");
-      }
+    const micGranted =
+      mediaStream.getAudioTracks().length > 0;
 
+    const screenGranted =
+      screenStream.getVideoTracks().length > 0;
 
-      // BACKEND VERIFY
-      const permissionsRes =
-        await API.post(
-          "/waiting/permissions",
-          {
-            camera: true,
-            microphone: true,
-            screenShare: true
-          }
-        );
-
-      console.log(
-        permissionsRes.data
-      );
-      console.log(user);
-
-      // READY STATUS
-      const readyRes =
-        await API.post(
-          "/waiting/ready",
-          {
-            candidateId: user?.id,
-            ready: true
-          }
-        );
-
-      console.log(
-        readyRes
-      );
-
- 
-
-      // SOCKET READY EVENT
-      socket.emit(
-        "candidate_ready",
-        {
-          roomId: roomId,
-          candidateId: user?.id
-        }
-      );
-
-      setSubmitted(true);
-
-      setMessage(
-        "Waiting for interviewer approval..."
-      );
-
-    } catch (error) {
-
-      console.log(error);
-      alert("There is a error while submitting Permissions");
-
-      
-
-    } finally {
-
-      setLoading(false);
+    if (!cameraGranted) {
+      alert("Camera permission not granted");
+      return;
     }
-  };
+
+    if (!micGranted) {
+      alert("Microphone permission not granted");
+      return;
+    }
+
+    if (!screenGranted) {
+      alert("Screen share permission not granted");
+      return;
+    }
+
+    if(!resumeUploaded){
+      alert("resume is not uploaded");
+      return;
+    }
+
+    // Update UI
+    setCameraPermission(true);
+    setMicPermission(true);
+    setScreenPermission(true);
+
+    // Backend Verify
+    await API.post(
+      "/waiting/permissions",
+      {
+        camera: true,
+        microphone: true,
+        screenShare: true,
+        resume: true,
+      }
+    );
+
+    // Ready Status
+    await API.post(
+      "/waiting/ready",
+      {
+        candidateId: user?.id,
+        ready: true,
+      }
+    );
+
+    // Notify Admin
+    socket.emit(
+      "candidate_ready",
+      {
+        roomId,
+        candidateId: user?.id,
+        organisationId: user?.organisation
+      }
+    );
+
+    setSubmitted(true);
+
+    setMessage(
+      "Waiting for interviewer approval..."
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+      "Permission denied or an error occurred"
+    );
+
+  } finally {
+
+    setLoading(false);
+  }
+};
 
   // ==========================================
   // JOIN INTERVIEW ROOM
   // ==========================================
-  const joinInterviewRoom = () => {
-
-    navigate(
-      `/interview-room/${roomId}`
-    );
-  };
 
   return (
 
@@ -377,6 +473,43 @@ function CandidateWaiting() {
         {/* PERMISSIONS */}
 
         <div className="mt-12 space-y-5">
+          {/*resume upload */}
+
+          <input
+            type="file"
+            accept=".pdf,.doc,.docx"
+            onChange={handleResumeChange}
+          />
+
+          <button
+            onClick={handleResumeUpload}
+            disabled={!resumeFile}
+            className="
+              w-full
+              bg-purple-600
+              hover:bg-purple-700
+              transition-all
+              duration-300
+              text-white
+              py-4
+              rounded-2xl
+              text-lg
+              font-semibold
+              disabled:bg-gray-400
+              disabled:cursor-not-allowed
+            "
+          >
+            Upload Updated Resume
+          </button>
+          <PermissionCard
+            title="Resume Upload"
+            description={
+              resumeUploaded
+                ? "Resume uploaded successfully"
+                : "Please upload your latest resume"
+            }
+            granted={resumeUploaded}
+          />
 
           {/* CAMERA */}
 
@@ -401,6 +534,10 @@ function CandidateWaiting() {
             description="Required for coding and monitoring"
             granted={screenPermission}
           />
+
+
+          
+
 
         </div>
 
@@ -437,48 +574,26 @@ function CandidateWaiting() {
 
               </button>
 
-            ) : approved ? (
-
-              <button
-                onClick={joinInterviewRoom}
-                className="
-                  w-full
-                  bg-green-600
-                  hover:bg-green-700
-                  transition-all
-                  duration-300
-                  text-white
-                  py-4
-                  rounded-2xl
-                  text-lg
-                  font-semibold
-                "
-              >
-
-                Join Interview Room
-
-              </button>
-
             ) : (
 
               <div
                 className="
-                  bg-yellow-100
+                  bg-green-100
                   border
-                  border-yellow-200
+                  border-green-200
                   rounded-2xl
                   p-6
                   text-center
                 "
               >
 
-                <h2 className="text-2xl font-bold text-yellow-700">
+                <h2 className="text-2xl font-bold text-white-700">
 
                   Waiting For Approval
 
                 </h2>
 
-                <p className="text-yellow-600 mt-3 text-lg">
+                <p className="text-white-600 mt-3 text-lg">
 
                   Interviewer will allow you shortly.
 
@@ -486,6 +601,7 @@ function CandidateWaiting() {
                 <p>Note:This is the pre check of the requirements, you must turn-on camera and microphone in the interview room</p>
 
               </div>
+
             )
           }
 

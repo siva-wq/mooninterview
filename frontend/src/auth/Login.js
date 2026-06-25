@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import API from "../api/axios";
 
@@ -9,6 +9,7 @@ import socket from "../socket";
 function Login() {
 
     const navigate = useNavigate();
+    const { roomId } = useParams();
 
     const [loading, setLoading] =
         useState(false);
@@ -58,7 +59,7 @@ function Login() {
 
             const res =
                 await API.post(
-                    "https://mooninterview.onrender.com/api/auth/login",
+                    "http://192.168.29.28:5000/api/auth/login",
                     formData
                 );
 
@@ -107,24 +108,31 @@ function Login() {
                 }
             );
 
-            alert(
-                "Login Successful"
-            );
+
 
             // ==========================================
             // ROLE BASED NAVIGATION
             // ==========================================
             if (
                 res.data.user.role ===
-                "admin"
+                "admin" || res.data.user.role === "interviewer"
             ) {
 
                 navigate("/admin");
 
             } else {
+                if (!roomId) {
 
-                navigate("/candidate");
+                    localStorage.clear();
+
+                    socket.disconnect();
+
+                    return navigate("/candidate/invalid");
+                }
+
+                navigate(`/candidate/waiting/${roomId}`);
             }
+
 
         } catch (err) {
 
@@ -152,143 +160,191 @@ function Login() {
         formData.password;
 
     return (
+  <div className="min-h-screen bg-[#0F172A] flex">
 
-        <div className="min-h-screen bg-black flex items-center justify-center px-4">
+    {/* LEFT SIDE */}
 
-            <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl p-6 sm:p-8">
+    <div className="hidden lg:flex w-1/2 flex-col justify-center px-16 text-[#F8FAFC]">
 
-                {/* HEADER */}
+      <h1 className="text-6xl font-bold mb-6">
+        <span className="bg-gradient-to-br from-[#B8860B] via-[#D4A017] to-[#FFD76A] bg-clip-text text-transparent">
+          Moon
+        </span>
+        <span className="text-[#7C3AED]">
+          Interview
+        </span>
+      </h1>
 
-                <div className="text-center mb-8">
+      <p className="text-2xl text-[#94A3B8] mb-10">
+        Smart Interviews. Better Hiring.
+      </p>
 
-                    <h1 className="text-3xl sm:text-4xl font-bold text-black">
+      <div className="space-y-5 text-lg">
 
-                        Moon Interview
+        <div className="flex items-center gap-3">
+          <span className="text-[#FBBF24]">✓</span>
+          <span className="text-[#F8FAFC]">Live Video Interviews</span>
+        </div>
 
-                    </h1>
+        <div className="flex items-center gap-3">
+          <span className="text-[#FBBF24]">✓</span>
+          <span className="text-[#F8FAFC]">Real-Time Screen Sharing</span>
+        </div>
 
-                    <p className="text-gray-500 mt-3">
+        <div className="flex items-center gap-3">
+          <span className="text-[#FBBF24]">✓</span>
+          <span className="text-[#F8FAFC]">Integrated Code Editor</span>
+        </div>
 
-                        AI Powered Interview Platform
+        <div className="flex items-center gap-3">
+          <span className="text-[#FBBF24]">✓</span>
+          <span className="text-[#F8FAFC]">Resume Evaluation</span>
+        </div>
 
-                    </p>
+        <div className="flex items-center gap-3">
+          <span className="text-[#FBBF24]">✓</span>
+          <span className="text-[#F8FAFC]">Automated Interview Workflow</span>
+        </div>
 
-                </div>
+      </div>
 
-                {/* FORM */}
+    </div>
 
-                <form
-                    onSubmit={submit}
-                    className="flex flex-col gap-5"
-                >
+    {/* RIGHT SIDE */}
 
-                    {/* EMAIL */}
+    <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
 
-                    <div>
+      <div
+        className="
+          w-full
+          max-w-md
+          bg-[#1E293B]
+          border
+          border-[#334155]
+          rounded-3xl
+          shadow-xl
+          p-10
+        "
+      >
 
-                        <label className="block mb-2 text-sm font-medium text-gray-700">
+        <div className="text-center mb-8">
 
-                            Email
+          <h2 className="text-4xl font-bold text-[#F8FAFC]">
+            Welcome Back
+          </h2>
 
-                        </label>
-
-                        <input
-                            type="email"
-                            name="email"
-                            placeholder="Enter your email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            className="
-                                w-full
-                                border
-                                border-gray-300
-                                p-3
-                                rounded-xl
-                                outline-none
-                                focus:ring-2
-                                focus:ring-blue-500
-                            "
-                            required
-                        />
-
-                    </div>
-
-                    {/* PASSWORD */}
-
-                    <div>
-
-                        <label className="block mb-2 text-sm font-medium text-gray-700">
-
-                            Password
-
-                        </label>
-
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="Enter your password"
-                            value={formData.password}
-                            onChange={handleChange}
-                            className="
-                                w-full
-                                border
-                                border-gray-300
-                                p-3
-                                rounded-xl
-                                outline-none
-                                focus:ring-2
-                                focus:ring-blue-500
-                            "
-                            required
-                        />
-
-                    </div>
-
-                    {/* BUTTON */}
-
-                    <button
-                        type="submit"
-                        disabled={
-                            !isFormValid ||
-                            loading
-                        }
-                        className={`
-
-                            w-full
-                            p-3
-                            rounded-xl
-                            text-white
-                            font-semibold
-                            transition-all
-                            duration-300
-
-                            ${
-                                !isFormValid ||
-                                loading
-
-                                    ? "bg-gray-400 cursor-not-allowed"
-
-                                    : "bg-blue-600 hover:bg-blue-700"
-                            }
-                        `}
-                    >
-
-                        {
-                            loading
-
-                                ? "Logging In..."
-
-                                : "Login"
-                        }
-
-                    </button>
-
-                </form>
-
-            </div>
+          <p className="text-[#94A3B8] mt-3">
+            Sign in to continue
+          </p>
 
         </div>
-    );
+
+        <form
+          onSubmit={submit}
+          className="space-y-5"
+        >
+
+          {/* EMAIL */}
+
+          <div>
+
+            <label className="block mb-2 text-[#94A3B8] text-sm">
+              Email
+            </label>
+
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter your email"
+              className="
+                w-full
+                p-3
+                rounded-xl
+                bg-[#0F172A]
+                border
+                border-[#334155]
+                text-[#F8FAFC]
+                placeholder-[#64748B]
+                outline-none
+                focus:border-[#7C3AED]
+focus:ring-2
+focus:ring-[#7C3AED]/30
+              "
+            />
+
+          </div>
+
+          {/* PASSWORD */}
+
+          <div>
+
+            <label className="block mb-2 text-[#94A3B8] text-sm">
+              Password
+            </label>
+
+            <input
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Enter your password"
+              className="
+                w-full
+                p-3
+                rounded-xl
+                bg-[#0F172A]
+                border
+                border-[#334155]
+                text-[#F8FAFC]
+                placeholder-[#64748B]
+                outline-none
+                focus:border-[#7C3AED]
+                focus:ring-2
+                focus:ring-[#7C3AED]/30
+              "
+            />
+
+          </div>
+
+          {/* LOGIN BUTTON */}
+
+          <button
+            type="submit"
+            disabled={!isFormValid || loading}
+            className="
+              w-full
+              py-3
+              rounded-xl
+              font-semibold
+              text-white
+              bg-[#7C3AED]
+              hover:bg-[#6D28D9]
+              shadow-[0_0_25px_rgba(124,58,237,0.35)]
+              transition-all
+              disabled:opacity-50
+            "
+          >
+
+            {loading
+              ? "Logging In..."
+              : "Login"}
+
+          </button>
+          <p className="text-[#94A3B8] mt-4 text-center">
+            Need to Register? <span className="text-[#FBBF24]  cursor-pointer hover:underline" onClick={() => navigate('/register')}>Register here</span>
+          </p>
+
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+);
 }
 
 export default Login;

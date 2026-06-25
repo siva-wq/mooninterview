@@ -1,22 +1,26 @@
-import axios from 'axios';
+import API from "../../api/axios";
 
-const SendMail = async (candidate) => {
-
+const SendMail = async (data) => {
+  const {candidate, type} = data;
   try {
 
-    const response = await axios.post(
-      'https://mooninterview.onrender.com/api/send',
+    //console.log(data);
+
+    const response = await API.post(
+      '/send', 
       {
         name: candidate.name,
         email: candidate.email,
-        time: candidate.date,
+        date: candidate.date,
+        time:candidate.time,
         interviewer: candidate.interviewer,
         interviewType: candidate.interviewType,
-        roomId: candidate.roomId
+        roomId: candidate.roomId,
+        type: type
       }
     );
 
-    alert('Email Sent Successfully');
+   // alert('Email Sent Successfully');
 
     return response.data;
 

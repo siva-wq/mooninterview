@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import API from "../../api/axios";
 
 import socket from "../../socket";
+import toast from "react-hot-toast";
 
 function Navbar() {
 
@@ -22,6 +23,9 @@ function Navbar() {
   const [openNotification, setOpenNotification] =
     useState(false);
 
+  const [organisationStatus, setOrganisationStatus] =
+    useState(null);
+
   const [user, setUser] = useState(null);
 
   const [notifications, setNotifications] =
@@ -31,7 +35,7 @@ function Navbar() {
   // FETCH CURRENT USER
   // ==========================================
   useEffect(() => {
-
+    fetchOrganisationStatus();
     fetchCurrentUser();
 
   }, []);
@@ -40,7 +44,7 @@ function Navbar() {
 
     try {
 
-      const res = await API.get("https://mooninterview.onrender.com/api/auth/me");
+      const res = await API.get("/auth/me");
 
       setUser(res.data);
 
@@ -49,6 +53,21 @@ function Navbar() {
       console.log(err);
     }
   };
+
+  const fetchOrganisationStatus = async () => {
+    try {
+      const res = await API.get(
+        "/organisation-status"
+      );
+
+      setOrganisationStatus(res.data);
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
 
   // ==========================================
   // SOCKET REALTIME NOTIFICATIONS
@@ -61,6 +80,7 @@ function Navbar() {
     // LISTEN NOTIFICATIONS
     socket.on("notification", (data) => {
 
+
       setNotifications((prev) => [
 
         {
@@ -71,6 +91,7 @@ function Navbar() {
         ...prev
 
       ]);
+      toast(data.message);
     });
 
     return () => {
@@ -99,7 +120,9 @@ function Navbar() {
 
       {/* LEFT */}
 
-      <div>
+      <div className="flex">
+          <div>
+      
 
         <h1 className="text-2xl font-bold text-zinc-800">
           Admin Dashboard
@@ -108,6 +131,27 @@ function Navbar() {
         <p className="text-sm text-zinc-500">
           Welcome back 👋
         </p>
+        </div>
+        <div>
+        {organisationStatus && (
+
+          <div
+            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+      ${organisationStatus.expired
+                ? "bg-red-100 text-red-600"
+                : organisationStatus.daysLeft <= 7
+                  ? "bg-yellow-100 text-yellow-700"
+                  : "bg-green-100 text-green-600"
+              }`}
+          >
+
+            {organisationStatus.expired
+              ? "Organisation Expired"
+              : `${organisationStatus.daysLeft} Days Remaining`}
+
+          </div>
+        )}
+        </div>
 
       </div>
 
@@ -257,11 +301,10 @@ function Navbar() {
 
             <ChevronDown
               size={18}
-              className={`transition-transform duration-300 ${
-                openProfile
+              className={`transition-transform duration-300 ${openProfile
                   ? "rotate-180"
                   : ""
-              }`}
+                }`}
             />
 
           </button>

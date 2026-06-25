@@ -382,7 +382,7 @@ function InterviewTable() {
                 <option>scheduled</option>
                 <option>ongoing</option>
                 <option>completed</option>
-                <option>pending</option>
+                <option>waiting</option>
 
             </select>
 

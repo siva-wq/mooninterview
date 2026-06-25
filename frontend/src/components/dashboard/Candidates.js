@@ -1,91 +1,82 @@
 import { useEffect, useState } from "react";
+import {
+  Users,
+  Mail,
+  CheckCircle,
+  UserCircle,
+} from "lucide-react";
 
 import API from "../../api/axios";
-
 import socket from "../../socket";
-function Candidates() {
 
+function Candidates() {
   const [candidates, setCandidates] =
     useState([]);
 
   const [loading, setLoading] =
     useState(true);
 
-  // ==========================================
+  // =====================================
   // FETCH CANDIDATES
-  // ==========================================
-  useEffect(() => {
-
-    fetchCandidates();
-
-  }, []);
-
+  // =====================================
   const fetchCandidates = async () => {
-
     try {
-
       setLoading(true);
 
-      const res = await API.get("https://mooninterview.onrender.com/api/users");
+      const res = await API.get(
+        "/users"
+      );
 
-      // FILTER ONLY CANDIDATES
       const filteredCandidates =
         res.data.filter(
           (user) =>
-            user.role === "candidate"
+            user.role ===
+            "candidate"
         );
+        console.log(filteredCandidates)
 
-      setCandidates(filteredCandidates);
-
-    } catch (err) {
-
-      console.log(err);
-
+      setCandidates(
+        filteredCandidates
+      );
+    } catch (error) {
+      console.error(error);
     } finally {
-
       setLoading(false);
     }
   };
 
-  // ==========================================
-  // SOCKET REALTIME EVENTS
-  // ==========================================
   useEffect(() => {
+    fetchCandidates();
+  }, []);
 
+  // =====================================
+  // SOCKET EVENTS
+  // =====================================
+  useEffect(() => {
     socket.connect();
 
-    // NEW CANDIDATE ADDED
     socket.on(
       "new_candidate",
       (candidate) => {
-
         setCandidates((prev) => [
-
           candidate,
-
-          ...prev
-
+          ...prev,
         ]);
       }
     );
 
-    // CANDIDATE STATUS UPDATE
     socket.on(
       "candidate_ready_status",
       (data) => {
-
         setCandidates((prev) =>
-
           prev.map((candidate) =>
-
             candidate._id ===
             data.candidateId
-
               ? {
                   ...candidate,
-                  ready: data.ready
+                  ready:
+                    data.ready,
                 }
-
               : candidate
           )
         );
@@ -93,129 +84,156 @@ function Candidates() {
     );
 
     return () => {
-
-      socket.off("new_candidate");
-
+      socket.off(
+        "new_candidate"
+      );
       socket.off(
         "candidate_ready_status"
       );
     };
-
   }, []);
 
+  const readyCount =
+    candidates.filter(
+      (candidate) =>
+        candidate.ready
+    ).length;
+
   return (
+    <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h2 className="flex items-center gap-2 text-xl font-semibold text-gray-900">
+            <Users
+              size={22}
+              className="text-blue-600"
+            />
+            Candidates
+          </h2>
 
-    <div className="bg-zinc-900 p-5 rounded-2xl">
-
-      <h2 className="text-white text-xl font-semibold mb-4">
-
-        Recent Candidates
-
-      </h2>
-
-      {/* LOADING */}
-
-      {
-        loading && (
-
-          <p className="text-zinc-400">
-
-            Loading candidates...
-
+          <p className="text-sm text-gray-500 mt-1">
+            Total Candidates:{" "}
+            {candidates.length}
           </p>
-        )
-      }
+        </div>
 
-      {/* CANDIDATES */}
+        <div className="px-4 py-2 rounded-xl bg-green-50 border border-green-100">
+          <span className="font-semibold text-green-600">
+            {readyCount}
+          </span>
 
-      <div className="space-y-3">
-
-        {
-          !loading &&
-          candidates.length > 0 ? (
-
-            candidates.map(
-              (candidate) => (
-
-                <div
-                  key={candidate._id}
-                  className="bg-zinc-800 p-4 rounded-xl flex items-center justify-between"
-                >
-
-                  {/* LEFT */}
-
-                  <div className="flex items-center gap-3">
-
-                    <img
-                      src={`https://ui-avatars.com/api/?name=${candidate.name}`}
-                      alt="candidate"
-                      className="w-10 h-10 rounded-full"
-                    />
-
-                    <div>
-
-                      <h3 className="text-white font-medium">
-
-                        {candidate.name}
-
-                      </h3>
-
-                      <p className="text-zinc-400 text-sm">
-
-                        {candidate.email}
-
-                      </p>
-
-                    </div>
-
-                  </div>
-
-                  {/* RIGHT */}
-
-                  <div className="flex items-center gap-2">
-
-                    {/* READY STATUS */}
-
-                    {
-                      candidate.ready && (
-
-                        <span className="bg-blue-500/20 text-blue-400 text-xs px-3 py-1 rounded-full">
-
-                          Ready
-
-                        </span>
-                      )
-                    }
-
-                    {/* ROLE */}
-
-                    <span className="bg-green-500/20 text-green-400 text-xs px-3 py-1 rounded-full capitalize">
-
-                      {candidate.role}
-
-                    </span>
-
-                  </div>
-
-                </div>
-              )
-            )
-
-          ) : (
-
-            !loading && (
-
-              <p className="text-zinc-400">
-
-                No candidates found
-
-              </p>
-            )
-          )
-        }
-
+          <span className="ml-1 text-sm text-gray-500">
+            Ready
+          </span>
+        </div>
       </div>
 
+      {/* Loading */}
+      {loading && (
+        <div className="space-y-4">
+          {[1, 2, 3].map(
+            (item) => (
+              <div
+                key={item}
+                className="h-24 rounded-xl bg-gray-100 animate-pulse"
+              />
+            )
+          )}
+        </div>
+      )}
+
+      {/* Empty State */}
+      {!loading &&
+        candidates.length ===
+          0 && (
+          <div className="text-center py-12">
+            <UserCircle
+              size={55}
+              className="mx-auto text-gray-300"
+            />
+
+            <h3 className="mt-4 text-lg font-medium text-gray-800">
+              No Candidates Found
+            </h3>
+
+            <p className="mt-1 text-sm text-gray-500">
+              Candidates will
+              appear here after
+              registration.
+            </p>
+          </div>
+        )}
+
+      {/* Candidate List */}
+      {!loading &&
+        candidates.length >
+          0 && (
+          <div className="space-y-4 max-h-[550px] overflow-y-auto pr-2">
+            {candidates.map(
+              (candidate) => (
+                <div
+                  key={
+                    candidate._id
+                  }
+                  className="
+                    bg-white
+                    border
+                    border-gray-200
+                    rounded-xl
+                    p-5
+                    shadow-sm
+                    hover:shadow-md
+                    hover:border-blue-300
+                    transition-all
+                  "
+                >
+                  <div className="flex items-center justify-between">
+                    {/* Left Side */}
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-semibold text-lg">
+                        {candidate.name
+                          ?.charAt(
+                            0
+                          )
+                          ?.toUpperCase()}
+                      </div>
+
+                      <div>
+                        <h3 className="font-semibold text-gray-900">
+                          {
+                            candidate.name
+                          }
+                        </h3>
+
+                        <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
+                          <Mail
+                            size={
+                              14
+                            }
+                          />
+                          {
+                            candidate.email
+                          }
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right Side */}
+                    <div className="flex items-center gap-2">
+
+                      <span className="px-3 py-1 rounded-full text-xs font-medium capitalize bg-green-100 text-green-700 border border-green-200">
+                        {
+                          candidate.role
+                        }
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )
+            )}
+          </div>
+        )}
     </div>
   );
 }

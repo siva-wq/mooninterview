@@ -67,11 +67,11 @@ function ScheduleInterview() {
             item.status === "completed"
         ).length;
 
-      // PENDING
-      const pending =
+      // waiting
+      const waiting =
         interviews.filter(
           (item) =>
-            item.status === "pending"
+            item.status === "waiting"
         ).length;
 
       // LIVE
@@ -89,7 +89,7 @@ function ScheduleInterview() {
 
         completed,
 
-        pending,
+        waiting,
 
         ongoing
       });
@@ -295,9 +295,9 @@ function ScheduleInterview() {
             />
 
             <DashboardCard
-              title="Pending"
+              title="waiting"
               value={
-                stats?.pending || 0
+                stats?.waiting || 0
               }
               increase="+5%"
             />
