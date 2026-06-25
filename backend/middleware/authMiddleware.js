@@ -33,7 +33,7 @@ console.log("AUTH HEADER:", authHeader);
 
         const verified = jwt.verify(
             token,
-            'mooninterviewsecret'
+            process.env.JWT_SECRET
         );
 
         req.user = verified;
