@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   Users,
   Mail,
-  CheckCircle,
   UserCircle,
 } from "lucide-react";
 
