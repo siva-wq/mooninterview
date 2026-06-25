@@ -7,7 +7,7 @@ const Interview = require("../models/Interview");
 const Question = require("../models/Question");
 const Result = require("../models/Result");
 const Notification = require("../models/Notification");
-const WaitingRoom = require("../models/WaitingRoom");
+const WaitingRoom = require("../models/waitingRoom");
 
 const router = express.Router();
 
