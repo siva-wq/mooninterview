@@ -13,6 +13,9 @@ const transporter = nodemailer.createTransport({
   socketTimeout: 30000,
 });
 
+console.log("Email:", process.env.GOOGLE_EMAIL);
+console.log("Password exists:", !!process.env.GOOGLE_APP_PASSWORD);
+
 const sendEmail = async (to, subject, html) => {
   try {
     // Verify SMTP connection
