@@ -469,7 +469,7 @@ router.get("/", async (req, res) => {
                     'Needs improvement',
 
                 status:
-                    'pending'
+                    'hold'
             },
 
             {
