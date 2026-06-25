@@ -104,55 +104,6 @@ function CandidateRoom() {
   const remoteAudioRef = useRef(null);
 
   // ==========================================
-  // START CAMERA + MIC
-  // ==========================================
-  const startMedia = useCallback(async () => {
-
-    try {
-
-      const stream =
-        await navigator.mediaDevices.getUserMedia({
-          video: {
-            width: { min: 1280, ideal: 1280 },
-            height: { min: 720, ideal: 720 },
-            frameRate: { ideal: 30 }
-          },
-          audio: true
-        })
-      const track = stream.getVideoTracks()[0];
-
-      console.log(
-        "LOCAL CAMERA SETTINGS",
-        track.getSettings()
-      );
-
-      // const track = stream.getVideoTracks()[0];
-
-      //console.log(track.getSettings());
-
-      localStreamRef.current =
-        stream;
-
-      if (selfVideoRef.current) {
-
-        selfVideoRef.current.srcObject =
-          stream;
-      }
-
-      createPeerConnection(stream);
-      await createOffer();
-      console.log("Offer Sent");
-
-    } catch (error) {
-
-      console.log(
-        "Media Error",
-        error
-      );
-    }
-  }, [createPeerConnection, createOffer]);
-
-  // ==========================================
   // CREATE WEBRTC CONNECTION
   // ==========================================
   const createPeerConnection = useCallback((stream) => {
@@ -279,6 +230,56 @@ function CandidateRoom() {
       );
     }
   }, [roomId]);
+  
+  // ==========================================
+  // START CAMERA + MIC
+  // ==========================================
+  const startMedia = useCallback(async () => {
+
+    try {
+
+      const stream =
+        await navigator.mediaDevices.getUserMedia({
+          video: {
+            width: { min: 1280, ideal: 1280 },
+            height: { min: 720, ideal: 720 },
+            frameRate: { ideal: 30 }
+          },
+          audio: true
+        })
+      const track = stream.getVideoTracks()[0];
+
+      console.log(
+        "LOCAL CAMERA SETTINGS",
+        track.getSettings()
+      );
+
+      // const track = stream.getVideoTracks()[0];
+
+      //console.log(track.getSettings());
+
+      localStreamRef.current =
+        stream;
+
+      if (selfVideoRef.current) {
+
+        selfVideoRef.current.srcObject =
+          stream;
+      }
+
+      createPeerConnection(stream);
+      await createOffer();
+      console.log("Offer Sent");
+
+    } catch (error) {
+
+      console.log(
+        "Media Error",
+        error
+      );
+    }
+  }, [createPeerConnection, createOffer]);
+
   //tab switch
   useEffect(() => {
 
