@@ -11,7 +11,7 @@ const WaitingRoom = require("../models/waitingRoom");
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/seed", async (req, res) => {
     try {
 
 
