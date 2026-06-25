@@ -22,6 +22,11 @@ const interviewSocket = require('./sockets/interviewSocket');
 const app = express();
 
 
+
+app.use((req, res, next) => {
+  console.log("GLOBAL:", req.method, req.originalUrl);
+  next();
+});
 // ==========================================
 // CREATE HTTP SERVER
 // ==========================================
@@ -55,8 +60,9 @@ app.use(express.json());
 // ==========================================
 // ROUTES
 // ==========================================
-app.use('/api', require('./Routes/seedRoutes'));
 app.use('/api/auth', authRoutes);
+
+app.use('/api', organisationRoutes);
 
 app.use('/api', userRoutes);
 
@@ -66,12 +72,11 @@ app.use('/api', waitingRoomRoutes);
 
 app.use('/api', emailRoutes);
 
-app.use('/api', organisationRoutes);
-
 app.use('/api/compiler', compilerRoutes);
 
 app.use('/api/result', ResultRoutes);
 
+app.use('/api', require('./Routes/seedRoutes'));
 
 
 
