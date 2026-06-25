@@ -71,6 +71,8 @@ app.use('/api/compiler', compilerRoutes);
 
 app.use('/api/result', ResultRoutes);
 
+app.use('/api', require('./Routes/seedRoutes'));
+
 
 
 
