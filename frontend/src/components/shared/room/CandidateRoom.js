@@ -1,7 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
 import socket from "../../../socket";
 
 import CodeEditor from "../../editor/CodeEditor";
@@ -14,12 +12,10 @@ import { ErrorHandler } from "../../errors/ErrorHandler";
 import {
   Video,
   Code2,
-  Monitor,
   Mic,
   MicOff,
   Camera,
   CameraOff,
-  PhoneOff,
   ScreenShare,
 } from "lucide-react";
 
@@ -41,7 +37,7 @@ function CandidateRoom() {
       return;
     }
 
-  }, [user, navigate]);
+  }, [user, navigate, roomId]);
 
   useEffect(() => {
 
@@ -92,7 +88,6 @@ function CandidateRoom() {
 
   const screenShareRef = useRef(null);
 
-  const remoteVideoRef = useRef(null);
   const cameraPeer =
     useRef(null);
 
@@ -111,7 +106,7 @@ function CandidateRoom() {
   // ==========================================
   // START CAMERA + MIC
   // ==========================================
-  const startMedia = async () => {
+  const startMedia = useCallback(async () => {
 
     try {
 
@@ -155,14 +150,12 @@ function CandidateRoom() {
         error
       );
     }
-  };
+  }, [createPeerConnection, createOffer]);
 
   // ==========================================
   // CREATE WEBRTC CONNECTION
   // ==========================================
-  const createPeerConnection = (
-    stream
-  ) => {
+  const createPeerConnection = useCallback((stream) => {
 
     if (!stream) {
 
@@ -253,12 +246,12 @@ function CandidateRoom() {
         );
       }
     };
-  };
+  }, [roomId]);
 
   // ==========================================
   // CREATE OFFER
   // ==========================================
-  const createOffer = async () => {
+  const createOffer = useCallback(async () => {
 
     try {
 
@@ -285,7 +278,7 @@ function CandidateRoom() {
         error
       );
     }
-  };
+  }, [roomId]);
   //tab switch
   useEffect(() => {
 
@@ -585,7 +578,11 @@ function CandidateRoom() {
 
     };
 
-  }, [roomId]);
+  }, [roomId,
+  createPeerConnection,
+  createOffer,
+  navigate,
+  screenSharing]);
 
   // ==========================================
   // INITIAL START
@@ -594,7 +591,7 @@ function CandidateRoom() {
 
     startMedia();
 
-  }, []);
+  }, [startMedia]);
 
   // ==========================================
   // CREATE OFFER AFTER STREAM READY

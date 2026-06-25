@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -109,7 +109,7 @@ function CandidateWaiting() {
   // ==========================================
 
 
-  const joinWaitingRoom = async () => {
+  const joinWaitingRoom = useCallback(async () => {
 
     try {
 
@@ -133,11 +133,11 @@ function CandidateWaiting() {
 
       console.log(err);
     }
-  };
+  }, [roomId]);
 
   useEffect(() => {
     joinWaitingRoom();
-  }, []);
+  }, [joinWaitingRoom]);
 
   // ==========================================
   // SOCKET REALTIME EVENTS
@@ -199,7 +199,7 @@ function CandidateWaiting() {
       );
     };
 
-  }, [roomId]);
+  }, [roomId,navigate]);
 
   const handleResumeChange = (e) => {
     const file = e.target.files[0];

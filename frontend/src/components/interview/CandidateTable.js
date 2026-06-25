@@ -237,32 +237,6 @@ function CandidateTable() {
                 matchesStatus
             );
         });
-
-    // ==========================================
-    // COUNTS
-    // ==========================================
-    const totalCandidates =
-        candidates.length;
-
-    const scheduledCount =
-        candidates.filter(
-            (c) =>
-                c.status === "scheduled"
-        ).length;
-
-    const completedCount =
-        candidates.filter(
-            (c) =>
-                c.status === "completed"
-        ).length;
-
-    const pendingCount =
-        candidates.filter(
-            (c) =>
-                c.status === "Pending"
-        ).length;
-
-
     const handleScheduleChange = (
         candidateId,
         field,

@@ -20,30 +20,29 @@ function CandidateReport() {
   // FETCH INTERVIEW REPORT
   // ==========================================
   useEffect(() => {
-   fetchInterview();
-}, [fetchInterview]);
+    const fetchInterview = async () => {
 
-  const fetchInterview = async () => {
+      try {
 
-    try {
+        setLoading(true);
 
-      setLoading(true);
+        const res = await API.get(
+          `/interviews/${id}`
+        );
 
-      const res = await API.get(
-        `/interviews/${id}`
-      );
+        setCandidate(res.data);
 
-      setCandidate(res.data);
+      } catch (err) {
 
-    } catch (err) {
+        console.log(err);
 
-      console.log(err);
+      } finally {
 
-    } finally {
-
-      setLoading(false);
-    }
-  };
+        setLoading(false);
+      }
+    };
+    fetchInterview();
+  }, [fetchInterview]);
 
   // ==========================================
   // SOCKET REALTIME REPORT UPDATES
@@ -256,16 +255,15 @@ function CandidateReport() {
                 font-semibold
                 capitalize
 
-                ${
-                  candidate.status === "completed"
+                ${candidate.status === "completed"
 
                   ? "bg-green-100 text-green-700"
 
                   : candidate.status === "ongoing"
 
-                  ? "bg-yellow-100 text-yellow-700"
+                    ? "bg-yellow-100 text-yellow-700"
 
-                  : "bg-blue-100 text-blue-700"
+                    : "bg-blue-100 text-blue-700"
                 }
               `}
             >
@@ -338,7 +336,7 @@ function CandidateReport() {
 
                 {
                   new Date(candidate.date)
-                  .toLocaleDateString("en-IN")
+                    .toLocaleDateString("en-IN")
                 }
 
               </h3>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState,useCallback } from "react";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import toast from "react-hot-toast";
@@ -311,7 +311,7 @@ function AdminRoom() {
   // ==========================================
   // CREATE PEERS
   // ==========================================
-  const createPeers = () => {
+  const createPeers =useCallback( () => {
 
     // CAMERA PEER
     cameraPeer.current =
@@ -464,7 +464,7 @@ function AdminRoom() {
           );
         }
       };
-  };
+  },[roomId]);
 
 
   //end interview
@@ -818,7 +818,7 @@ function AdminRoom() {
 
     };
 
-  }, [roomId]);
+  }, [roomId,createPeers]);
 
   return (
 
