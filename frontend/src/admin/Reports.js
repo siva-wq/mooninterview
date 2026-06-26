@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react';
 
-import Navbar from '../components/common/Navbar';
-import Sidebar from '../components/common/Sidebar';
-
 import DashboardCard from '../components/dashboard/DashboardCard';
 
 import ReportsTable from '../components/reports/ReportsTable';
@@ -327,17 +324,9 @@ function Reports() {
 
     <div className="flex min-h-screen bg-white text-black">
 
-      {/* SIDEBAR */}
-
-      <Sidebar />
-
       {/* MAIN */}
 
       <div className="flex-1">
-
-        {/* NAVBAR */}
-
-        <Navbar />
 
         <div className="p-6">
 

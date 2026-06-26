@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 
-import DashboardLayout from "../layouts/DashboardLayout";
-
 import DashboardCard from "../components/dashboard/DashboardCard";
 import RecentInterviews from "../components/dashboard/RecentInterviews";
 import Candidates from "../components/dashboard/Candidates";
@@ -194,7 +192,7 @@ function Admin() {
 
   return (
 
-    <DashboardLayout>
+    <>
 
       {/* PAGE HEADER */}
 
@@ -319,7 +317,7 @@ function Admin() {
 
       </div>
 
-    </DashboardLayout>
+    </>
   );
 }
 

@@ -2,9 +2,6 @@ import { useEffect, useState } from "react";
 
 import CandidateTable from "../components/interview/CandidateTable";
 
-import Sidebar from "../components/common/Sidebar";
-import Navbar from "../components/common/Navbar";
-
 import DashboardCard from "../components/dashboard/DashboardCard";
 
 import API from "../api/axios";
@@ -198,17 +195,11 @@ function ScheduleInterview() {
 
     <div className="flex min-h-screen bg-[#F5F7FB] text-black">
 
-      {/* SIDEBAR */}
-
-      <Sidebar />
-
       {/* MAIN CONTENT */}
 
       <div className="flex-1">
 
-        {/* NAVBAR */}
-
-        <Navbar />
+      
 
         {/* PAGE CONTENT */}
 

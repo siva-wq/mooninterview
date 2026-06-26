@@ -2,9 +2,6 @@ import { useEffect, useState } from "react";
 
 import DashboardCard from "../components/dashboard/DashboardCard";
 
-import Sidebar from "../components/common/Sidebar";
-import Navbar from "../components/common/Navbar";
-
 import InterviewTable from "../components/interview/InterviewTable";
 
 import API from "../api/axios";
@@ -201,25 +198,11 @@ function Interviews() {
 
         <div className="flex h-screen bg-[#F5F7FB] overflow-hidden">
 
-            {/* SIDEBAR */}
-
-            <div className="h-screen sticky top-0">
-
-                <Sidebar />
-
-            </div>
 
             {/* MAIN CONTENT */}
 
             <div className="flex-1 flex flex-col overflow-hidden">
 
-                {/* NAVBAR */}
-
-                <div className="sticky top-0 z-50 bg-[#F5F7FB]">
-
-                    <Navbar />
-
-                </div>
 
                 {/* CONTENT */}
 

@@ -2,8 +2,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Register from "../auth/Register";
 import Login from "../auth/Login";
+import CreatePassword from "../auth/CreatePassword";
 
 import ProtectedRoute from "./ProtectedRoute";
+
+import DashboardLayout from "../layouts/DashboardLayout";
 
 import Admin from "../admin/Admin";
 import ScheduleInterview from "../admin/ScheduleInterview";
@@ -50,6 +53,10 @@ function AppRoutes() {
         {/*candidate login */}
         <Route path="/login/:roomId" element={<Login />} />
 
+       
+
+        <Route path="/create-password/:token" element={<CreatePassword />} />
+
 
         {/* CANDIDATE ROUTE */}
 
@@ -65,50 +72,36 @@ function AppRoutes() {
         {/* ADMIN ROUTE */}
 
         <Route
-          path="/admin"
-          element={
-            <ProtectedRoute role="admin">
-              <Admin />
-            </ProtectedRoute>
-          }
-        />
+  element={
+    <ProtectedRoute role="admin">
+      <DashboardLayout />
+    </ProtectedRoute>
+  }
+>
+  <Route path="/admin" element={<Admin />} />
 
-        <Route
-          path="/admin/schedule"
-          element={
-            <ProtectedRoute role="admin">
-              <ScheduleInterview />
-            </ProtectedRoute>
-          }
-        />
+  <Route
+    path="/admin/schedule"
+    element={<ScheduleInterview />}
+  />
 
-        <Route
-          path="/admin/interviews"
-          element={
-            <ProtectedRoute role="admin">
-              <Interviews />
-            </ProtectedRoute>
-          }
-        />
+  <Route
+    path="/admin/interviews"
+    element={<Interviews />}
+  />
 
-        <Route
-          path="/admin/reports"
-          element={
-            <ProtectedRoute role="admin">
-              <Reports />
-            </ProtectedRoute>
-          }
-        />
+  <Route
+    path="/admin/reports"
+    element={<Reports />}
+  />
+  <Route 
+  path="/admin/waiting"
+  element={<AdminWaiting />}
+  />
+</Route>
 
         {/* ADMIN WAITING ROUTE */}
-        <Route
-          path="/admin/waiting"
-          element={
-            <ProtectedRoute role="admin">
-              <AdminWaiting />
-            </ProtectedRoute>
-          }
-        />
+        
 
         {/* CANDIDATE WAITING ROUTE */}
 
