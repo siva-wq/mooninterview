@@ -99,7 +99,7 @@ router.post(
     }
   );
 };
-      console.log(time);
+      console.log(formatTime);
 
       const organisationName =
         req.user.organisationName ||
@@ -119,7 +119,7 @@ router.post(
               name,
               organisationName,
               formattedDate,
-              formatTime(time),
+              formatTime,
               roomId,
               frontendUrl: process.env.FRONTEND_URL,
               createPasswordLink,
