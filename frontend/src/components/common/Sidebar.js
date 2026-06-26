@@ -7,6 +7,7 @@ import {
   Video,
   FileText,
   Menu,
+  Clock3 ,
   X,
 } from "lucide-react";
 
@@ -47,6 +48,11 @@ useEffect(() => {
       name: "Reports",
       path: "/admin/reports",
       icon: <FileText size={20} />,
+    },
+    {
+      name:"Waiting Room",
+      path:"/admin/waiting",
+      icon:<Clock3 size={20}/>
     },
   ];
 
