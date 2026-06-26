@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
+
 import { useNavigate, useParams } from "react-router-dom";
+
 import socket from "../../../socket";
 
 import CodeEditor from "../../editor/CodeEditor";
@@ -37,7 +39,7 @@ function CandidateRoom() {
       return;
     }
 
-  }, [user, navigate, roomId]);
+  }, [user, navigate]);
 
   useEffect(() => {
 
@@ -104,9 +106,60 @@ function CandidateRoom() {
   const remoteAudioRef = useRef(null);
 
   // ==========================================
+  // START CAMERA + MIC
+  // ==========================================
+  const startMedia = async () => {
+
+    try {
+
+      const stream =
+        await navigator.mediaDevices.getUserMedia({
+          video: {
+            width: { min: 1280, ideal: 1280 },
+            height: { min: 720, ideal: 720 },
+            frameRate: { ideal: 30 }
+          },
+          audio: true
+        })
+      const track = stream.getVideoTracks()[0];
+
+      console.log(
+        "LOCAL CAMERA SETTINGS",
+        track.getSettings()
+      );
+
+      // const track = stream.getVideoTracks()[0];
+
+      //console.log(track.getSettings());
+
+      localStreamRef.current =
+        stream;
+
+      if (selfVideoRef.current) {
+
+        selfVideoRef.current.srcObject =
+          stream;
+      }
+
+      createPeerConnection(stream);
+      await createOffer();
+      console.log("Offer Sent");
+
+    } catch (error) {
+
+      console.log(
+        "Media Error",
+        error
+      );
+    }
+  };
+
+  // ==========================================
   // CREATE WEBRTC CONNECTION
   // ==========================================
-  const createPeerConnection = useCallback((stream) => {
+  const createPeerConnection = (
+    stream
+  ) => {
 
     if (!stream) {
 
@@ -197,12 +250,12 @@ function CandidateRoom() {
         );
       }
     };
-  }, [roomId]);
+  };
 
   // ==========================================
   // CREATE OFFER
   // ==========================================
-  const createOffer = useCallback(async () => {
+  const createOffer = async () => {
 
     try {
 
@@ -229,57 +282,7 @@ function CandidateRoom() {
         error
       );
     }
-  }, [roomId]);
-  
-  // ==========================================
-  // START CAMERA + MIC
-  // ==========================================
-  const startMedia = useCallback(async () => {
-
-    try {
-
-      const stream =
-        await navigator.mediaDevices.getUserMedia({
-          video: {
-            width: { min: 1280, ideal: 1280 },
-            height: { min: 720, ideal: 720 },
-            frameRate: { ideal: 30 }
-          },
-          audio: true
-        })
-      const track = stream.getVideoTracks()[0];
-
-      console.log(
-        "LOCAL CAMERA SETTINGS",
-        track.getSettings()
-      );
-
-      // const track = stream.getVideoTracks()[0];
-
-      //console.log(track.getSettings());
-
-      localStreamRef.current =
-        stream;
-
-      if (selfVideoRef.current) {
-
-        selfVideoRef.current.srcObject =
-          stream;
-      }
-
-      createPeerConnection(stream);
-      await createOffer();
-      console.log("Offer Sent");
-
-    } catch (error) {
-
-      console.log(
-        "Media Error",
-        error
-      );
-    }
-  }, [createPeerConnection, createOffer]);
-
+  };
   //tab switch
   useEffect(() => {
 
@@ -579,11 +582,7 @@ function CandidateRoom() {
 
     };
 
-  }, [roomId,
-  createPeerConnection,
-  createOffer,
-  navigate,
-  screenSharing]);
+  }, [roomId]);
 
   // ==========================================
   // INITIAL START
@@ -592,7 +591,7 @@ function CandidateRoom() {
 
     startMedia();
 
-  }, [startMedia]);
+  }, []);
 
   // ==========================================
   // CREATE OFFER AFTER STREAM READY
