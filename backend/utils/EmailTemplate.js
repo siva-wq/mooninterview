@@ -131,6 +131,7 @@ const getInterviewInvitationTemplate = ({
   time,
   roomId,
   frontendUrl,
+  createPasswordLink,
 }) => {
   return emailLayout({
     subtitle: `Your Interview Has Been Scheduled by ${organisationName}`,
@@ -198,27 +199,63 @@ const getInterviewInvitationTemplate = ({
       </table>
 
       <div
+  style="
+    text-align:center;
+    margin:40px 0;
+  "
+>
+  ${
+    createPasswordLink
+      ? `
+      <a
+        href="${createPasswordLink}"
         style="
-          text-align:center;
-          margin:40px 0;
+          display:inline-block;
+          padding:16px 40px;
+          background:linear-gradient(135deg,#2563eb,#7c3aed);
+          color:#ffffff;
+          font-size:18px;
+          font-weight:bold;
+          text-decoration:none;
+          border-radius:10px;
         "
       >
-        <a
-          href="${frontendUrl}/login/${roomId}"
-          style="
-            display:inline-block;
-            padding:16px 40px;
-            background:linear-gradient(135deg,#2563eb,#7c3aed);
-            color:#ffffff;
-            font-size:18px;
-            font-weight:bold;
-            text-decoration:none;
-            border-radius:10px;
-          "
-        >
-          Join Interview
-        </a>
-      </div>
+        Create Password
+      </a>
+
+      <p
+        style="
+          margin-top:20px;
+          color:#6b7280;
+          font-size:15px;
+          line-height:1.7;
+        "
+      >
+        Before attending your interview, please create your
+        MoonInterview password using the button above.
+        After creating your password, you can log in and
+        join the interview on the scheduled date.
+      </p>
+      `
+      : `
+      <a
+        href="${frontendUrl}/login/${roomId}"
+        style="
+          display:inline-block;
+          padding:16px 40px;
+          background:linear-gradient(135deg,#2563eb,#7c3aed);
+          color:#ffffff;
+          font-size:18px;
+          font-weight:bold;
+          text-decoration:none;
+          border-radius:10px;
+        "
+      >
+        Join Interview
+      </a>
+      `
+    }
+    </div>
 
       <div
         style="
