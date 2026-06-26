@@ -48,13 +48,7 @@ router.get("/validate/:roomId", async (req, res) => {
       });
     }
 
-    console.log("Interview date:", interview.date);
-console.log("Interview time:", interview.time);
     
-console.log("Interview DateTime:", interviewDateTime);
-console.log("Interview Timestamp:", interviewDateTime.getTime());
-console.log("Current Time:", new Date());
-console.log("Current Timestamp:", Date.now());
 
 
     // Link expiry check
@@ -64,6 +58,14 @@ console.log("Current Timestamp:", Date.now());
 
     const expiryTime =
       interviewDateTime.getTime() + 60 * 60 * 1000;
+
+    console.log("Interview date:", interview.date);
+console.log("Interview time:", interview.time);
+    
+console.log("Interview DateTime:", interviewDateTime);
+console.log("Interview Timestamp:", interviewDateTime.getTime());
+console.log("Current Time:", new Date());
+console.log("Current Timestamp:", Date.now());
 
     if (Date.now() > expiryTime) {
       return res.status(410).json({
