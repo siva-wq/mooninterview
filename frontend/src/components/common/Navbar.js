@@ -4,9 +4,11 @@ import {
   Bell,
   ChevronDown,
   LogOut,
+  UserPlus,
 } from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
+import CreateCandidate from "../../auth/CreateCandidate";
 
 import API from "../../api/axios";
 
@@ -30,7 +32,7 @@ function Navbar() {
 
   const [notifications, setNotifications] =
     useState([]);
-
+  const [showCreateCandidate, setShowCreateCandidate] = useState(false);
   // ==========================================
   // FETCH CURRENT USER
   // ==========================================
@@ -79,6 +81,7 @@ function Navbar() {
 
     // LISTEN NOTIFICATIONS
     socket.on("notification", (data) => {
+      console.log("Notification received:", data);
 
 
       setNotifications((prev) => [
@@ -121,36 +124,36 @@ function Navbar() {
       {/* LEFT */}
 
       <div className="flex">
-          <div>
-      
+        <div>
 
-        <h1 className="text-2xl font-bold text-zinc-800">
-          Admin Dashboard
-        </h1>
 
-        <p className="text-sm text-zinc-500">
-          Welcome back 👋
-        </p>
+          <h1 className="text-2xl font-bold text-zinc-800">
+            Admin Dashboard
+          </h1>
+
+          <p className="text-sm text-zinc-500">
+            Welcome back 👋
+          </p>
         </div>
         <div>
-        {organisationStatus && (
+          {organisationStatus && (
 
-          <div
-            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+            <div
+              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
       ${organisationStatus.expired
-                ? "bg-red-100 text-red-600"
-                : organisationStatus.daysLeft <= 7
-                  ? "bg-yellow-100 text-yellow-700"
-                  : "bg-green-100 text-green-600"
-              }`}
-          >
+                  ? "bg-red-100 text-red-600"
+                  : organisationStatus.daysLeft <= 7
+                    ? "bg-yellow-100 text-yellow-700"
+                    : "bg-green-100 text-green-600"
+                }`}
+            >
 
-            {organisationStatus.expired
-              ? "Organisation Expired"
-              : `${organisationStatus.daysLeft} Days Remaining`}
+              {organisationStatus.expired
+                ? "Organisation Expired"
+                : `${organisationStatus.daysLeft} Days Remaining`}
 
-          </div>
-        )}
+            </div>
+          )}
         </div>
 
       </div>
@@ -158,6 +161,20 @@ function Navbar() {
       {/* RIGHT */}
 
       <div className="flex items-center gap-4 relative">
+
+        <button
+          onClick={() => {
+            setOpenProfile(false);
+            setOpenNotification(false);
+            setShowCreateCandidate(true);
+          }}
+          className="flex items-center gap-2 rounded-xl bg-purple-600 px-4 py-3 text-white transition hover:bg-purple-700"
+        >
+          <UserPlus size={18} />
+          <span className="hidden md:block">
+            Create Candidate
+          </span>
+        </button>
 
         {/* ==========================================
             NOTIFICATIONS
@@ -302,8 +319,8 @@ function Navbar() {
             <ChevronDown
               size={18}
               className={`transition-transform duration-300 ${openProfile
-                  ? "rotate-180"
-                  : ""
+                ? "rotate-180"
+                : ""
                 }`}
             />
 
@@ -358,6 +375,11 @@ function Navbar() {
         </div>
 
       </div>
+      {showCreateCandidate && (
+        <CreateCandidate
+          onClose={() => setShowCreateCandidate(false)}
+        />
+      )}
 
     </div>
   );
