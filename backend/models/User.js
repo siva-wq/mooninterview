@@ -16,7 +16,11 @@ const userSchema = new mongoose.Schema({
 
     password: {
         type: String,
-        required: true,
+        default: null,
+    },
+    passwordSet: {
+        type: Boolean,
+        default: false,
     },
 
     organisation: {
