@@ -17,6 +17,7 @@ router.use(checkOrganisationExpiry);
 //validate
 router.get("/validate/:roomId", async (req, res) => {
   try {
+    console.log("validate room");
     const { roomId } = req.params;
 
     const interview = await Interview.findOne({
