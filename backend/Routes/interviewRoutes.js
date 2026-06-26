@@ -47,6 +47,9 @@ router.get("/validate/:roomId", async (req, res) => {
       });
     }
 
+    console.log("Interview date:", interview.date);
+console.log("Interview time:", interview.time);
+
     // Link expiry check
     const interviewDateTime = new Date(
       `${interview.date.toISOString().split("T")[0]} ${interview.time}`
