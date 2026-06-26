@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -86,9 +86,9 @@ function CandidateWaiting() {
 
     try {
 
-      await API.get(
-        `/interview/${roomId}`
-      );
+      //await API.get(
+     //   `/interview/${roomId}`
+     // );
 
     } catch (error) {
 
@@ -102,14 +102,14 @@ function CandidateWaiting() {
 
   checkInterview();
 
-}, [roomId, navigate]);
+}, [roomId]);
 
   // ==========================================
   // JOIN WAITING ROOM
   // ==========================================
 
 
-  const joinWaitingRoom = useCallback(async () => {
+  const joinWaitingRoom = async () => {
 
     try {
 
@@ -133,7 +133,7 @@ function CandidateWaiting() {
 
       console.log(err);
     }
-  }, [roomId]);
+  }
 
   useEffect(() => {
     joinWaitingRoom();
