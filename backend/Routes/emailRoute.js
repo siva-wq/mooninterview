@@ -4,6 +4,8 @@ const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
 const sendEmail = require('../utils/sendEmail');
 
+const User=require('../models/User');
+
 const checkOrganisationExpiry = require('../middleware/checkOrganisationExpiry');
 
 const {
@@ -45,6 +47,36 @@ router.post(
           message: 'All fields are required',
         });
       }
+      const candidate = await User.findOne({
+          email: email.toLowerCase(),
+      });
+
+      if (!candidate) {
+        return res.status(404).json({
+          success: false,
+          message: "Candidate not found.",
+        });
+      }
+      const jwt = require("jsonwebtoken");
+
+      let createPasswordLink = null;
+
+      if (!candidate.passwordSet) {
+        const createPasswordToken = jwt.sign(
+          {
+            userId: candidate._id,
+            roomId,
+            purpose: "create-password",
+          },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: "24h",
+          }
+        );
+
+        createPasswordLink =
+          `${process.env.FRONTEND_URL}/create-password/${createPasswordToken}`;
+      }
 
       const formattedDate = new Date(date)
         .toLocaleDateString(
@@ -77,6 +109,7 @@ router.post(
               time,
               roomId,
               frontendUrl: process.env.FRONTEND_URL,
+              createPasswordLink,
             });
 
           break;

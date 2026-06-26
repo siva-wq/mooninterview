@@ -160,6 +160,80 @@ router.post('/login', async (req, res) => {
         });
     }
 });
+
+router.post("/create-password/:token", async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    if (!password) {
+      return res.status(400).json({
+        message: "Password is required.",
+      });
+    }
+
+    // Verify JWT
+    let decoded;
+
+    try {
+      decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET
+      );
+    } catch (err) {
+      return res.status(400).json({
+        message: "Invalid or expired link.",
+      });
+    }
+
+    // Ensure token purpose is correct
+    if (decoded.purpose !== "create-password") {
+      return res.status(400).json({
+        message: "Invalid invitation link.",
+      });
+    }
+
+    console.log(decoded)
+
+    // Find candidate
+    const user = await User.findById(decoded.userId);
+
+    if (!user) {
+      return res.status(404).json({
+        message: "Candidate not found.",
+      });
+    }
+
+    // Password already created
+    if (user.passwordSet) {
+      return res.status(400).json({
+        message: "Password has already been created.",
+      });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Save password
+    user.password = hashedPassword;
+    user.passwordSet = true;
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "Password created successfully.",
+      roomId: decoded.roomId,
+    });
+
+  } catch (err) {
+    console.error("Create Password Error:", err);
+
+    return res.status(500).json({
+      message: "Internal server error.",
+    });
+  }
+});
+
 router.get(
     '/me',
     authMiddleware,
