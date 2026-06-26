@@ -70,11 +70,11 @@ function CandidateWaiting() {
           console.log("Status:", error.response?.status);
           console.log("Data:", error.response?.data);
 
-      /*   ErrorHandler(
+        ErrorHandler(
           navigate,
           error.response?.data?.type
         );
-*/
+
       }
     };
 
