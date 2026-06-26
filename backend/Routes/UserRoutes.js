@@ -253,4 +253,63 @@ router.delete(
     }
 );
 
+router.post("/users/create-candidate", authMiddleware, async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    console.log(req.user)
+
+    if (!name || !email) {
+      return res.status(400).json({
+        message: "Name and email are required.",
+      });
+    }
+
+    const admin = await User.findById(req.user.id);
+
+    if (!admin) {
+      return res.status(404).json({
+        message: "Admin not found.",
+      });
+    }
+
+    if (admin.role !== "admin") {
+      return res.status(403).json({
+        message: "Access denied.",
+      });
+    }
+
+    const existingUser = await User.findOne({
+      email: email.toLowerCase(),
+    });
+
+    if (existingUser) {
+      return res.status(400).json({
+        message: "Candidate already exists.",
+      });
+    }
+
+    const candidate = await User.create({
+      name,
+      email: email.toLowerCase(),
+      role: "candidate",
+      organisation: admin.organisation,
+      password: null,
+      passwordSet: false,
+    });
+
+    res.status(201).json({
+      message: "Candidate created successfully.",
+      candidate,
+    });
+
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({
+      message: "Internal server error.",
+    });
+  }
+});
+
 module.exports = router;
