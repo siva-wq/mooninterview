@@ -87,6 +87,18 @@ router.post(
             year: 'numeric',
           }
         );
+      const formatTime = (time) => {
+  const [hours, minutes] = time.split(":").map(Number);
+
+  return new Date(0, 0, 0, hours, minutes).toLocaleTimeString(
+    "en-US",
+    {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    }
+  );
+};
       console.log(time);
 
       const organisationName =
@@ -107,7 +119,7 @@ router.post(
               name,
               organisationName,
               formattedDate,
-              time,
+              formatTime(time),
               roomId,
               frontendUrl: process.env.FRONTEND_URL,
               createPasswordLink,
