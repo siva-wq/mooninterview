@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
-import Navbar from "../../common/Navbar";
-import Sidebar from "../../common/Sidebar";
+
 
 import API from "../../../api/axios";
 
@@ -251,17 +250,9 @@ function AdminWaiting() {
 
     <div className="flex min-h-screen bg-gray-50 text-black">
 
-      {/* SIDEBAR */}
-
-      <Sidebar />
-
       {/* MAIN */}
 
       <div className="flex-1">
-
-        {/* NAVBAR */}
-
-        <Navbar />
 
         {/* CONTENT */}
 
