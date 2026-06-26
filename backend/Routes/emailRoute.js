@@ -87,6 +87,7 @@ router.post(
             year: 'numeric',
           }
         );
+      console.log(time);
 
       const organisationName =
         req.user.organisationName ||
