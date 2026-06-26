@@ -13,6 +13,7 @@ function CandidateTable() {
     const [scheduleData, setScheduleData] = useState({});
     const [mailLoading, setMailLoading] =
         useState({});
+    const [scheduleLoading, setScheduleLoading] = useState({});
 
 
     // ==========================================
@@ -273,6 +274,10 @@ function CandidateTable() {
             );
             return;
         }
+        setScheduleLoading(prev => ({
+            ...prev,
+            [candidate._id]: true,
+        }));
 
         try {
 
@@ -297,7 +302,12 @@ function CandidateTable() {
 
             console.log(error);
 
-        }
+        }finally {
+    setScheduleLoading(prev => ({
+        ...prev,
+        [candidate._id]: false,
+    }));
+}
     };
     // ==========================================
     // SEND MAIL
@@ -600,17 +610,25 @@ function CandidateTable() {
 
                                             {!candidate.date ? (
 
-                                                <button onClick={() => handleSchedule(candidate)}
-                                                    className="
-                                                        bg-blue-600
-                                                        text-white
-                                                        px-4
-                                                        py-2
-                                                        rounded-xl
-                                                    "
-                                                >
-                                                    Schedule
-                                                </button>
+                                                <button
+    onClick={() => handleSchedule(candidate)}
+    disabled={scheduleLoading[candidate._id]}
+    className="
+        bg-blue-600
+        text-white
+        px-4
+        py-2
+        rounded-xl
+        disabled:bg-gray-400
+        disabled:cursor-not-allowed
+    "
+>
+    {
+        scheduleLoading[candidate._id]
+            ? "Scheduling..."
+            : "Schedule"
+    }
+</button>
 
                                             ) : (
 
