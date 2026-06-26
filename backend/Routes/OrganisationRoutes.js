@@ -20,9 +20,7 @@ const roleMiddleware =
 
 //create organisation
 router.post(
-    '/organisations',
-    authMiddleware,
-    roleMiddleware(['admin']),
+    '/organisations'
     async (req, res) => {
         try {
             const { title } = req.body;
@@ -187,9 +185,7 @@ router.get(
 // ADMIN ONLY
 // ==========================================
 router.put(
-    '/organisations',
-    authMiddleware,
-    roleMiddleware('admin'),
+    '/organisations'
     async (req, res) => {
 
         try {
