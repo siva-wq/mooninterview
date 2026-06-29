@@ -225,7 +225,7 @@ function CandidateRoom() {
         if (remoteAudioRef.current) {
           remoteAudioRef.current.srcObject = event.streams[0];
           remoteAudioRef.current.play()
-            .then(() =>// console.log("AUDIO PLAYING"))
+            .then(() =>console.log(""))
             .catch(err => console.log("AUDIO ERROR", err));
         }
       }
