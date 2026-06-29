@@ -225,7 +225,7 @@ function CandidateWaiting() {
         resumeFile,
         user.id
       );
-      console.log(result)
+     // console.log(result)
 
       const response=await API.post(
         "/candidate/update-resume",
@@ -235,7 +235,7 @@ function CandidateWaiting() {
         }
       );
 
-      console.log(response);
+     // console.log(response);
 
       setResumeUploaded(true);
 
