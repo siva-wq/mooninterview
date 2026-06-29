@@ -123,10 +123,10 @@ function CandidateRoom() {
         })
       const track = stream.getVideoTracks()[0];
 
-      console.log(
+     /* console.log(
         "LOCAL CAMERA SETTINGS",
         track.getSettings()
-      );
+      );*/
 
       // const track = stream.getVideoTracks()[0];
 
@@ -143,7 +143,7 @@ function CandidateRoom() {
 
       createPeerConnection(stream);
       await createOffer();
-      console.log("Offer Sent");
+      //console.log("Offer Sent");
 
     } catch (error) {
 
@@ -163,9 +163,9 @@ function CandidateRoom() {
 
     if (!stream) {
 
-      console.log(
+    /*  console.log(
         "createPeerConnection: stream is null"
-      );
+      );*/
 
       return;
     }
@@ -179,26 +179,26 @@ function CandidateRoom() {
           },
         ],
       });
-    console.log("Setting ontrack handler");
+    //console.log("Setting ontrack handler");
     cameraPeer.current =
       peer;
     peer.onconnectionstatechange =
       () => {
 
-        console.log(
+        /*console.log(
           "Candidate Peer State:",
           peer.connectionState
-        );
+        );*/
 
       };
 
     // ADD CANDIDATE TRACKS ONLY - let WebRTC handle transceivers automatically
     stream.getTracks().forEach(
       (track) => {
-        console.log(
+       /* console.log(
           "Sending stream:",
           stream.getVideoTracks()[0].getSettings()
-        );
+        );*/
 
         peer.addTrack(
           track,
@@ -209,23 +209,23 @@ function CandidateRoom() {
 
     // RECEIVE REMOTE STREAM
     peer.ontrack = (event) => {
-      console.log("=== CANDIDATE ONTRACK FIRED ===");
+     /* console.log("=== CANDIDATE ONTRACK FIRED ===");
       console.log("TRACK KIND:", event.track.kind);
       console.log("TRACK ID:", event.track.id);
       console.log("TRACK STATE:", event.track.readyState);
       console.log("STREAMS:", event.streams);
       console.log("STREAM ID:", event.streams[0]?.id);
       console.log("Receivers:", peer.getReceivers().map(r => ({ kind: r.track?.kind, id: r.track?.id })));
-      console.log("Senders:", peer.getSenders().map(s => ({ kind: s.track?.kind, id: s.track?.id })));
+      console.log("Senders:", peer.getSenders().map(s => ({ kind: s.track?.kind, id: s.track?.id })));*/
 
       if (event.track.kind === "audio") {
-        console.log("AUDIO TRACK RECEIVED - checking if it's admin audio");
-        console.log("Is remote track?", !stream.getAudioTracks().includes(event.track));
+       /* console.log("AUDIO TRACK RECEIVED - checking if it's admin audio");
+        console.log("Is remote track?", !stream.getAudioTracks().includes(event.track));*/
 
         if (remoteAudioRef.current) {
           remoteAudioRef.current.srcObject = event.streams[0];
           remoteAudioRef.current.play()
-            .then(() => console.log("AUDIO PLAYING"))
+            .then(() =>// console.log("AUDIO PLAYING"))
             .catch(err => console.log("AUDIO ERROR", err));
         }
       }
@@ -334,15 +334,15 @@ function CandidateRoom() {
       "request_offer",
       async () => {
 
-        console.log(
+     /*   console.log(
           "Admin requested NEW offer"
-        );
+        );*/
 
         if (!localStreamRef.current) {
 
-          console.log(
+          /*console.log(
             "Local media not ready yet"
-          );
+          );*/
 
           return;
         }
@@ -412,17 +412,17 @@ function CandidateRoom() {
 
         try {
 
-          console.log(
+       /*   console.log(
             "Answer Received:",
             type
-          );
+          );*/
 
           if (type === "camera") {
 
-            console.log(
+          /*  console.log(
               "Camera State:",
               cameraPeer.current?.signalingState
-            );
+            );*/
 
             if (
               cameraPeer.current?.signalingState ===
@@ -438,27 +438,27 @@ function CandidateRoom() {
               cameraPeer.current
                 .getReceivers()
                 .forEach(r => {
-                  console.log(
+                /*  console.log(
                     r.track?.kind,
                     r.track?.readyState
-                  );
+                  );*/
                 });
-              console.log(
+             /* console.log(
                 "Receivers:",
                 cameraPeer.current
                   .getReceivers()
                   .map(r => r.track?.kind)
-              );
+              );*/
 
             }
           }
 
           if (type === "screen") {
 
-            console.log(
+           /* console.log(
               "Screen State:",
               screenPeer.current?.signalingState
-            );
+            );*/
 
             if (
               screenPeer.current?.signalingState ===
@@ -678,9 +678,9 @@ function CandidateRoom() {
           }
         );
 
-        console.log(
+      /*  console.log(
           "Screen Share Offer Sent"
-        );
+        );*/
 
       } catch (error) {
 
