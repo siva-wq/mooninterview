@@ -39,7 +39,7 @@ function Register() {
         const fetchOrganisations = async () => {
             try {
                 const res = await API.get('/organisations');
-                console.log(res.data);
+                //console.log(res.data);
                 setOrganisations(res.data.organisations);
             } catch (err) {
                 console.error('Error fetching organisations:', err);
@@ -101,7 +101,7 @@ function Register() {
                 role:
                     formData.role
             };
-            console.log(sendData)
+           // console.log(sendData)
 
             const res =
                 await axios.post(
@@ -152,7 +152,7 @@ function Register() {
 
         } catch (err) {
 
-            console.log(err);
+            //console.log(err);
 
             alert(
 
