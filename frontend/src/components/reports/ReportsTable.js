@@ -168,8 +168,8 @@ function ReportsTable({ setSelectedCandidate }) {
   const updateResult = async (candidate,status) => {
   try {
 
-    console.log(candidate);
-    console.log(status);
+    //console.log(candidate);
+    //console.log(status);
 
     await API.post(
               "/result/setres",
