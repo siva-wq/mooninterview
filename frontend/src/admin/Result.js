@@ -24,7 +24,7 @@ function Result() {
           `/room/${roomId}`
         );
 
-        console.log(res.data);
+        //console.log(res.data);
 
         setInterview(res.data);
         setCandidate(
