@@ -81,7 +81,7 @@ function Navbar() {
 
     // LISTEN NOTIFICATIONS
     socket.on("notification", (data) => {
-      console.log("Notification received:", data);
+      //console.log("Notification received:", data);
 
 
       setNotifications((prev) => [
