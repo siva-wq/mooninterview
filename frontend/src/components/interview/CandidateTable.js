@@ -313,21 +313,21 @@ function CandidateTable() {
     // SEND MAIL
     // ==========================================
     const sendMail = async (candidate) => {
-        console.log(candidate);
+        //console.log(candidate);
         setMailLoading(prev => ({
             ...prev,
             [candidate._id]: "sending mail"
         }));
 
         const send = await SendMail({ candidate, type: "Interview-invitation" });
-        console.log(send);
+        //console.log(send);
         if (send.success) {
             setMailLoading(prev => ({
                 ...prev,
                 [candidate._id]: "mail sent"
             }));
         }
-        console.log(send);
+        //console.log(send);
     };
 
     // ==========================================
