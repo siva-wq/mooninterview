@@ -20,12 +20,12 @@ API.interceptors.response.use(
 
   (error) => {
 
-    console.log(
+    /*console.log(
       "FAILED API:",
       error.config?.url
     );
      console.log(
-      error.response?.data)
+      error.response?.data)*/
 
    if (
       error.response?.status === 401 &&
