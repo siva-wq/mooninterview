@@ -32,7 +32,7 @@ function Candidates() {
             user.role ===
             "candidate"
         );
-        console.log(filteredCandidates)
+        //console.log(filteredCandidates)
 
       setCandidates(
         filteredCandidates
