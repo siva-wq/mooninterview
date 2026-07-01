@@ -112,7 +112,7 @@ router.post(
 
         case 'Interview-invitation':
 
-          subject = 'Interview Scheduled';
+          subject = `Your Interview is Scheduled – ${organisationName}`;
 
           html =
             getInterviewInvitationTemplate({
@@ -130,7 +130,7 @@ router.post(
         case 'selected':
 
           subject =
-            `Congratulations! Selected by ${organisationName}`;
+            `🎉 Congratulations! You've Been Selected by ${organisationName}`;
 
           html =
             getSelectedTemplate({
@@ -140,10 +140,11 @@ router.post(
 
           break;
 
-        case 'hold' || 'pending':
+        case 'hold':
+        case 'pending':
 
           subject =
-            `Application Under Review - ${organisationName}`;
+            `Application Update | Under Review at ${organisationName}`;
 
           html =
             getHoldTemplate({
