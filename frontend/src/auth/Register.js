@@ -27,7 +27,7 @@ function Register() {
 
             organisation:'',
 
-            role: '',
+            role: 'candidate',
 
             password: '',
 
@@ -378,12 +378,12 @@ function Register() {
                         "
                     >
 
-                        <option value="admin">
-                            Admin
-                        </option>
-
                         <option value="candidate">
                             Candidate
+                        </option>
+
+                        <option value="admin">
+                            Admin
                         </option>
 
 
