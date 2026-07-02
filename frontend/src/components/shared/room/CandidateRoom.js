@@ -237,18 +237,18 @@ function CandidateRoom() {
 
     // RECEIVE REMOTE STREAM
     peer.ontrack = (event) => {
-     /* console.log("=== CANDIDATE ONTRACK FIRED ===");
+     console.log("=== CANDIDATE ONTRACK FIRED ===");
       console.log("TRACK KIND:", event.track.kind);
       console.log("TRACK ID:", event.track.id);
       console.log("TRACK STATE:", event.track.readyState);
       console.log("STREAMS:", event.streams);
       console.log("STREAM ID:", event.streams[0]?.id);
       console.log("Receivers:", peer.getReceivers().map(r => ({ kind: r.track?.kind, id: r.track?.id })));
-      console.log("Senders:", peer.getSenders().map(s => ({ kind: s.track?.kind, id: s.track?.id })));*/
+      console.log("Senders:", peer.getSenders().map(s => ({ kind: s.track?.kind, id: s.track?.id })));
 
       if (event.track.kind === "audio") {
-       /* console.log("AUDIO TRACK RECEIVED - checking if it's admin audio");
-        console.log("Is remote track?", !stream.getAudioTracks().includes(event.track));*/
+        console.log("AUDIO TRACK RECEIVED - checking if it's admin audio");
+        console.log("Is remote track?", !stream.getAudioTracks().includes(event.track));
 
         if (remoteAudioRef.current) {
           remoteAudioRef.current.srcObject = event.streams[0];
