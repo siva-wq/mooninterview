@@ -1283,7 +1283,7 @@ function AdminRoom() {
                       ref={candidateVideoRef}
                       autoPlay
                       playsInline
-                      className="max-h-[500px] w-full h-full object-contain"
+                      className="max-h-[480px] w-full h-full object-contain"
                     />
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center bg-gray-50 text-center">
@@ -1428,7 +1428,7 @@ function AdminRoom() {
                       ref={screenShareRef}
                       autoPlay
                       playsInline
-                      className="max-h-[520px] w-full h-full object-contain"
+                      className="max-h-[480px] w-full h-full object-contain"
                     />
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center bg-gray-50 text-center">
