@@ -57,6 +57,10 @@ function AdminRoom() {
     useState(0);
   //admin audio
   const adminStreamRef = useRef(null);
+  //candidate audio for screen share
+  const screenAudioRef = useRef(null);
+  //global candidate audio - plays on all tabs
+  const candidateAudioRef = useRef(null);
   // ==========================================
   // VIDEO REFS
   // ==========================================
@@ -333,6 +337,20 @@ function AdminRoom() {
         screenStreamRef.current;
     }
 
+    // Reattach audio when switching to screen tab
+    if (
+      activeTab === "screen" &&
+      screenAudioRef.current
+    ) {
+      // The audio stream is the same as screen stream (contains both video and audio)
+      if (screenStreamRef.current) {
+        screenAudioRef.current.srcObject = screenStreamRef.current;
+        screenAudioRef.current.play()
+          .then(() => console.log("Screen audio reattached on tab switch"))
+          .catch(err => console.log("Audio reattach error:", err));
+      }
+    }
+
   }, [activeTab]);
 
   // ==========================================
@@ -356,12 +374,6 @@ function AdminRoom() {
         direction: "recvonly"
       }
     );
-    cameraPeer.current.addTransceiver(
-      "audio",
-      {
-        direction: "recvonly"
-      }
-    );
     cameraPeer.current.onconnectionstatechange =
       () => {
 
@@ -376,8 +388,10 @@ function AdminRoom() {
     if (adminStreamRef.current) {
       adminStreamRef.current.getAudioTracks().forEach(track => {
         cameraPeer.current.addTrack(track, adminStreamRef.current);
-        console.log("Admin audio track added in createPeers");
+        console.log("Admin audio track added in createPeers:", track.kind, track.id, track.enabled);
       });
+    } else {
+      console.log("WARNING: adminStreamRef.current is null when adding audio track");
     }
 
     // SCREEN PEER
@@ -397,6 +411,12 @@ function AdminRoom() {
         direction: "recvonly",
       }
     );
+    screenPeer.current.addTransceiver(
+      "audio",
+      {
+        direction: "recvonly",
+      }
+    );
 
 
     //camera streams
@@ -407,24 +427,31 @@ function AdminRoom() {
         event.track.kind
       );
 
-      if (event.track.kind !== "video") {
-        return;
-      }
+      if (event.track.kind === "video") {
+        const stream = event.streams[0];
+        candidateStreamRef.current = stream;
 
-      const stream = event.streams[0];
+        if (
+          candidateVideoRef.current &&
+          candidateVideoRef.current.srcObject !== stream
+        ) {
 
-      candidateStreamRef.current = stream;
+          candidateVideoRef.current.srcObject =
+            stream;
 
-      if (
-        candidateVideoRef.current &&
-        candidateVideoRef.current.srcObject !== stream
-      ) {
-
-        candidateVideoRef.current.srcObject =
-          stream;
-
-        candidateVideoRef.current.play()
-          .catch(console.error);
+          candidateVideoRef.current.play()
+            .catch(console.error);
+        }
+      } else if (event.track.kind === "audio") {
+        console.log("CANDIDATE AUDIO RECEIVED ON CAMERA PEER");
+        // Play candidate audio through global audio element
+        const stream = event.streams[0];
+        if (candidateAudioRef.current) {
+          candidateAudioRef.current.srcObject = stream;
+          candidateAudioRef.current.play()
+            .then(() => console.log("CANDIDATE AUDIO PLAYING GLOBALLY"))
+            .catch(err => console.log("AUDIO PLAY ERROR:", err));
+        }
       }
     };
 
@@ -433,18 +460,36 @@ function AdminRoom() {
     // ==========================================
     screenPeer.current.ontrack =
       (event) => {
-        console.log("SCREEN TRACK RECEIVED");
+        console.log("SCREEN TRACK RECEIVED:", event.track.kind);
 
-        const stream = event.streams[0];
+        if (event.track.kind === "video") {
+          const stream = event.streams[0];
+          screenStreamRef.current = stream;
+          console.log(
+            "TRACK",
+            event.track.kind,
+            event.track.label
+          );
 
-        screenStreamRef.current = stream;
-
-        if (
-          screenShareRef.current
-        ) {
-          console.log("ATTACHING SCREEN");
-          screenShareRef.current.srcObject =
-            stream;
+          // Always attach stream to video element, even if tab is not active
+          if (screenShareRef.current) {
+            console.log("ATTACHING SCREEN");
+            screenShareRef.current.srcObject = stream;
+          } else {
+            console.log("screenShareRef not available yet, stream saved");
+          }
+        } else if (event.track.kind === "audio") {
+          console.log("CANDIDATE AUDIO RECEIVED ON SCREEN PEER");
+          // Audio from candidate during screen share - play it in separate audio element
+          const stream = event.streams[0];
+          if (screenAudioRef.current) {
+            screenAudioRef.current.srcObject = stream;
+            screenAudioRef.current.play()
+              .then(() => console.log("CANDIDATE AUDIO PLAYING"))
+              .catch(err => console.log("AUDIO PLAY ERROR:", err));
+          } else {
+            console.log("screenAudioRef not available");
+          }
         }
       };
 
@@ -1458,14 +1503,18 @@ function AdminRoom() {
               <div className="camera-area flex-1 bg-gray-900 flex items-center justify-center">
 
                 <div className="relative w-full h-full">
-                  {screenSharing ? (
-                    <video
-                      ref={screenShareRef}
-                      autoPlay
-                      playsInline
-                      className="max-h-[480px] w-full h-full object-contain"
-                    />
-                  ) : (
+                  {/* Video element always in DOM to capture stream immediately */}
+                  <video
+                    ref={screenShareRef}
+                    autoPlay
+                    playsInline
+                    className={`${screenSharing ? 'block' : 'hidden'} max-h-[480px] w-full h-full object-contain`}
+                  />
+                  
+                  {/* Audio element for candidate audio during screen share */}
+                  
+                  
+                  {!screenSharing && (
                     <div className="w-full h-full flex flex-col items-center justify-center bg-gray-50 text-center">
                       <MonitorOff
                         size={64}
@@ -1949,6 +1998,11 @@ function AdminRoom() {
         </div>
 
       </div>
+      <audio
+        ref={candidateAudioRef}
+        autoPlay
+        playsInline
+      />
 
     </div>
   );
