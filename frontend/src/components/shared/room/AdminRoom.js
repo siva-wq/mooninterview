@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState,useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import toast from "react-hot-toast";
@@ -173,7 +173,7 @@ function AdminRoom() {
 
   //checking the screen share and camera
 
- /* useEffect(() => {
+  useEffect(() => {
     console.log(
       "Camera Stream:",
       candidateStreamRef.current
@@ -183,8 +183,8 @@ function AdminRoom() {
       "Screen Stream:",
       screenStreamRef.current
     );
-  }, [activeTab]);*/
-  /*useEffect(() => {
+  }, [activeTab]);
+  useEffect(() => {
     if (candidateVideoRef.current) {
       console.log(
         "Video Size",
@@ -198,7 +198,7 @@ function AdminRoom() {
         candidateVideoRef.current.videoHeight
       );
     }
-  }, [activeTab]);*/
+  }, [activeTab]);
 
   // ==========================================
   // ADD NOTIFICATION
@@ -265,7 +265,7 @@ function AdminRoom() {
 
         const response = await API.get(`/room/${roomId}`);
 
-        //console.log(response.data);
+        console.log(response.data);
 
         setcandidate(response.data.candidate);
         setResumeUrl(response.data.resume);
@@ -311,7 +311,7 @@ function AdminRoom() {
   // ==========================================
   // CREATE PEERS
   // ==========================================
-  const createPeers =useCallback( () => {
+  const createPeers = () => {
 
     // CAMERA PEER
     cameraPeer.current =
@@ -331,10 +331,10 @@ function AdminRoom() {
     cameraPeer.current.onconnectionstatechange =
       () => {
 
-      /*  console.log(
+        console.log(
           "Admin Peer State:",
           cameraPeer.current.connectionState
-        );*/
+        );
 
       };
 
@@ -342,7 +342,7 @@ function AdminRoom() {
     if (adminStreamRef.current) {
       adminStreamRef.current.getAudioTracks().forEach(track => {
         cameraPeer.current.addTrack(track, adminStreamRef.current);
-        //console.log("Admin audio track added in createPeers");
+        console.log("Admin audio track added in createPeers");
       });
     }
 
@@ -367,10 +367,10 @@ function AdminRoom() {
     //camera streams
     cameraPeer.current.ontrack = (event) => {
 
-    /*  console.log(
+      console.log(
         "TRACK RECEIVED:",
         event.track.kind
-      );*/
+      );
 
       if (event.track.kind !== "video") {
         return;
@@ -398,7 +398,7 @@ function AdminRoom() {
     // ==========================================
     screenPeer.current.ontrack =
       (event) => {
-        //console.log("SCREEN TRACK RECEIVED");
+        console.log("SCREEN TRACK RECEIVED");
 
         const stream = event.streams[0];
 
@@ -407,7 +407,7 @@ function AdminRoom() {
         if (
           screenShareRef.current
         ) {
-         // console.log("ATTACHING SCREEN");
+          console.log("ATTACHING SCREEN");
           screenShareRef.current.srcObject =
             stream;
         }
@@ -464,7 +464,7 @@ function AdminRoom() {
           );
         }
       };
-  },[roomId]);
+  };
 
 
   //end interview
@@ -498,11 +498,14 @@ function AdminRoom() {
       adminStreamRef.current =
         stream;
 
-      //console.log("Admin mic ready");
+      console.log("Admin mic ready");
 
     } catch (error) {
 
-      console.log(error);
+      console.log(
+        "Admin Mic Error",
+        error
+      );
 
     }
 
@@ -554,7 +557,7 @@ function AdminRoom() {
         offer,
         type,
       }) => {
-       // console.log("Offer Received", offer, "type:", type);
+        console.log("Offer Received", offer, "type:", type);
         try {
 
           const peer =
@@ -562,7 +565,7 @@ function AdminRoom() {
               ? cameraPeer.current
               : screenPeer.current;
 
-         // console.log("Setting remote description", offer);
+          console.log("Setting remote description", offer);
           await peer.setRemoteDescription(
             new RTCSessionDescription(
               offer
@@ -575,10 +578,10 @@ function AdminRoom() {
           await peer.setLocalDescription(
             answer
           );
-        /*  console.log(
+          console.log(
             "Answer Sent",
             type
-          );*/
+          );
           socket.emit(
             "answer",
             {
@@ -773,7 +776,7 @@ function AdminRoom() {
     const mic = async () => {
       await startAdminMic();
 
-      //console.log("mic stream", adminStreamRef.current);
+      console.log("mic stream", adminStreamRef.current);
 
       socket.connect();
 
@@ -815,7 +818,7 @@ function AdminRoom() {
 
     };
 
-  }, [roomId,createPeers]);
+  }, [roomId]);
 
   return (
 
