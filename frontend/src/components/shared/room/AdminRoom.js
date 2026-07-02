@@ -777,6 +777,8 @@ function AdminRoom() {
       await startAdminMic();
 
       console.log("mic stream", adminStreamRef.current);
+      
+      createPeers();
 
       socket.connect();
 
@@ -798,8 +800,6 @@ function AdminRoom() {
           roomId
         }
       );
-
-      createPeers();
     }
     mic();
 
