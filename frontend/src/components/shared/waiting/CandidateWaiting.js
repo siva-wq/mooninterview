@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import API from "../../../api/axios";
 
@@ -31,6 +32,8 @@ function CandidateWaiting() {
   const [loading, setLoading] =
     useState(false);
 
+  const [uploadingResume, setUploadingResume] = useState(false);
+  
   const [message, setMessage] =
     useState("");
 
@@ -61,14 +64,12 @@ function CandidateWaiting() {
         );
 
         const res = await API.get( `/interview/${roomId}` ); 
+        console.log(res)
         if ( res.data.status === "ongoing" ) { 
           navigate( `/candidate/interview/${roomId}` );
         }
 
       } catch (error) {
-         console.log("Validation Error:", error);
-          console.log("Status:", error.response?.status);
-          console.log("Data:", error.response?.data);
 
         ErrorHandler(
           navigate,
@@ -89,9 +90,9 @@ function CandidateWaiting() {
 
     try {
 
-      //await API.get(
-     //   `/interview/${roomId}`
-     // );
+      await API.get(
+        `/interview/${roomId}`
+      );
 
     } catch (error) {
 
@@ -105,14 +106,14 @@ function CandidateWaiting() {
 
   checkInterview();
 
-}, [roomId]);
+}, [roomId, navigate]);
 
   // ==========================================
   // JOIN WAITING ROOM
   // ==========================================
 
 
-  const joinWaitingRoom = async () => {
+  const joinWaitingRoom = useCallback(async () => {
 
     try {
 
@@ -136,7 +137,7 @@ function CandidateWaiting() {
 
       console.log(err);
     }
-  }
+  }, [roomId]);
 
   useEffect(() => {
     joinWaitingRoom();
@@ -215,8 +216,10 @@ function CandidateWaiting() {
   };
   const handleResumeUpload = async () => {
     try {
+      setUploadingResume(true);
 
       if (!resumeFile) {
+        setUploadingResume(false);
         alert("Please select a resume");
         return;
       }
@@ -225,7 +228,7 @@ function CandidateWaiting() {
         resumeFile,
         user.id
       );
-     // console.log(result)
+      console.log(result)
 
       const response=await API.post(
         "/candidate/update-resume",
@@ -235,17 +238,20 @@ function CandidateWaiting() {
         }
       );
 
-     // console.log(response);
+      console.log(response);
 
       setResumeUploaded(true);
+      setUploadingResume(true);
 
-      alert("Resume uploaded successfully");
+      toast.success("Resume uploaded successfully");
 
     } catch (error) {
 
       console.log(error);
 
-      alert("Resume upload failed in backend, try again");
+      toast.error("Resume upload failed in backend, try again");
+    } finally {
+      setUploadingResume(false);
     }
   };
 
@@ -486,7 +492,7 @@ function CandidateWaiting() {
 
           <button
             onClick={handleResumeUpload}
-            disabled={!resumeFile}
+            disabled={ !resumeFile || uploadingResume || resumeUploaded }
             className="
               w-full
               bg-purple-600
@@ -502,17 +508,26 @@ function CandidateWaiting() {
               disabled:cursor-not-allowed
             "
           >
-            Upload Updated Resume
+            {
+  uploadingResume
+    ? "Uploading Resume..."
+    : resumeUploaded
+      ? "Resume Uploaded ✓"
+      : "Upload Updated Resume"
+}
           </button>
           <PermissionCard
-            title="Resume Upload"
-            description={
-              resumeUploaded
-                ? "Resume uploaded successfully"
-                : "Please upload your latest resume"
-            }
-            granted={resumeUploaded}
-          />
+  title="Resume Upload"
+  description={
+    resumeUploaded
+      ? "Resume uploaded successfully"
+      : uploadingResume
+      ? "Uploading your resume..."
+      : "Please upload your latest resume"
+  }
+  granted={resumeUploaded}
+  uploading={uploadingResume}
+/>
 
           {/* CAMERA */}
 
@@ -622,7 +637,8 @@ function CandidateWaiting() {
 function PermissionCard({
   title,
   description,
-  granted
+  granted,
+  uploading
 }) {
 
   return (
@@ -676,6 +692,21 @@ function PermissionCard({
             </span>
           )
         }
+        {
+  uploading ? (
+    <span className="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-xl font-medium">
+      Uploading...
+    </span>
+  ) : granted ? (
+    <span className="bg-green-100 text-green-700 px-4 py-2 rounded-xl font-medium">
+      Uploaded
+    </span>
+  ) : (
+    <span className="bg-red-100 text-red-700 px-4 py-2 rounded-xl font-medium">
+      Pending
+    </span>
+  )
+}
 
       </div>
 
