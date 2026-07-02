@@ -82,6 +82,33 @@ function CandidateRoom() {
   const [screenSharing,
     setScreenSharing] =
     useState(false);
+  const rtcConfig = {
+  iceServers: [
+      {
+        urls: "stun:stun.relay.metered.ca:80",
+      },
+      {
+        urls: "turn:global.relay.metered.ca:80",
+        username: "916e04d2a094c44f0f8940a3",
+        credential: "uK2mcLPf2HUNRsvi",
+      },
+      {
+        urls: "turn:global.relay.metered.ca:80?transport=tcp",
+        username: "916e04d2a094c44f0f8940a3",
+        credential: "uK2mcLPf2HUNRsvi",
+      },
+      {
+        urls: "turn:global.relay.metered.ca:443",
+        username: "916e04d2a094c44f0f8940a3",
+        credential: "uK2mcLPf2HUNRsvi",
+      },
+      {
+        urls: "turns:global.relay.metered.ca:443?transport=tcp",
+        username: "916e04d2a094c44f0f8940a3",
+        credential: "uK2mcLPf2HUNRsvi",
+      },
+  ]
+  };
 
   // ==========================================
   // REFS
@@ -171,14 +198,15 @@ function CandidateRoom() {
     }
 
     const peer =
-      new RTCPeerConnection({
+     /* new RTCPeerConnection({
         iceServers: [
           {
             urls:
               "stun:stun.l.google.com:19302",
           },
         ],
-      });
+      });*/
+      new RTCPeerConnection(rtcConfig);
     //console.log("Setting ontrack handler");
     cameraPeer.current =
       peer;
@@ -363,14 +391,15 @@ function CandidateRoom() {
           screenPeer.current?.close();
 
           screenPeer.current =
-            new RTCPeerConnection({
+           /* new RTCPeerConnection({
               iceServers: [
                 {
                   urls:
                     "stun:stun.l.google.com:19302",
                 },
               ],
-            });
+            });*/
+            new RTCPeerConnection(rtcConfig);
 
           screenStreamRef.current
             .getTracks()
@@ -622,14 +651,15 @@ function CandidateRoom() {
 
         // CREATE SCREEN PEER
         screenPeer.current =
-          new RTCPeerConnection({
+         /* new RTCPeerConnection({
             iceServers: [
               {
                 urls:
                   "stun:stun.l.google.com:19302",
               },
             ],
-          });
+          });*/
+          new RTCPeerConnection(rtcConfig);
 
         // ICE
         screenPeer.current.onicecandidate =
