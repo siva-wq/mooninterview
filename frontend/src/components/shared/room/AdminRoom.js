@@ -342,14 +342,14 @@ function AdminRoom() {
 
     // CAMERA PEER
     cameraPeer.current =
-     /* new RTCPeerConnection({
+      new RTCPeerConnection({
         iceServers: [
           {
             urls: "stun:stun.l.google.com:19302",
           },
         ],
-      });*/
-      new RTCPeerConnection(rtcConfig);
+      });
+      //new RTCPeerConnection(rtcConfig);
     cameraPeer.current.addTransceiver(
       "video",
       {
@@ -376,15 +376,15 @@ function AdminRoom() {
 
     // SCREEN PEER
     screenPeer.current =
-     /* new RTCPeerConnection({
+     new RTCPeerConnection({
         iceServers: [
           {
             urls:
               "stun:stun.l.google.com:19302",
           },
         ],
-      });*/
-      new RTCPeerConnection(rtcConfig);
+      });
+      //new RTCPeerConnection(rtcConfig);
     screenPeer.current.addTransceiver(
       "video",
       {
