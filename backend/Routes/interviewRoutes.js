@@ -116,6 +116,7 @@ router.get(
                     message: 'Interview not found'
                 });
             }
+            console.log(interview)
 
             // Candidate can only access own interview
             if (
@@ -142,7 +143,8 @@ router.get(
             }
 
             return res.status(200).json({
-                success: true
+                success: true,
+                status: interview.status
             });
 
         } catch (error) {
