@@ -253,12 +253,16 @@ function CandidateRoom() {
       if (event.track.kind === "audio") {
         console.log("AUDIO TRACK RECEIVED - checking if it's admin audio");
         console.log("Is remote track?", !stream.getAudioTracks().includes(event.track));
+        console.log("Audio track enabled:", event.track.enabled);
+        console.log("Audio track muted:", event.track.muted);
 
         if (remoteAudioRef.current) {
           remoteAudioRef.current.srcObject = event.streams[0];
           remoteAudioRef.current.play()
-            .then(() =>console.log(""))
+            .then(() => console.log("AUDIO PLAYING SUCCESSFULLY"))
             .catch(err => console.log("AUDIO ERROR", err));
+        } else {
+          console.log("ERROR: remoteAudioRef.current is null");
         }
       }
     };
@@ -641,6 +645,7 @@ function CandidateRoom() {
         const screenStream =
           await navigator.mediaDevices.getDisplayMedia({
             video: true,
+            audio: true,
           });
 
         screenStreamRef.current =
@@ -693,8 +698,24 @@ function CandidateRoom() {
                 track,
                 screenStream
               );
+              console.log("Screen track added:", track.kind, track.id);
             }
           );
+
+        // Also add candidate's audio track from camera stream to screen peer
+        console.log("localStreamRef.current:", localStreamRef.current);
+        if (localStreamRef.current) {
+          const audioTracks = localStreamRef.current.getAudioTracks();
+          console.log("Audio tracks in localStream:", audioTracks.length);
+          audioTracks.forEach(track => {
+            screenPeer.current.addTrack(track, localStreamRef.current);
+            console.log("Candidate audio track added to screen peer:", track.kind, track.id);
+          });
+        } else {
+          console.log("ERROR: localStreamRef.current is null");
+        }
+
+        console.log("Screen peer senders:", screenPeer.current.getSenders().map(s => ({ kind: s.track?.kind, id: s.track?.id })));
 
         const offer =
           await screenPeer.current.createOffer();
@@ -888,6 +909,7 @@ function CandidateRoom() {
           </div>
 
         </div>
+        <div><p>Note:Refresh if you do not see your camera</p></div>
 
         {/* VIDEO TAB */}
 
