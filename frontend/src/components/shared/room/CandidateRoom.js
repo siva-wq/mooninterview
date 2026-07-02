@@ -198,18 +198,22 @@ function CandidateRoom() {
     }
 
     const peer =
-     new RTCPeerConnection({
+    /* new RTCPeerConnection({
         iceServers: [
           {
             urls:
               "stun:stun.l.google.com:19302",
           },
         ],
-      });
-     // new RTCPeerConnection(rtcConfig);
+      });*/
+      new RTCPeerConnection(rtcConfig);
     //console.log("Setting ontrack handler");
     cameraPeer.current =
       peer;
+    
+    // Add transceiver to receive admin audio
+    peer.addTransceiver("audio", { direction: "recvonly" });
+    
     peer.onconnectionstatechange =
       () => {
 
@@ -391,15 +395,15 @@ function CandidateRoom() {
           screenPeer.current?.close();
 
           screenPeer.current =
-            new RTCPeerConnection({
+           /* new RTCPeerConnection({
               iceServers: [
                 {
                   urls:
                     "stun:stun.l.google.com:19302",
                 },
               ],
-            });
-           // new RTCPeerConnection(rtcConfig);
+            });*/
+           new RTCPeerConnection(rtcConfig);
 
           screenStreamRef.current
             .getTracks()
@@ -651,15 +655,15 @@ function CandidateRoom() {
 
         // CREATE SCREEN PEER
         screenPeer.current =
-          new RTCPeerConnection({
+         /* new RTCPeerConnection({
             iceServers: [
               {
                 urls:
                   "stun:stun.l.google.com:19302",
               },
             ],
-          });
-          //new RTCPeerConnection(rtcConfig);
+          });*/
+          new RTCPeerConnection(rtcConfig);
 
         // ICE
         screenPeer.current.onicecandidate =
@@ -1087,4 +1091,4 @@ function CandidateRoom() {
   );
 }
 
-export default CandidateRoom;
+export default CandidateRoom; 
