@@ -86,6 +86,33 @@ function AdminRoom() {
 
   const screenPeer =
     useRef(null);
+  const rtcConfig = {
+  iceServers: [
+      {
+        urls: "stun:stun.relay.metered.ca:80",
+      },
+      {
+        urls: "turn:global.relay.metered.ca:80",
+        username: "916e04d2a094c44f0f8940a3",
+        credential: "uK2mcLPf2HUNRsvi",
+      },
+      {
+        urls: "turn:global.relay.metered.ca:80?transport=tcp",
+        username: "916e04d2a094c44f0f8940a3",
+        credential: "uK2mcLPf2HUNRsvi",
+      },
+      {
+        urls: "turn:global.relay.metered.ca:443",
+        username: "916e04d2a094c44f0f8940a3",
+        credential: "uK2mcLPf2HUNRsvi",
+      },
+      {
+        urls: "turns:global.relay.metered.ca:443?transport=tcp",
+        username: "916e04d2a094c44f0f8940a3",
+        credential: "uK2mcLPf2HUNRsvi",
+      },
+  ]
+  };
 
   // ==========================================
   // TIMER
@@ -315,13 +342,14 @@ function AdminRoom() {
 
     // CAMERA PEER
     cameraPeer.current =
-      new RTCPeerConnection({
+     /* new RTCPeerConnection({
         iceServers: [
           {
             urls: "stun:stun.l.google.com:19302",
           },
         ],
-      });
+      });*/
+      new RTCPeerConnection(rtcConfig);
     cameraPeer.current.addTransceiver(
       "video",
       {
@@ -348,14 +376,15 @@ function AdminRoom() {
 
     // SCREEN PEER
     screenPeer.current =
-      new RTCPeerConnection({
+     /* new RTCPeerConnection({
         iceServers: [
           {
             urls:
               "stun:stun.l.google.com:19302",
           },
         ],
-      });
+      });*/
+      new RTCPeerConnection(rtcConfig);
     screenPeer.current.addTransceiver(
       "video",
       {
