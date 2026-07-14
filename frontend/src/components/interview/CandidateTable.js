@@ -13,7 +13,6 @@ function CandidateTable() {
     const [scheduleData, setScheduleData] = useState({});
     const [mailLoading, setMailLoading] =
         useState({});
-    const [scheduleLoading, setScheduleLoading] = useState({});
 
 
     // ==========================================
@@ -39,6 +38,7 @@ function CandidateTable() {
 
             const mergedData =
                 candidateUsers.map((candidate) => {
+                    console.log(candidate);
 
                     const interview =
                         interviewsRes.data.find(
@@ -274,14 +274,10 @@ function CandidateTable() {
             );
             return;
         }
-        setScheduleLoading(prev => ({
-            ...prev,
-            [candidate._id]: true,
-        }));
 
         try {
 
-            await API.post(
+            const response = await API.post(
                 "/interviews",
                 {
                     title: "Interview",
@@ -296,38 +292,57 @@ function CandidateTable() {
                 }
             );
 
-            fetchCandidates();
+            console.log("API Response:", response.data);
+
+            // Update local state instead of refetching all candidates
+            setCandidates(prevCandidates =>
+                prevCandidates.map(c =>
+                    c._id === candidate._id
+                        ? {
+                            ...c,
+                            interviewId: response.data.interview._id,
+                            interviewer: response.data.interview.interviewer?.name || "N/A",
+                            roomId: response.data.interview.roomId || "N/A",
+                            date: selectedData.date,
+                            time: selectedData.time,
+                            status: "Scheduled"
+                        }
+                        : c
+                )
+            );
+
+            // Clear schedule data for this candidate
+            setScheduleData(prev => {
+                const newData = { ...prev };
+                delete newData[candidate._id];
+                return newData;
+            });
 
         } catch (error) {
 
             console.log(error);
 
-        }finally {
-    setScheduleLoading(prev => ({
-        ...prev,
-        [candidate._id]: false,
-    }));
-}
+        }
     };
     // ==========================================
     // SEND MAIL
     // ==========================================
     const sendMail = async (candidate) => {
-        //console.log(candidate);
+        console.log(candidate);
         setMailLoading(prev => ({
             ...prev,
             [candidate._id]: "sending mail"
         }));
 
         const send = await SendMail({ candidate, type: "Interview-invitation" });
-        //console.log(send);
+        console.log(send);
         if (send.success) {
             setMailLoading(prev => ({
                 ...prev,
                 [candidate._id]: "mail sent"
             }));
         }
-        //console.log(send);
+        console.log(send);
     };
 
     // ==========================================
@@ -610,25 +625,17 @@ function CandidateTable() {
 
                                             {!candidate.date ? (
 
-                                                <button
-    onClick={() => handleSchedule(candidate)}
-    disabled={scheduleLoading[candidate._id]}
-    className="
-        bg-blue-600
-        text-white
-        px-4
-        py-2
-        rounded-xl
-        disabled:bg-gray-400
-        disabled:cursor-not-allowed
-    "
->
-    {
-        scheduleLoading[candidate._id]
-            ? "Scheduling..."
-            : "Schedule"
-    }
-</button>
+                                                <button onClick={() => handleSchedule(candidate)}
+                                                    className="
+                                                        bg-blue-600
+                                                        text-white
+                                                        px-4
+                                                        py-2
+                                                        rounded-xl
+                                                    "
+                                                >
+                                                    Schedule
+                                                </button>
 
                                             ) : (
 
