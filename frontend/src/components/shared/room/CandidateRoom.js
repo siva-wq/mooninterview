@@ -166,6 +166,7 @@ function CandidateRoom() {
 
         selfVideoRef.current.srcObject =
           stream;
+        selfVideoRef.current.play().catch(console.error);
       }
 
       createPeerConnection(stream);
@@ -629,6 +630,16 @@ function CandidateRoom() {
     startMedia();
 
   }, []);
+
+  // ==========================================
+  // ENSURE VIDEO PLAYS WHEN READY
+  // ==========================================
+  useEffect(() => {
+    if (selfVideoRef.current && localStreamRef.current) {
+      selfVideoRef.current.srcObject = localStreamRef.current;
+      selfVideoRef.current.play().catch(console.error);
+    }
+  }, [selfVideoRef.current, localStreamRef.current]);
 
   // ==========================================
   // CREATE OFFER AFTER STREAM READY
