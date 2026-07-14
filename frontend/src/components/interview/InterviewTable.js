@@ -241,16 +241,27 @@ function InterviewTable() {
     // ==========================================
     // FORMAT TIME
     // ==========================================
-    const formatTime = (date) => {
-        console.log(date);
-        if (!date) return "N/A";
+    const formatTime = (time) => {
 
-        return new Date(date)
+        if (!time) return "N/A";
+
+        // If time is already in HH:MM format, convert to 12-hour with AM/PM
+        if (typeof time === 'string' && time.includes(':')) {
+            const [hours, minutes] = time.split(':');
+            const hour = parseInt(hours);
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const hour12 = hour % 12 || 12;
+            return `${hour12}:${minutes} ${ampm}`;
+        }
+
+        // Otherwise parse as date
+        return new Date(time)
             .toLocaleTimeString(
                 "en-IN",
                 {
                     hour: "2-digit",
-                    minute: "2-digit"
+                    minute: "2-digit",
+                    hour12: true
                 }
             );
     };
