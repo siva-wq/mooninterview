@@ -242,7 +242,7 @@ function InterviewTable() {
     // FORMAT TIME
     // ==========================================
     const formatTime = (date) => {
-
+        console.log(date);
         if (!date) return "N/A";
 
         return new Date(date)
@@ -584,7 +584,7 @@ function InterviewTable() {
 
                                         <td className="py-6 text-zinc-700">
 
-                                            {formatTime(item.date)}
+                                            {formatTime(item.time)}
 
                                         </td>
 
