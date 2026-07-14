@@ -38,7 +38,7 @@ function CandidateTable() {
 
             const mergedData =
                 candidateUsers.map((candidate) => {
-                    console.log(candidate);
+                   // console.log(candidate);
 
                     const interview =
                         interviewsRes.data.find(
@@ -292,7 +292,7 @@ function CandidateTable() {
                 }
             );
 
-            console.log("API Response:", response.data);
+           // console.log("API Response:", response.data);
 
             // Update local state instead of refetching all candidates
             setCandidates(prevCandidates =>
@@ -328,21 +328,21 @@ function CandidateTable() {
     // SEND MAIL
     // ==========================================
     const sendMail = async (candidate) => {
-        console.log(candidate);
+        //console.log(candidate);
         setMailLoading(prev => ({
             ...prev,
             [candidate._id]: "sending mail"
         }));
 
         const send = await SendMail({ candidate, type: "Interview-invitation" });
-        console.log(send);
+        //console.log(send);
         if (send.success) {
             setMailLoading(prev => ({
                 ...prev,
                 [candidate._id]: "mail sent"
             }));
         }
-        console.log(send);
+        //console.log(send);
     };
 
     // ==========================================
