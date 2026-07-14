@@ -200,10 +200,15 @@ router.post(
                 status: 'scheduled'
             });
 
+            // Populate interviewer and candidate before sending response
+            const populatedInterview = await Interview.findById(interview._id)
+                .populate('interviewer', 'name email')
+                .populate('candidate', 'name email');
+
             res.status(201).json({
                 success: true,
                 message: 'Interview created successfully',
-                interview
+                interview: populatedInterview
             });
 
         } catch (error) {
