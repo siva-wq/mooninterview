@@ -66,12 +66,12 @@ export default function CreatePassword() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-navy flex items-center justify-center px-4">
 
-      <div className="w-full max-w-md rounded-2xl border border-slate-700 bg-slate-800 shadow-2xl p-8">
+      <div className="w-full max-w-md rounded-2xl border border-custom bg-[#1E293B] shadow-2xl p-8">
 
         <div className="flex justify-center mb-6">
-          <div className="w-16 h-16 rounded-full bg-purple-600 flex items-center justify-center">
+          <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center">
             <Lock className="text-white" size={28} />
           </div>
         </div>
@@ -80,7 +80,7 @@ export default function CreatePassword() {
           Create Password
         </h1>
 
-        <p className="text-slate-400 text-center mt-2 mb-8">
+        <p className="text-secondary text-center mt-2 mb-8">
           Create your password to continue to your interview.
         </p>
 
@@ -90,7 +90,7 @@ export default function CreatePassword() {
         >
 
           <div>
-            <label className="block text-slate-300 mb-2">
+            <label className="block text-secondary mb-2">
               Password
             </label>
 
@@ -105,7 +105,7 @@ export default function CreatePassword() {
                 onChange={handleChange}
                 required
                 placeholder="Enter password"
-                className="w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-3 pr-12 text-white outline-none focus:border-purple-500"
+                className="w-full rounded-lg border border-custom bg-navy px-4 py-3 pr-12 text-white outline-none focus:border-primary"
               />
 
               <button
@@ -113,7 +113,7 @@ export default function CreatePassword() {
                 onClick={() =>
                   setShowPassword(!showPassword)
                 }
-                className="absolute right-4 top-3 text-slate-400"
+                className="absolute right-4 top-3 text-secondary"
               >
                 {showPassword ? (
                   <EyeOff size={20} />
@@ -128,7 +128,7 @@ export default function CreatePassword() {
 
           <div>
 
-            <label className="block text-slate-300 mb-2">
+            <label className="block text-secondary mb-2">
               Confirm Password
             </label>
 
@@ -145,7 +145,7 @@ export default function CreatePassword() {
                 onChange={handleChange}
                 required
                 placeholder="Confirm password"
-                className="w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-3 pr-12 text-white outline-none focus:border-purple-500"
+                className="w-full rounded-lg border border-custom bg-navy px-4 py-3 pr-12 text-white outline-none focus:border-primary"
               />
 
               <button
@@ -155,7 +155,7 @@ export default function CreatePassword() {
                     !showConfirmPassword
                   )
                 }
-                className="absolute right-4 top-3 text-slate-400"
+                className="absolute right-4 top-3 text-secondary"
               >
                 {showConfirmPassword ? (
                   <EyeOff size={20} />
@@ -171,7 +171,7 @@ export default function CreatePassword() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-purple-600 py-3 font-semibold text-white transition hover:bg-purple-700 disabled:opacity-50"
+            className="btn-primary w-full rounded-lg py-3 font-semibold disabled:opacity-50"
           >
             {loading
               ? "Creating..."

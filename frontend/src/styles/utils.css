@@ -1,0 +1,32 @@
+.text-primary {
+    color: var(--text-primary);
+  }
+
+  .text-secondary {
+    color: var(--text-secondary);
+  }
+
+  .text-gold {
+    color: var(--gold);
+  }
+
+  .text-navy {
+    color: var(--navy);
+  }
+
+  .bg-primary {
+    background: var(--primary);
+  }
+
+  .bg-gold {
+    background: var(--gold);
+  }
+
+  .bg-navy {
+    background: var(--navy);
+  }
+
+  .border-custom {
+    border-color: var(--border);
+  }
+

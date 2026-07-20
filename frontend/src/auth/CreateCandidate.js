@@ -51,14 +51,14 @@ export default function CreateCandidate({ onClose }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"   onClick={onClose}>
 
       {/* Modal */}
-      <div className="relative w-full max-w-lg rounded-2xl border border-slate-700 bg-slate-800 shadow-2xl"   onClick={(e) => e.stopPropagation()}>
+      <div className="relative w-full max-w-lg rounded-2xl border border-custom bg-[#1E293B] shadow-2xl"   onClick={(e) => e.stopPropagation()}>
 
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-700 px-6 py-5">
+        <div className="flex items-center justify-between border-b border-custom px-6 py-5">
 
           <div className="flex items-center gap-3">
 
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-purple-600">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary">
               <UserPlus className="text-white" size={22} />
             </div>
 
@@ -67,7 +67,7 @@ export default function CreateCandidate({ onClose }) {
                 Create Candidate
               </h2>
 
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-secondary">
                 Add a candidate to your organization.
               </p>
             </div>
@@ -76,7 +76,7 @@ export default function CreateCandidate({ onClose }) {
 
           <button
             onClick={onClose}
-            className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-700 hover:text-white"
+            className="rounded-lg p-2 text-secondary transition hover:bg-[#334155] hover:text-white"
           >
             <X size={20} />
           </button>
@@ -104,7 +104,7 @@ export default function CreateCandidate({ onClose }) {
               disabled={loading}
               required
               placeholder="Enter candidate name"
-              className="w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-3 text-white outline-none transition focus:border-purple-500 disabled:opacity-60"
+              className="w-full rounded-lg border border-custom bg-navy px-4 py-3 text-white outline-none transition focus:border-primary disabled:opacity-60"
             />
 
           </div>
@@ -112,7 +112,7 @@ export default function CreateCandidate({ onClose }) {
           {/* Email */}
           <div>
 
-            <label className="mb-2 block text-sm font-medium text-slate-300">
+            <label className="mb-2 block text-sm font-medium text-secondary">
               Email Address
             </label>
 
@@ -124,7 +124,7 @@ export default function CreateCandidate({ onClose }) {
               disabled={loading}
               required
               placeholder="Enter candidate email"
-              className="w-full rounded-lg border border-slate-600 bg-slate-700 px-4 py-3 text-white outline-none transition focus:border-purple-500 disabled:opacity-60"
+              className="w-full rounded-lg border border-custom bg-navy px-4 py-3 text-white outline-none transition focus:border-primary disabled:opacity-60"
             />
 
           </div>
@@ -136,7 +136,7 @@ export default function CreateCandidate({ onClose }) {
               type="button"
               onClick={onClose}
               disabled={loading}
-              className="rounded-lg border border-slate-600 px-5 py-2.5 text-slate-300 transition hover:bg-slate-700"
+              className="rounded-lg border border-custom px-5 py-2.5 text-secondary transition hover:bg-[#334155]"
             >
               Cancel
             </button>
@@ -144,7 +144,7 @@ export default function CreateCandidate({ onClose }) {
             <button
               type="submit"
               disabled={loading}
-              className="rounded-lg bg-purple-600 px-5 py-2.5 font-semibold text-white transition hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-50"
+              className="btn-primary rounded-lg px-5 py-2.5 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading ? "Creating..." : "Create Candidate"}
             </button>

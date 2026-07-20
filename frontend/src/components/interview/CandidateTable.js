@@ -409,12 +409,13 @@ function CandidateTable() {
     return (
 
         <div className="min-h-screen bg-[#f5f7fb] p-6 space-y-6">
+        <div className="min-h-screen bg-background p-4 sm:p-6 space-y-4 sm:space-y-6">
 
             {/* TOP CARDS */}
 
             {/* SEARCH */}
 
-            <div className="flex flex-col md:flex-row justify-between gap-4">
+            <div className="flex flex-col sm:flex-row justify-between gap-3 sm:gap-4">
 
                 <input
                     type="text"
@@ -425,12 +426,13 @@ function CandidateTable() {
                     }
                     className="
                         border
-                        border-black
+                        border-custom
                         rounded-2xl
                         px-5
                         py-3
                         outline-none
                         w-full
+                        sm:w-64
                         md:w-80
                     "
                 />
@@ -444,7 +446,7 @@ function CandidateTable() {
                     }
                     className="
                         border
-                        border-black
+                        border-custom
                         rounded-2xl
                         px-5
                         py-3
@@ -477,37 +479,37 @@ function CandidateTable() {
 
             {/* TABLE */}
 
-            <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
+            <div className="card rounded-2xl sm:rounded-3xl shadow-lg overflow-hidden">
 
                 <div className="overflow-x-auto">
 
-                    <table className="w-full">
+                    <table className="w-full min-w-[600px]">
 
-                        <thead className="bg-black text-white">
+                        <thead className="bg-navy text-white">
 
                             <tr>
 
-                                <th className="p-4 text-left">
+                                <th className="p-3 sm:p-4 text-left text-sm sm:text-base">
                                     Candidate
                                 </th>
 
-                                <th className="p-4 text-left">
+                                <th className="p-3 sm:p-4 text-left text-sm sm:text-base">
                                     Interviewer
                                 </th>
 
-                                <th className="p-4 text-left">
+                                <th className="p-3 sm:p-4 text-left text-sm sm:text-base">
                                     Date
                                 </th>
 
-                                <th className="p-4 text-left">
+                                <th className="p-3 sm:p-4 text-left text-sm sm:text-base">
                                     Time
                                 </th>
 
-                                <th className="p-4 text-left">
+                                <th className="p-3 sm:p-4 text-left text-sm sm:text-base">
                                     Status
                                 </th>
 
-                                <th className="p-4 text-left">
+                                <th className="p-3 sm:p-4 text-left text-sm sm:text-base">
                                     Actions
                                 </th>
 
@@ -528,23 +530,23 @@ function CandidateTable() {
                                         "
                                     >
 
-                                        <td className="p-4">
+                                        <td className="p-3 sm:p-4 text-navy">
 
-                                            <div className="font-semibold">
+                                            <div className="font-semibold text-sm sm:text-base">
                                                 {candidate.name}
                                             </div>
 
-                                            <div className="text-sm text-zinc-500">
+                                            <div className="text-xs sm:text-sm text-secondary">
                                                 {candidate.email}
                                             </div>
 
                                         </td>
 
-                                        <td className="p-4">
+                                        <td className="p-3 sm:p-4 text-navy">
                                             {candidate.interviewer}
                                         </td>
 
-                                        <td className="p-4">
+                                        <td className="p-3 sm:p-4 text-navy">
 
                                             {candidate.date ? (
 
@@ -556,10 +558,11 @@ function CandidateTable() {
                                                     type="date"
                                                     className="
                 border
-                border-zinc-300
+                border-custom
                 rounded-xl
-                px-3
-                py-2
+                px-2 sm:px-3
+                py-1.5 sm:py-2
+                text-sm
             "
                                                     onChange={(e) =>
                                                         handleScheduleChange(
@@ -574,7 +577,7 @@ function CandidateTable() {
 
                                         </td>
 
-                                        <td className="p-4">
+                                        <td className="p-3 sm:p-4 text-navy">
 
                                             {candidate.time ? (
 
@@ -588,8 +591,9 @@ function CandidateTable() {
                                                         border
                                                         border-zinc-300
                                                         rounded-xl
-                                                        px-3
-                                                        py-2
+                                                        px-2 sm:px-3
+                                                        py-1.5 sm:py-2
+                                                        text-sm
                                                     "
                                                     onChange={(e) =>
                                                         handleScheduleChange(
@@ -607,12 +611,12 @@ function CandidateTable() {
                                         <td className="p-4">
 
                                             <span className="
-                                                px-4
+                                                px-3 sm:px-4
                                                 py-1
                                                 rounded-full
-                                                text-sm
+                                                text-xs sm:text-sm
                                                 bg-blue-100
-                                                text-blue-700
+                                                text-primary
                                             ">
 
                                                 {candidate.status}
@@ -627,11 +631,11 @@ function CandidateTable() {
 
                                                 <button onClick={() => handleSchedule(candidate)}
                                                     className="
-                                                        bg-blue-600
-                                                        text-white
-                                                        px-4
-                                                        py-2
+                                                        btn-primary
+                                                        px-3 sm:px-4
+                                                        py-1.5 sm:py-2
                                                         rounded-xl
+                                                        text-sm
                                                     "
                                                 >
                                                     Schedule
@@ -644,11 +648,12 @@ function CandidateTable() {
                                                         sendMail(candidate)
                                                     }
                                                     className="
-                                                        bg-black
+                                                        bg-navy
                                                         text-white
-                                                        px-4    
-                                                        py-2
+                                                        px-3 sm:px-4
+                                                        py-1.5 sm:py-2
                                                         rounded-xl
+                                                        text-sm
                                                     "
                                                 >
                                                     {

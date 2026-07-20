@@ -161,49 +161,50 @@ function Login() {
 
     return (
   <div className="min-h-screen bg-[#0F172A] flex">
+  <div className="min-h-screen bg-background text-navy flex">
 
     {/* LEFT SIDE */}
 
-    <div className="hidden lg:flex w-1/2 flex-col justify-center px-16 text-[#F8FAFC]">
+    <div className="hidden lg:flex w-1/2 flex-col justify-center px-16 text-white">
 
       <h1 className="text-6xl font-bold mb-6">
-        <span className="bg-gradient-to-br from-[#B8860B] via-[#D4A017] to-[#FFD76A] bg-clip-text text-transparent">
+        <span className="text-gold">
           Moon
         </span>
-        <span className="text-[#7C3AED]">
+        <span className="text-primary">
           Interview
         </span>
       </h1>
 
-      <p className="text-2xl text-[#94A3B8] mb-10">
+      <p className="text-2xl text-secondary mb-10">
         Smart Interviews. Better Hiring.
       </p>
 
-      <div className="space-y-5 text-lg">
+      <div className="space-y-5 text-lg text-navy">
 
         <div className="flex items-center gap-3">
-          <span className="text-[#FBBF24]">✓</span>
-          <span className="text-[#F8FAFC]">Live Video Interviews</span>
+          <span className="text-gold">✓</span>
+          <span className="text-navy">Live Video Interviews</span>
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="text-[#FBBF24]">✓</span>
-          <span className="text-[#F8FAFC]">Real-Time Screen Sharing</span>
+          <span className="text-gold">✓</span>
+          <span className="text-navy">Real-Time Screen Sharing</span>
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="text-[#FBBF24]">✓</span>
-          <span className="text-[#F8FAFC]">Integrated Code Editor</span>
+          <span className="text-gold">✓</span>
+          <span className="text-navy">Integrated Code Editor</span>
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="text-[#FBBF24]">✓</span>
-          <span className="text-[#F8FAFC]">Resume Evaluation</span>
+          <span className="text-gold">✓</span>
+          <span className="text-navy">Resume Evaluation</span>
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="text-[#FBBF24]">✓</span>
-          <span className="text-[#F8FAFC]">Automated Interview Workflow</span>
+          <span className="text-gold">✓</span>
+          <span className="text-navy">Automated Interview Workflow</span>
         </div>
 
       </div>
@@ -220,7 +221,7 @@ function Login() {
           max-w-md
           bg-[#1E293B]
           border
-          border-[#334155]
+          border-custom
           rounded-3xl
           shadow-xl
           p-10
@@ -229,11 +230,11 @@ function Login() {
 
         <div className="text-center mb-8">
 
-          <h2 className="text-4xl font-bold text-[#F8FAFC]">
+          <h2 className="text-4xl font-bold text-white">
             Welcome Back
           </h2>
 
-          <p className="text-[#94A3B8] mt-3">
+          <p className="text-secondary mt-3">
             Sign in to continue
           </p>
 
@@ -262,15 +263,15 @@ function Login() {
                 w-full
                 p-3
                 rounded-xl
-                bg-[#0F172A]
+                bg-navy
                 border
-                border-[#334155]
-                text-[#F8FAFC]
-                placeholder-[#64748B]
+                border-custom
+                text-white
+                placeholder-secondary
                 outline-none
-                focus:border-[#7C3AED]
+                focus:border-primary
 focus:ring-2
-focus:ring-[#7C3AED]/30
+focus:ring-primary/30
               "
             />
 
@@ -280,7 +281,7 @@ focus:ring-[#7C3AED]/30
 
           <div>
 
-            <label className="block mb-2 text-[#94A3B8] text-sm">
+            <label className="block mb-2 text-secondary text-sm">
               Password
             </label>
 
@@ -294,15 +295,15 @@ focus:ring-[#7C3AED]/30
                 w-full
                 p-3
                 rounded-xl
-                bg-[#0F172A]
+                bg-navy
                 border
-                border-[#334155]
-                text-[#F8FAFC]
-                placeholder-[#64748B]
+                border-custom
+                text-white
+                placeholder-secondary
                 outline-none
-                focus:border-[#7C3AED]
+                focus:border-primary
                 focus:ring-2
-                focus:ring-[#7C3AED]/30
+                focus:ring-primary/30
               "
             />
 
@@ -314,15 +315,10 @@ focus:ring-[#7C3AED]/30
             type="submit"
             disabled={!isFormValid || loading}
             className="
+              btn-primary
               w-full
               py-3
-              rounded-xl
               font-semibold
-              text-white
-              bg-[#7C3AED]
-              hover:bg-[#6D28D9]
-              shadow-[0_0_25px_rgba(124,58,237,0.35)]
-              transition-all
               disabled:opacity-50
             "
           >
@@ -332,8 +328,8 @@ focus:ring-[#7C3AED]/30
               : "Login"}
 
           </button>
-          <p className="text-[#94A3B8] mt-4 text-center">
-            Need to Register? <span className="text-[#FBBF24]  cursor-pointer hover:underline" onClick={() => navigate('/register')}>Register here</span>
+          <p className="text-secondary mt-4 text-center">
+            Need to Register? <span className="text-gold cursor-pointer hover:underline" onClick={() => navigate('/register')}>Register here</span>
           </p>
 
 

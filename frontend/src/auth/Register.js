@@ -15,7 +15,7 @@ function Register() {
     const [loading, setLoading] =
         useState(false);
     const [organisations, setOrganisations] =
-    useState([]);
+        useState([]);
 
 
     const [formData, setFormData] =
@@ -25,9 +25,10 @@ function Register() {
 
             email: '',
 
-            organisation:'',
+            organisation: '',
 
             role: 'candidate',
+            role: '',
 
             password: '',
 
@@ -39,7 +40,7 @@ function Register() {
         const fetchOrganisations = async () => {
             try {
                 const res = await API.get('/organisations');
-                //console.log(res.data);
+                console.log(res.data);
                 setOrganisations(res.data.organisations);
             } catch (err) {
                 console.error('Error fetching organisations:', err);
@@ -101,7 +102,7 @@ function Register() {
                 role:
                     formData.role
             };
-           // console.log(sendData)
+            console.log(sendData)
 
             const res =
                 await axios.post(
@@ -152,7 +153,7 @@ function Register() {
 
         } catch (err) {
 
-            //console.log(err);
+            console.log(err);
 
             alert(
 
@@ -186,280 +187,280 @@ function Register() {
 
     return (
 
-        <div className="min-h-screen bg-[#0F172A] flex">
+        <div className="min-h-screen bg-background flex">
 
-    {/* LEFT SIDE */}
+            {/* LEFT SIDE */}
 
-    <div className="hidden lg:flex w-1/2 flex-col justify-center px-16 text-[#F8FAFC]">
+            <div className="hidden lg:flex w-1/2 flex-col justify-center px-16 text-white">
 
-      <h1 className="text-6xl font-bold mb-6">
-        <span className="bg-gradient-to-br from-[#B8860B] via-[#D4A017] to-[#FFD76A] bg-clip-text text-transparent">
-          Moon
-        </span>
-        <span className="text-[#7C3AED]">
-          Interview
-        </span>
-      </h1>
+                <h1 className="text-6xl font-bold mb-6">
+                    <span className="text-gold">
+                        Moon
+                    </span>
+                    <span className="text-primary">
+                        Interview
+                    </span>
+                </h1>
 
-      <p className="text-2xl text-[#94A3B8] mb-10">
-        Smart Interviews. Better Hiring.
-      </p>
+                <p className="text-2xl text-secondary mb-10">
+                    Smart Interviews. Better Hiring.
+                </p>
 
-      <div className="space-y-5 text-lg">
+                <div className="space-y-5 text-lg">
 
-        <div className="flex items-center gap-3">
-          <span className="text-[#FBBF24]">✓</span>
-          <span className="text-[#F8FAFC]">Live Video Interviews</span>
-        </div>
+                    <div className="flex items-center gap-3">
+                        <span className="text-gold">✓</span>
+                        <span className="text-navy">Live Video Interviews</span>
+                    </div>
 
-        <div className="flex items-center gap-3">
-          <span className="text-[#FBBF24]">✓</span>
-          <span className="text-[#F8FAFC]">Real-Time Screen Sharing</span>
-        </div>
+                    <div className="flex items-center gap-3">
+                        <span className="text-gold">✓</span>
+                        <span className="text-navy">Real-Time Screen Sharing</span>
+                    </div>
 
-        <div className="flex items-center gap-3">
-          <span className="text-[#FBBF24]">✓</span>
-          <span className="text-[#F8FAFC]">Integrated Code Editor</span>
-        </div>
+                    <div className="flex items-center gap-3">
+                        <span className="text-gold">✓</span>
+                        <span className="text-navy">Integrated Code Editor</span>
+                    </div>
 
-        <div className="flex items-center gap-3">
-          <span className="text-[#FBBF24]">✓</span>
-          <span className="text-[#F8FAFC]">Resume Evaluation</span>
-        </div>
+                    <div className="flex items-center gap-3">
+                        <span className="text-gold">✓</span>
+                        <span className="text-navy">Resume Evaluation</span>
+                    </div>
 
-        <div className="flex items-center gap-3">
-          <span className="text-[#FBBF24]">✓</span>
-          <span className="text-[#F8FAFC]">Automated Interview Workflow</span>
-        </div>
+                    <div className="flex items-center gap-3">
+                        <span className="text-gold">✓</span>
+                        <span className="text-navy">Automated Interview Workflow</span>
+                    </div>
 
-      </div>
+                </div>
 
-    </div>
+            </div>
 
-    {/* RIGHT SIDE */}
+            {/* RIGHT SIDE */}
 
-    <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
+            <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
 
-      <div
-        className="
+                <div
+                    className="
           w-full
           max-w-md
           bg-[#1E293B]
           border
-          border-[#334155]
+          border-custom
           rounded-3xl
           shadow-xl
           p-10
         "
-      >
+                >
 
-        <div className="text-center mb-8">
+                    <div className="text-center mb-8">
 
-          <h2 className="text-4xl font-bold text-[#F8FAFC]">
-            Create Account
-          </h2>
+                        <h2 className="text-4xl font-bold text-white">
+                            Create Account
+                        </h2>
 
-          <p className="text-[#94A3B8] mt-3">
-            Join MoonInterview today
-          </p>
+                        <p className="text-secondary mt-3">
+                            Join MoonInterview today
+                        </p>
 
-        </div>
+                    </div>
 
-        {/* FORM */}
+                    {/* FORM */}
 
-        <form
-            onSubmit={Reg}
-            className="flex flex-col gap-4"
-        >
-
-                    {/* NAME */}
-
-                    <input
-                        type="text"
-                        name="name"
-                        placeholder="Name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        className="
-                            border border-[#334155]
-                            p-3
-                            rounded-lg
-                            outline-none
-                            w-full
-                            bg-[#0F172A]
-                            text-[#F8FAFC]
-                            placeholder-[#64748B]
-                            focus:border-[#7C3AED]
-                            focus:ring-2
-                            focus:ring-[#7C3AED]/30
-                        "
-                        required
-                    />
-
-                    {/* EMAIL */}
-
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="
-                            border border-[#334155]
-                            p-3
-                            rounded-lg
-                            outline-none
-                            w-full
-                            bg-[#0F172A]
-                            text-[#F8FAFC]
-                            placeholder-[#64748B]
-                            focus:border-[#7C3AED]
-                            focus:ring-2
-                            focus:ring-[#7C3AED]/30
-                        "
-                        required
-                    />
-
-                    {/*Organisations*/}
-                    <select
-                        name="organisation"
-                        value={formData.organisation}
-                        onChange={handleChange}
-                        className="
-                            border border-[#334155]
-                            p-3
-                            rounded-lg
-                            outline-none
-                            w-full
-                            bg-[#0F172A]
-                            text-[#F8FAFC]
-                        "
-                        required
+                    <form
+                        onSubmit={Reg}
+                        className="flex flex-col gap-4"
                     >
 
-                        <option value="">
-                            Select Organisation
-                        </option>
+                        {/* NAME */}
+
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            className="
+                            border border-custom
+                            p-3
+                            rounded-lg
+                            outline-none
+                            w-full
+                            bg-navy
+                            text-white
+                            placeholder-secondary
+                            focus:border-primary
+                            focus:ring-2
+                            focus:ring-primary/30
+                        "
+                            required
+                        />
+
+                        {/* EMAIL */}
+
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="
+                            border border-custom
+                            p-3
+                            rounded-lg
+                            outline-none
+                            w-full
+                            bg-navy
+                            text-white
+                            placeholder-secondary
+                            focus:border-primary
+                            focus:ring-2
+                            focus:ring-primary/30
+                        "
+                            required
+                        />
+
+                        {/*Organisations*/}
+                        <select
+                            name="organisation"
+                            value={formData.organisation}
+                            onChange={handleChange}
+                            className="
+                            border border-custom
+                            p-3
+                            rounded-lg
+                            outline-none
+                            w-full
+                            bg-navy
+                            text-white
+                        "
+                            required
+                        >
+
+                            <option value="">
+                                Select Organisation
+                            </option>
+
+                            {
+                                organisations.map(
+                                    (org) => (
+
+                                        <option
+                                            key={org._id}
+                                            value={org._id}
+                                        >
+                                            {org.title}
+                                        </option>
+                                    )
+                                )
+                            }
+
+                        </select>
+
+                        {/* ROLE */}
+
+                        <select
+                            name="role"
+                            value={formData.role}
+                            onChange={handleChange}
+                            className="
+                            border border-custom
+                            p-3
+                            rounded-lg
+                            outline-none
+                            w-full
+                            bg-navy
+                            text-white
+                            placeholder-secondary
+                            focus:border-primary
+                            focus:ring-2
+                            focus:ring-primary/30
+                        "
+                        >
+
+                            <option value="admin">
+                                Admin
+                            </option>
+
+                            <option value="candidate">
+                                Candidate
+                            </option>
+
+
+                        </select>
+
+                        {/* PASSWORD */}
+
+                        <input
+                            type="password"
+                            name="password"
+                            placeholder="Password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            className="
+                            border border-custom
+                            p-3
+                            rounded-lg
+                            outline-none
+                            w-full
+                            bg-navy
+                            text-white
+                            placeholder-secondary
+                            focus:border-primary
+                            focus:ring-2
+                            focus:ring-primary/30
+                        "
+                            required
+                        />
+
+                        {/* CONFIRM PASSWORD */}
+
+                        <input
+                            type="password"
+                            name="confirmPassword"
+                            placeholder="Confirm Password"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            className="
+                            border border-custom
+                            p-3
+                            rounded-lg
+                            outline-none
+                            w-full
+                            bg-navy
+                            text-white
+                            placeholder-secondary
+                            focus:border-primary
+                            focus:ring-2
+                            focus:ring-primary/30
+                        "
+                            required
+                        />
+
+                        {/* PASSWORD ERROR */}
 
                         {
-                            organisations.map(
-                                (org) => (
+                            formData.confirmPassword &&
+                            !isPasswordMatch && (
 
-                                    <option
-                                        key={org._id}
-                                        value={org._id}
-                                    >
-                                        {org.title}
-                                    </option>
-                                )
+                                <p className="text-danger text-sm">
+
+                                    Passwords do not match
+
+                                </p>
                             )
                         }
 
-                    </select>
+                        {/* BUTTON */}
 
-                    {/* ROLE */}
-
-                    <select
-                        name="role"
-                        value={formData.role}
-                        onChange={handleChange}
-                        className="
-                            border border-[#334155]
-                            p-3
-                            rounded-lg
-                            outline-none
-                            w-full
-                            bg-[#0F172A]
-                            text-[#F8FAFC]
-                            placeholder-[#64748B]
-                            focus:border-[#7C3AED]
-                            focus:ring-2
-                            focus:ring-[#7C3AED]/30
-                        "
-                    >
-
-                        <option value="candidate">
-                            Candidate
-                        </option>
-
-                        <option value="admin">
-                            Admin
-                        </option>
-
-
-                    </select>
-
-                    {/* PASSWORD */}
-
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        className="
-                            border border-[#334155]
-                            p-3
-                            rounded-lg
-                            outline-none
-                            w-full
-                            bg-[#0F172A]
-                            text-[#F8FAFC]
-                            placeholder-[#64748B]
-                            focus:border-[#7C3AED]
-                            focus:ring-2
-                            focus:ring-[#7C3AED]/30
-                        "
-                        required
-                    />
-
-                    {/* CONFIRM PASSWORD */}
-
-                    <input
-                        type="password"
-                        name="confirmPassword"
-                        placeholder="Confirm Password"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        className="
-                            border border-[#334155]
-                            p-3
-                            rounded-lg
-                            outline-none
-                            w-full
-                            bg-[#0F172A]
-                            text-[#F8FAFC]
-                            placeholder-[#64748B]
-                            focus:border-[#7C3AED]
-                            focus:ring-2
-                            focus:ring-[#7C3AED]/30
-                        "
-                        required
-                    />
-
-                    {/* PASSWORD ERROR */}
-
-                    {
-                        formData.confirmPassword &&
-                        !isPasswordMatch && (
-
-                            <p className="text-[#EF4444] text-sm">
-
-                                Passwords do not match
-
-                            </p>
-                        )
-                    }
-
-                    {/* BUTTON */}
-
-                    <button
-                        type="submit"
-                        disabled={
-                            !isFormValid ||
-                            loading
-                        }
-                        className={`
+                        <button
+                            type="submit"
+                            disabled={
+                                !isFormValid ||
+                                loading
+                            }
+                            className={`
 
                             p-3
                             rounded-lg
@@ -468,42 +469,41 @@ function Register() {
                             transition-all
                             duration-300
 
-                            ${
-                                !isFormValid ||
-                                loading
+                            ${!isFormValid ||
+                                    loading
 
                                     ? "bg-gray-600 cursor-not-allowed"
 
-                                    : "bg-[#7C3AED] hover:bg-[#6D28D9] shadow-[0_0_25px_rgba(124,58,237,0.35)]"
-                            }
+                                    : "btn-primary"
+                                }
                         `}
-                    >
+                        >
 
-                        {
-                            loading
+                            {
+                                loading
 
-                                ? "Registering..."
+                                    ? "Registering..."
 
-                                : "Register"
-                        }
+                                    : "Register"
+                            }
 
-                    </button>
+                        </button>
 
-                    <p className="text-[#94A3B8] mt-4 text-center">
-                        Already have an account? <span className="text-[#FBBF24]  cursor-pointer hover:underline" onClick={() => navigate('/login')}>Login here</span>
-                    </p>
+                        <p className="text-secondary mt-4 text-center">
+                            Already have an account? <span className="text-gold  cursor-pointer hover:underline" onClick={() => navigate('/login')}>Login here</span>
+                        </p>
 
-                    <p className="text-[#94A3B8] mt-4 text-center">
-            Did'nt find your Organisation? Mail us moonintelligence2005@gmail.com
-          </p>
+                        <p className="text-secondary mt-4 text-center">
+                            Did'nt find your Organisation? Mail us at moonintelligence2005@gmail.com
+                        </p>
 
-                </form>
+                    </form>
 
-      </div>
+                </div>
 
-    </div>
+            </div>
 
-  </div>
+        </div>
     );
 }
 

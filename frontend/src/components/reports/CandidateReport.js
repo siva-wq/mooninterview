@@ -131,7 +131,7 @@ function CandidateReport() {
 
   return (
 
-    <div className="bg-[#F5F7FB] min-h-screen p-8 rounded-[32px]">
+    <div className="bg-background min-h-screen p-4 sm:p-6 lg:p-8 rounded-[32px]">
 
       <div className="max-w-7xl mx-auto space-y-8">
 
@@ -141,12 +141,11 @@ function CandidateReport() {
 
         <div
           className="
-            bg-white
+            card
             rounded-[28px]
-            border
-            border-zinc-200
+            border-custom
             shadow-sm
-            p-8
+            p-4 sm:p-6 lg:p-8
           "
         >
 
@@ -154,19 +153,19 @@ function CandidateReport() {
 
             <div>
 
-              <p className="text-blue-600 font-semibold text-sm uppercase tracking-wider">
+              <p className="text-navy font-semibold text-sm uppercase tracking-wider">
 
                 AI Interview Report
 
               </p>
 
-              <h1 className="text-4xl font-bold text-zinc-900 mt-2">
+              <h1 className="text-4xl font-bold text-navy mt-2">
 
                 Candidate Evaluation
 
               </h1>
 
-              <p className="text-zinc-500 mt-3">
+              <p className="text-secondary mt-3">
 
                 Comprehensive AI-powered interview analysis and hiring recommendation
 
@@ -178,11 +177,10 @@ function CandidateReport() {
 
             <div
               className="
-                w-36
-                h-36
+                w-28 h-28 sm:w-36 sm:h-36
                 rounded-full
                 bg-gradient-to-br
-                from-blue-600
+                from-navy
                 to-indigo-600
                 flex
                 items-center
@@ -193,7 +191,7 @@ function CandidateReport() {
 
               <div className="text-center">
 
-                <h2 className="text-4xl font-bold text-white">
+                <h2 className="text-3xl sm:text-4xl font-bold text-white">
 
                   {candidate.score || 82}%
 
@@ -219,26 +217,25 @@ function CandidateReport() {
 
         <div
           className="
-            bg-white
+            card
             rounded-[28px]
-            border
-            border-zinc-200
+            border-custom
             shadow-sm
-            p-8
+            p-4 sm:p-6 lg:p-8
           "
         >
 
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 sm:mb-8">
 
             <div>
 
-              <h2 className="text-2xl font-bold text-zinc-900">
+              <h2 className="text-2xl font-bold text-navy">
 
                 Candidate Information
 
               </h2>
 
-              <p className="text-zinc-500 mt-1">
+              <p className="text-secondary mt-1">
 
                 Personal and interview details
 
@@ -257,13 +254,13 @@ function CandidateReport() {
 
                 ${candidate.status === "completed"
 
-                  ? "bg-green-100 text-green-700"
+                  ? "bg-green-100 text-success"
 
                   : candidate.status === "ongoing"
 
-                    ? "bg-yellow-100 text-yellow-700"
+                    ? "bg-yellow-100 text-warning"
 
-                    : "bg-blue-100 text-blue-700"
+                    : "bg-blue-100 text-primary"
                 }
               `}
             >
@@ -274,17 +271,17 @@ function CandidateReport() {
 
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
 
             {/* NAME */}
 
-            <div className="bg-zinc-50 rounded-2xl p-5">
+            <div className="bg-zinc-50 rounded-2xl p-4 sm:p-5">
 
-              <p className="text-zinc-500 text-sm">
+              <p className="text-secondary text-sm">
                 Full Name
               </p>
 
-              <h3 className="text-lg font-bold text-zinc-900 mt-2">
+              <h3 className="text-base sm:text-lg font-bold text-navy mt-2">
 
                 {candidate.candidate?.name}
 
@@ -294,13 +291,13 @@ function CandidateReport() {
 
             {/* EMAIL */}
 
-            <div className="bg-zinc-50 rounded-2xl p-5">
+            <div className="bg-zinc-50 rounded-2xl p-4 sm:p-5">
 
-              <p className="text-zinc-500 text-sm">
+              <p className="text-secondary text-sm">
                 Email Address
               </p>
 
-              <h3 className="text-lg font-bold text-zinc-900 mt-2">
+              <h3 className="text-base sm:text-lg font-bold text-navy mt-2">
 
                 {candidate.candidate?.email}
 
@@ -310,13 +307,13 @@ function CandidateReport() {
 
             {/* INTERVIEWER */}
 
-            <div className="bg-zinc-50 rounded-2xl p-5">
+            <div className="bg-zinc-50 rounded-2xl p-4 sm:p-5">
 
-              <p className="text-zinc-500 text-sm">
+              <p className="text-secondary text-sm">
                 Interviewer
               </p>
 
-              <h3 className="text-lg font-bold text-zinc-900 mt-2">
+              <h3 className="text-base sm:text-lg font-bold text-navy mt-2">
 
                 {candidate.interviewer?.name}
 
@@ -326,13 +323,13 @@ function CandidateReport() {
 
             {/* DATE */}
 
-            <div className="bg-zinc-50 rounded-2xl p-5">
+            <div className="bg-zinc-50 rounded-2xl p-4 sm:p-5">
 
-              <p className="text-zinc-500 text-sm">
+              <p className="text-secondary text-sm">
                 Interview Date
               </p>
 
-              <h3 className="text-lg font-bold text-zinc-900 mt-2">
+              <h3 className="text-base sm:text-lg font-bold text-navy mt-2">
 
                 {
                   new Date(candidate.date)
@@ -345,13 +342,13 @@ function CandidateReport() {
 
             {/* ROOM ID */}
 
-            <div className="bg-zinc-50 rounded-2xl p-5">
+            <div className="bg-zinc-50 rounded-2xl p-4 sm:p-5">
 
-              <p className="text-zinc-500 text-sm">
+              <p className="text-secondary text-sm">
                 Room ID
               </p>
 
-              <h3 className="text-lg font-bold text-zinc-900 mt-2">
+              <h3 className="text-base sm:text-lg font-bold text-navy mt-2">
 
                 {candidate.roomId}
 
@@ -361,13 +358,13 @@ function CandidateReport() {
 
             {/* RESULT */}
 
-            <div className="bg-zinc-50 rounded-2xl p-5">
+            <div className="bg-zinc-50 rounded-2xl p-4 sm:p-5">
 
-              <p className="text-zinc-500 text-sm">
+              <p className="text-secondary text-sm">
                 Result
               </p>
 
-              <h3 className="text-lg font-bold text-zinc-900 mt-2 capitalize">
+              <h3 className="text-lg font-bold text-navy mt-2 capitalize">
 
                 {candidate.result || "Pending"}
 
@@ -385,18 +382,17 @@ function CandidateReport() {
 
         <div
           className="
-            bg-white
+            card
             rounded-[28px]
-            border
-            border-zinc-200
+            border-custom
             shadow-sm
-            p-8
+            p-4 sm:p-6 lg:p-8
           "
         >
 
-          <div className="mb-8">
+          <div className="mb-6 sm:mb-8">
 
-            <h2 className="text-2xl font-bold text-zinc-900">
+            <h2 className="text-2xl font-bold text-navy">
 
               Interview Feedback
 
@@ -414,11 +410,11 @@ function CandidateReport() {
             className="
               bg-zinc-50
               rounded-3xl
-              p-7
+              p-4 sm:p-6 lg:p-7
             "
           >
 
-            <p className="text-zinc-700 leading-relaxed text-lg">
+            <p className="text-primary leading-relaxed text-base sm:text-lg">
 
               {
                 candidate.feedback ||
@@ -439,11 +435,11 @@ function CandidateReport() {
         <div
           className="
             bg-gradient-to-r
-            from-blue-600
+            from-primary
             to-indigo-600
             rounded-[32px]
             shadow-xl
-            p-10
+            p-6 sm:p-8 lg:p-10
             text-center
           "
         >
@@ -454,13 +450,13 @@ function CandidateReport() {
 
           </p>
 
-          <h2 className="text-5xl font-bold text-white mt-4 capitalize">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-4 capitalize">
 
             {candidate.result || "Pending"}
 
           </h2>
 
-          <p className="text-blue-100 text-lg mt-5 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-blue-100 text-base sm:text-lg mt-5 max-w-2xl mx-auto leading-relaxed">
 
             AI-powered interview evaluation generated from interview performance and interviewer feedback.
 

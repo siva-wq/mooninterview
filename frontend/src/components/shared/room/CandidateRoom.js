@@ -828,7 +828,7 @@ function CandidateRoom() {
 
   return (
 
-    <div className="h-screen bg-[#F5F7FB] flex overflow-hidden">
+    <div className="h-screen bg-background flex overflow-hidden">
 
       {/* SIDEBAR */}
 
@@ -837,7 +837,7 @@ function CandidateRoom() {
           w-20
           bg-white
           border-r
-          border-zinc-200
+          border-custom
           flex
           flex-col
           items-center
@@ -858,8 +858,8 @@ function CandidateRoom() {
     justify-center
     transition-all
     ${activeTab === "video"
-              ? "bg-blue-600 text-white shadow-lg"
-              : "bg-zinc-100 text-zinc-600"
+              ? "btn-primary text-white shadow-lg"
+              : "bg-zinc-100 text-secondary"
             }
   `}
         >
@@ -877,8 +877,8 @@ function CandidateRoom() {
             justify-center
             transition-all
             ${activeTab === "code"
-              ? "bg-blue-600 text-white shadow-lg"
-              : "bg-zinc-100 text-zinc-600"
+              ? "btn-primary text-white shadow-lg"
+              : "bg-zinc-100 text-secondary"
             }
           `}
         >
@@ -898,7 +898,7 @@ function CandidateRoom() {
             h-16
             bg-white
             border-b
-            border-zinc-200
+            border-custom
             px-6
             flex
             items-center
@@ -909,11 +909,11 @@ function CandidateRoom() {
 
           <div>
 
-            <h1 className="text-lg font-bold text-zinc-900">
+            <h1 className="text-lg font-bold text-navy">
               MoonInterview
             </h1>
 
-            <p className="text-sm text-zinc-500">
+            <p className="text-sm text-secondary">
               AI Interview Session
             </p>
 
@@ -939,10 +939,9 @@ function CandidateRoom() {
             <div
               className="
                   col-span-2
-                  bg-white
+                  card
                   rounded-3xl
-                  border
-                  border-zinc-200
+                  border-custom
                   shadow-sm
                   overflow-hidden
                   flex
@@ -955,22 +954,22 @@ function CandidateRoom() {
                     px-6
                     py-4
                     border-b
-                    border-zinc-200
+                    border-custom
                     flex
                     items-center
                     justify-between
                   "
               >
 
-                <h2 className="font-bold text-zinc-900">
+                <h2 className="font-bold text-navy">
                   Screen Share
                 </h2>
 
                 <button
                   onClick={startScreenShare}
                   className="
-                      bg-violet-600
-                      hover:bg-violet-700
+                      bg-purple-600
+                      hover:bg-purple-700
                       text-white
                       px-4
                       py-2
@@ -1007,10 +1006,9 @@ function CandidateRoom() {
 
             <div
               className="
-                  bg-white
+                  card
                   rounded-3xl
-                  border
-                  border-zinc-200
+                  border-custom
                   shadow-sm
                   overflow-hidden
                   flex
@@ -1023,11 +1021,11 @@ function CandidateRoom() {
                     px-6
                     py-4
                     border-b
-                    border-zinc-200
+                    border-custom
                   "
               >
 
-                <h2 className="font-bold text-zinc-900">
+                <h2 className="font-bold text-navy">
                   Candidate Camera
                 </h2>
 
@@ -1052,7 +1050,7 @@ function CandidateRoom() {
                     w-12 h-12 rounded-full flex items-center justify-center
                     transition-all
                     ${cameraEnabled
-                      ? "bg-blue-600 hover:bg-blue-700 text-white"
+                      ? "btn-primary hover:bg-blue-700 text-white"
                       : "bg-red-500 hover:bg-red-600 text-white"
                     }
                   `}

@@ -34,6 +34,8 @@ import SessionExpired from "../components/errors/SessionExpired";
 import NotFound from "../components/errors/NotFound";
 
 import Home from "../components/home/Home";
+import Demo from "../components/home/Demo";
+import Release from "../components/home/Release";
 
 function AppRoutes() {
 
@@ -53,6 +55,9 @@ function AppRoutes() {
         {/*candidate login */}
         <Route path="/login/:roomId" element={<Login />} />
 
+        {/*demo */}
+        <Route path="/demo" element={<Demo />} />
+        <Route path="/release" element={<Release/>}/>
        
 
         <Route path="/create-password/:token" element={<CreatePassword />} />

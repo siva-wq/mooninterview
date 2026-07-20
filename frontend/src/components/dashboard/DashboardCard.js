@@ -7,7 +7,7 @@ function DashboardCard({ title, value, increase }) {
         relative
         overflow-hidden
         rounded-3xl
-        border border-zinc-200
+        border border-custom
         bg-white
         p-6
         shadow-md
@@ -26,16 +26,16 @@ function DashboardCard({ title, value, increase }) {
 
         {/* Title */}
         <div>
-          <p className="text-sm font-semibold tracking-wide text-zinc-500 uppercase">
+          <p className="text-sm font-semibold tracking-wide text-secondary uppercase">
             {title}
           </p>
 
-          <h1 className="mt-4 text-4xl font-bold text-zinc-900">
+          <h1 className="mt-4 text-3xl sm:text-4xl font-bold text-navy">
             {value}
           </h1>
         </div>
 
-        {/* Increase Badge */}
+        {/* Increase Badge 
         <span
           className="
             rounded-2xl
@@ -50,12 +50,12 @@ function DashboardCard({ title, value, increase }) {
           "
         >
           {increase}
-        </span>
+        </span>*/}
 
       </div>
 
       {/* Bottom Accent Line */}
-      <div className="mt-6 h-1 w-16 rounded-full bg-gradient-to-r from-zinc-900 to-zinc-400"></div>
+      <div className="mt-6 h-1 w-16 rounded-full bg-gradient-to-r from-navy to-zinc-400"></div>
 
     </div>
   );

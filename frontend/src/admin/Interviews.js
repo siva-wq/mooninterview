@@ -196,7 +196,7 @@ function Interviews() {
 
     return (
 
-        <div className="flex h-screen bg-[#F5F7FB] overflow-hidden">
+        <div className="flex h-screen bg-background overflow-hidden">
 
 
             {/* MAIN CONTENT */}
@@ -216,13 +216,13 @@ function Interviews() {
 
                             <div>
 
-                                <h1 className="text-3xl font-bold text-gray-900">
+                                <h1 className="text-3xl font-bold text-navy">
 
                                     Interviews Dashboard
 
                                 </h1>
 
-                                <p className="text-gray-500 mt-1">
+                                <p className="text-secondary mt-1">
 
                                     Monitor interviews, candidates, and hiring progress
 
@@ -237,9 +237,9 @@ function Interviews() {
                         {
                             loading && (
 
-                                <div className="bg-white p-5 rounded-2xl shadow-sm">
+                                <div className="card p-5">
 
-                                    <p className="text-zinc-500">
+                                    <p className="text-secondary">
 
                                         Loading interview statistics...
 
@@ -256,8 +256,9 @@ function Interviews() {
                                 grid
                                 grid-cols-1
                                 sm:grid-cols-2
-                                lg:grid-cols-4
-                                gap-5
+                                lg:grid-cols-5
+                                gap-6
+                                mb-8
                             "
                         >
 
@@ -266,7 +267,7 @@ function Interviews() {
                                 value={
                                     stats?.totalInterviews || 0
                                 }
-                                increase="+12%"
+                               // increase="+12%"
                             />
 
                             <DashboardCard
@@ -274,7 +275,7 @@ function Interviews() {
                                 value={
                                     stats?.liveInterviews || 0
                                 }
-                                increase="+8%"
+                                //increase="+8%"
                             />
 
                             <DashboardCard
@@ -282,7 +283,7 @@ function Interviews() {
                                 value={
                                     stats?.completedInterviews || 0
                                 }
-                                increase="+18%"
+                                //increase="+18%"
                             />
 
                             <DashboardCard
@@ -290,7 +291,7 @@ function Interviews() {
                                 value={
                                     stats?.waitingInterviews || 0
                                 }
-                                increase="+5%"
+                                //increase="+5%"
                             />
 
                             <DashboardCard
@@ -298,23 +299,7 @@ function Interviews() {
                                 value={
                                     stats?.scheduledInterviews || 0
                                 }
-                                increase="+10%"
-                            />
-
-                            <DashboardCard
-                                title="Selected"
-                                value={
-                                    stats?.selectedCandidates || 0
-                                }
-                                increase="+10%"
-                            />
-
-                            <DashboardCard
-                                title="Rejected"
-                                value={
-                                    stats?.rejectedCandidates || 0
-                                }
-                                increase="-2%"
+                                //increase="+10%"
                             />
 
                         </div>
@@ -323,11 +308,8 @@ function Interviews() {
 
                         <div
                             className="
-                                bg-white
+                                card
                                 rounded-3xl
-                                shadow-sm
-                                border
-                                border-gray-200
                                 p-6
                             "
                         >
@@ -338,13 +320,13 @@ function Interviews() {
 
                                 <div>
 
-                                    <h2 className="text-xl font-bold text-gray-900">
+                                    <h2 className="text-xl font-bold text-navy">
 
                                         Upcoming Interviews
 
                                     </h2>
 
-                                    <p className="text-gray-500 text-sm mt-1">
+                                    <p className="text-secondary text-sm mt-1">
 
                                         Manage and track scheduled interviews
 

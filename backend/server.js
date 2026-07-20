@@ -66,17 +66,18 @@ app.use('/api/seed', require('./Routes/seedRoutes'));
 
 app.use('/api', organisationRoutes);
 
+app.use('/api', emailRoutes);
+
 app.use('/api', userRoutes);
 
 app.use('/api', interviewRoutes);
 
 app.use('/api', waitingRoomRoutes);
 
-app.use('/api', emailRoutes);
-
 app.use('/api/compiler', compilerRoutes);
 
 app.use('/api/result', ResultRoutes);
+
 
 
 

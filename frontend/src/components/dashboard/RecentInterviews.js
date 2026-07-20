@@ -130,19 +130,19 @@ function RecentInterviews() {
     ).length;
 
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+    <div className="card border-custom rounded-2xl p-6 shadow-sm">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h2 className="flex items-center gap-2 text-xl font-semibold text-gray-900">
+          <h2 className="flex items-center gap-2 text-xl font-semibold text-navy">
             <Video
               size={20}
-              className="text-blue-600"
+              className="text-gold"
             />
             Recent Interviews
           </h2>
 
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-secondary mt-1">
             Total Interviews:{" "}
             {interviews.length}
           </p>
@@ -153,7 +153,7 @@ function RecentInterviews() {
             {completedCount}
           </span>
 
-          <span className="ml-1 text-sm text-gray-500">
+          <span className="ml-1 text-sm text-secondary">
             Completed
           </span>
         </div>
@@ -180,14 +180,14 @@ function RecentInterviews() {
           <div className="py-12 text-center">
             <Video
               size={50}
-              className="mx-auto text-gray-300"
+              className="mx-auto text-gold"
             />
 
-            <h3 className="mt-4 text-lg font-medium text-gray-800">
+            <h3 className="mt-4 text-lg font-medium text-navy">
               No Interviews Found
             </h3>
 
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-secondary">
               Scheduled
               interviews will
               appear here.
@@ -199,27 +199,26 @@ function RecentInterviews() {
       {!loading &&
         interviews.length >
           0 && (
-          <div className="space-y-4 max-h-[550px] overflow-y-auto pr-2">
+          <div className="space-y-4 max-h-[400px] sm:max-h-[550px] overflow-y-auto pr-2">
             {interviews.map(
               (item) => (
                 <div
                   key={item._id}
                   className="
-                    bg-white
-                    border
-                    border-gray-200
+                    card
+                    border-custom
                     rounded-xl
                     p-5
                     shadow-sm
                     hover:shadow-md
-                    hover:border-blue-300
+                    hover:border-primary
                     transition-all
                   "
                 >
                   <div className="flex justify-between items-start">
                     {/* Candidate Info */}
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-semibold text-lg">
+                      <div className="w-12 h-12 rounded-full bg-blue-100 text-navy flex items-center justify-center font-semibold text-lg">
                         {item
                           .candidate?.name?.charAt(
                             0
@@ -229,7 +228,7 @@ function RecentInterviews() {
                       </div>
 
                       <div>
-                        <h3 className="text-gray-900 font-semibold text-lg">
+                        <h3 className="text-navy font-semibold text-lg">
                           {
                             item
                               .candidate
@@ -237,7 +236,7 @@ function RecentInterviews() {
                           }
                         </h3>
 
-                        <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
+                        <div className="flex items-center gap-2 text-sm text-navy mt-1">
                           <User
                             size={
                               14
@@ -266,8 +265,8 @@ function RecentInterviews() {
                   </div>
 
                   {/* Footer */}
-                  <div className="mt-5 pt-4 border-t border-gray-100 flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-sm text-blue-600">
+                  <div className="mt-5 pt-4 border-t border-custom flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-sm text-navy">
                       <CalendarDays
                         size={
                           14
@@ -278,7 +277,7 @@ function RecentInterviews() {
                       )}
                     </div>
 
-                    <div className="flex items-center gap-2 text-xs text-gray-400">
+                    <div className="flex items-center gap-2 text-xs text-navy">
                       <BadgeCheck
                         size={
                           14

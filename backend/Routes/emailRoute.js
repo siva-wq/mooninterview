@@ -5,6 +5,7 @@ const authMiddleware = require('../middleware/authMiddleware');
 const sendEmail = require('../utils/sendEmail');
 
 const User=require('../models/User');
+const Demo=require('../models/Demo');
 
 const checkOrganisationExpiry = require('../middleware/checkOrganisationExpiry');
 
@@ -13,8 +14,66 @@ const {
   getSelectedTemplate,
   getHoldTemplate,
   getRejectedTemplate,
+  getDemoRequestTemplate,
+  getDemoRequestTemplateToAd
 } = require('../utils/EmailTemplate');
 
+router.post("/demo", async (req, res) => {
+  try {
+    const { name, email, organisation } = req.body;
+
+    if (!name || !email || !organisation) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required",
+      });
+    }
+    console.log(name," ",email," ",organisation)
+
+    await Demo.create({
+      name,
+      email,
+      organisation,
+    });
+
+    const subject = "Demo Request Received";
+
+    // Email to user
+    const userHtml = getDemoRequestTemplate({
+  name,
+  email,
+  organisation,
+});
+
+    await sendEmail(email, subject, userHtml);
+
+    // Email to admin
+    const adminEmail = process.env.ADMIN_EMAIL;
+
+    if (adminEmail) {
+     const adminHtml = getDemoRequestTemplateToAd({
+  name,
+  email,
+ organisation,
+});
+
+      await sendEmail(adminEmail, subject, adminHtml);
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Demo request submitted successfully",
+    });
+
+  } catch (error) {
+    console.error("Error submitting demo request:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
 
 router.use(authMiddleware)
 router.use(checkOrganisationExpiry);
@@ -31,6 +90,7 @@ router.post(
         time,
         roomId,
         type,
+        orgName
       } = req.body;
 
       if (
@@ -140,11 +200,10 @@ router.post(
 
           break;
 
-        case 'hold':
-        case 'pending':
+        case 'hold' || 'pending':
 
           subject =
-            `Application Update | Under Review at ${organisationName}`;
+            `Application Under Review - ${organisationName}`;
 
           html =
             getHoldTemplate({

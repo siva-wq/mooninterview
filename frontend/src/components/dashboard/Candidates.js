@@ -32,7 +32,7 @@ function Candidates() {
             user.role ===
             "candidate"
         );
-        //console.log(filteredCandidates)
+        console.log(filteredCandidates)
 
       setCandidates(
         filteredCandidates
@@ -99,19 +99,19 @@ function Candidates() {
     ).length;
 
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+    <div className="card border-custom rounded-2xl p-6 shadow-sm">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h2 className="flex items-center gap-2 text-xl font-semibold text-gray-900">
+          <h2 className="flex items-center gap-2 text-xl font-semibold text-navy">
             <Users
               size={22}
-              className="text-blue-600"
+              className="text-gold"
             />
             Candidates
           </h2>
 
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-secondary mt-1">
             Total Candidates:{" "}
             {candidates.length}
           </p>
@@ -122,7 +122,7 @@ function Candidates() {
             {readyCount}
           </span>
 
-          <span className="ml-1 text-sm text-gray-500">
+          <span className="ml-1 text-sm text-secondary">
             Ready
           </span>
         </div>
@@ -149,14 +149,14 @@ function Candidates() {
           <div className="text-center py-12">
             <UserCircle
               size={55}
-              className="mx-auto text-gray-300"
+              className="mx-auto text-secondary"
             />
 
-            <h3 className="mt-4 text-lg font-medium text-gray-800">
+            <h3 className="mt-4 text-lg font-medium text-navy">
               No Candidates Found
             </h3>
 
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-secondary">
               Candidates will
               appear here after
               registration.
@@ -176,21 +176,20 @@ function Candidates() {
                     candidate._id
                   }
                   className="
-                    bg-white
-                    border
-                    border-gray-200
+                    card
+                    border-custom
                     rounded-xl
                     p-5
                     shadow-sm
                     hover:shadow-md
-                    hover:border-blue-300
+                    hover:border-primary
                     transition-all
                   "
                 >
                   <div className="flex items-center justify-between">
                     {/* Left Side */}
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-semibold text-lg">
+                      <div className="w-12 h-12 rounded-full bg-blue-100 text-navy flex items-center justify-center font-semibold text-lg">
                         {candidate.name
                           ?.charAt(
                             0
@@ -199,13 +198,13 @@ function Candidates() {
                       </div>
 
                       <div>
-                        <h3 className="font-semibold text-gray-900">
+                        <h3 className="font-semibold text-navy">
                           {
                             candidate.name
                           }
                         </h3>
 
-                        <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
+                        <div className="flex items-center gap-2 mt-1 text-sm text-secondary">
                           <Mail
                             size={
                               14

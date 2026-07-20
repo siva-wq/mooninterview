@@ -7,14 +7,14 @@ function Output({ data }) {
     let title = "Output";
 
     let colorClass =
-        "text-green-400";
+        "text-success";
 
     if (hasOutput && !isSuccess) {
 
         title = "Error";
 
         colorClass =
-            "text-red-400";
+            "text-danger";
     }
 
     return (

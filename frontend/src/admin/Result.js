@@ -13,7 +13,7 @@ function Result() {
   const [interview, setInterview] = useState(null);
   const [candidate, setCandidate] = useState(null);
   const [resume, setResume] = useState("");
-  const [status, setStatus] = useState("selected");
+  const [status, setStatus] = useState("hold");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
@@ -24,7 +24,7 @@ function Result() {
           `/room/${roomId}`
         );
 
-        //console.log(res.data);
+        console.log(res.data);
 
         setInterview(res.data);
         setCandidate(
@@ -122,7 +122,7 @@ function Result() {
   return (
     <div className="
       min-h-screen
-      bg-slate-100
+      bg-background
       p-6
     ">
 
@@ -137,7 +137,7 @@ function Result() {
         <h1 className="
           text-3xl
           font-bold
-          text-slate-800
+          text-navy
         ">
           Interview Result
         </h1>
@@ -156,11 +156,11 @@ function Result() {
           lg:col-span-2
         ">
           <div className="
-            bg-white
+            card
             rounded-2xl
             shadow-md
             overflow-hidden
-            h-[800px]
+            h-[600px] lg:h-[800px]
           ">
             {resume ? (
               <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
@@ -187,7 +187,7 @@ function Result() {
 
         <div>
           <div className="
-            bg-white
+            card
             rounded-2xl
             shadow-md
             p-6
@@ -196,6 +196,7 @@ function Result() {
               text-xl
               font-semibold
               mb-6
+              text-navy
             ">
               Candidate Details
             </h2>
@@ -207,7 +208,7 @@ function Result() {
               <div>
                 <p className="
                   text-sm
-                  text-gray-500
+                  text-secondary
                 ">
                   Name
                 </p>
@@ -223,7 +224,7 @@ function Result() {
               <div>
                 <p className="
                   text-sm
-                  text-gray-500
+                  text-secondary
                 ">
                   Email
                 </p>
@@ -240,7 +241,7 @@ function Result() {
               <div>
                 <p className="
                   text-sm
-                  text-gray-500
+                  text-secondary
                 ">
                   Status
                 </p>
@@ -256,12 +257,12 @@ function Result() {
                     w-full
                     mt-2
                     border
-                    border-gray-300
+                    border-custom
                     rounded-xl
                     p-3
                     focus:outline-none
                     focus:ring-2
-                    focus:ring-blue-500
+                    focus:ring-primary
                   "
                 >
                   <option value="hold">
@@ -286,16 +287,10 @@ function Result() {
                   submitting
                 }
                 className="
+                  btn-primary
                   w-full
                   py-3
-                  rounded-xl
-                  text-white
                   font-semibold
-                  bg-gradient-to-r
-                  from-blue-600
-                  to-purple-600
-                  hover:opacity-90
-                  transition-all
                   disabled:opacity-50
                 "
               >

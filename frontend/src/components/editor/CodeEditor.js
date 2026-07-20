@@ -159,19 +159,20 @@ int main() {
     return (
 
         <div className="w-full h-screen bg-white text-black flex flex-col">
+        <div className="w-full h-screen bg-background text-navy flex flex-col">
 
             {/* ======================================== */}
             {/* Navbar */}
             {/* ======================================== */}
 
-            <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-300 shadow-sm shrink-0">
+            <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-custom shadow-sm shrink-0">
 
                 {/* Language Selector */}
 
                 <select
                     value={language}
                     onChange={(e) => ChangeLanguage(e.target.value)}
-                    className="bg-gray-100 text-black px-4 py-2 rounded-lg outline-none border border-gray-300"
+                    className="bg-gray-100 text-navy px-4 py-2 rounded-lg outline-none border border-custom"
                 >
 
                     <option value="javascript">
@@ -203,7 +204,7 @@ int main() {
                 <button
                     onClick={runCode}
                     disabled={loading}
-                    className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold"
+                    className="btn-primary px-5 py-2 rounded-lg font-semibold"
                 >
 
                     {
@@ -228,7 +229,7 @@ int main() {
                 {/* LEFT SIDE */}
                 {/* ======================================== */}
 
-                <div className="w-1/2 flex flex-col min-h-0 border-r border-gray-300 bg-white">
+                <div className="w-1/2 flex flex-col min-h-0 border-r border-custom bg-white">
 
                     {/* Monaco Editor */}
 
@@ -283,9 +284,9 @@ int main() {
                             height: `${inputHeight}px`
                         }}
                         className="
-                            bg-white
+                            bg-grey
                             border-t
-                            border-gray-300
+                            border-custom
                             transition-all
                             duration-300
                             overflow-hidden
@@ -297,9 +298,9 @@ int main() {
 
                         {/* Header */}
 
-                        <div className="flex items-center justify-between px-4 py-2 border-b border-gray-300 bg-gray-100 shrink-0">
+                        <div className="flex items-center justify-between px-4 py-2 border-b border-custom bg-gray-100 shrink-0">
 
-                            <h2 className="text-black text-lg font-semibold">
+                            <h2 className="text-navy text-lg font-semibold">
                                 Input
                             </h2>
 
@@ -322,7 +323,7 @@ int main() {
                                         py-1
                                         rounded
                                         text-sm
-                                        text-black
+                                        text-navy
                                     "
                                 >
                                     ▲
@@ -334,7 +335,7 @@ int main() {
 
                                 <button
                                     onClick={() =>
-                                        setInputHeight(140)
+                                        setInputHeight(200)
                                     }
                                     className="
                                         bg-gray-200
@@ -343,7 +344,7 @@ int main() {
                                         py-1
                                         rounded
                                         text-sm
-                                        text-black
+                                        text-navy
                                     "
                                 >
                                     ▼
@@ -369,11 +370,11 @@ int main() {
                                     w-full
                                     h-full
                                     bg-gray-50
-                                    text-black
+                                    text-navy
                                     p-3
                                     rounded-lg
                                     border
-                                    border-gray-300
+                                    border-custom
                                     outline-none
                                     resize-none
                                 "

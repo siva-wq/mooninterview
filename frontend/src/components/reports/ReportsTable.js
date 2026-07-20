@@ -210,21 +210,22 @@ function ReportsTable({ setSelectedCandidate }) {
 
     <div
       className="
-        bg-white
-        border
-        border-zinc-200
+        card
+        border-custom
         rounded-2xl
         overflow-hidden
         shadow-sm
       "
     >
 
+      <div className="overflow-x-auto">
+
       {/* LOADING */}
 
       {
         loading && (
 
-          <div className="p-6 text-zinc-500">
+          <div className="p-4 sm:p-6 text-secondary">
 
             Loading reports...
 
@@ -234,29 +235,29 @@ function ReportsTable({ setSelectedCandidate }) {
 
       {/* TABLE */}
 
-      <table className="w-full">
+      <table className="w-full min-w-[600px]">
 
         <thead className="bg-zinc-50">
 
           <tr>
 
-            <th className="text-left p-4 text-zinc-600 font-semibold">
+            <th className="text-left p-3 sm:p-4 text-secondary font-semibold text-sm sm:text-base">
               Candidate
             </th>
 
-            <th className="text-left p-4 text-zinc-600 font-semibold">
+            <th className="text-left p-3 sm:p-4 text-secondary font-semibold text-sm sm:text-base">
               Interviewer
             </th>
 
-            <th className="text-left p-4 text-zinc-600 font-semibold">
+            <th className="text-left p-3 sm:p-4 text-secondary font-semibold text-sm sm:text-base">
               Score
             </th>
 
-            <th className="text-left p-4 text-zinc-600 font-semibold">
+            <th className="text-left p-3 sm:p-4 text-secondary font-semibold text-sm sm:text-base">
               Status
             </th>
 
-            <th className="text-left p-4 text-zinc-600 font-semibold">
+            <th className="text-left p-3 sm:p-4 text-secondary font-semibold text-sm sm:text-base">
               Result
             </th>
 
@@ -278,7 +279,7 @@ function ReportsTable({ setSelectedCandidate }) {
                   
                   className="
                     border-t
-                    border-zinc-100
+                    border-custom
                     hover:bg-zinc-50
                     cursor-pointer
                     transition-all
@@ -288,17 +289,16 @@ function ReportsTable({ setSelectedCandidate }) {
 
                   {/* CANDIDATE */}
 
-                  <td className="p-4">
+                  <td className="p-3 sm:p-4">
 
                     <div className="flex items-center gap-3">
 
                       <div
                         className="
-                          w-10
-                          h-10
+                          w-8 h-8 sm:w-10 sm:h-10
                           rounded-full
                           bg-gradient-to-br
-                          from-blue-500
+                          from-navy
                           to-indigo-500
                           flex
                           items-center
@@ -316,7 +316,7 @@ function ReportsTable({ setSelectedCandidate }) {
 
                       <div>
 
-                        <p className="font-semibold text-zinc-900">
+                        <p className="font-semibold text-navy text-sm sm:text-base">
 
                           {
                             candidate.candidate?.name
@@ -324,7 +324,7 @@ function ReportsTable({ setSelectedCandidate }) {
 
                         </p>
 
-                        <p className="text-sm text-zinc-500">
+                        <p className="text-xs sm:text-sm text-secondary">
 
                           {
                             candidate.candidate?.email
@@ -340,7 +340,7 @@ function ReportsTable({ setSelectedCandidate }) {
 
                   {/* INTERVIEWER */}
 
-                  <td className="p-4 text-zinc-700">
+                  <td className="p-3 sm:p-4 text-navy text-sm sm:text-base">
 
                     {
                       candidate.interviewer?.name ||
@@ -351,16 +351,16 @@ function ReportsTable({ setSelectedCandidate }) {
 
                   {/* SCORE */}
 
-                  <td className="p-4">
+                  <td className="p-3 sm:p-4">
 
                     <span
                       className="
                         bg-blue-100
-                        text-blue-700
-                        px-4
+                        text-navy
+                        px-3 sm:px-4
                         py-1.5
                         rounded-full
-                        text-sm
+                        text-xs sm:text-sm
                         font-semibold
                       "
                     >
@@ -375,28 +375,28 @@ function ReportsTable({ setSelectedCandidate }) {
 
                   {/* STATUS */}
 
-                  <td className="p-4">
+                  <td className="p-3 sm:p-4">
 
                     <span
                       className={`
-                        px-4
+                        px-3 sm:px-4
                         py-1.5
                         rounded-full
-                        text-xs
+                        text-xs sm:text-sm
                         font-semibold
 
                         ${
                           candidate.status ===
                           "completed"
 
-                          ? "bg-green-100 text-green-700"
+                          ? "bg-green-100 text-success"
 
                           : candidate.status ===
                             "ongoing"
 
-                          ? "bg-yellow-100 text-yellow-700"
+                          ? "bg-yellow-100 text-warning"
 
-                          : "bg-blue-100 text-blue-700"
+                          : "bg-blue-100 text-primary"
                         }
                       `}
                     >
@@ -411,14 +411,14 @@ function ReportsTable({ setSelectedCandidate }) {
 
                   {/* RESULT */}
 
-                  <td className="p-4">
+                  <td className="p-3 sm:p-4">
 
                     <span
                       className={`
-                        px-4
+                        px-3 sm:px-4
                         py-1.5
                         rounded-full
-                        text-xs
+                        text-xs sm:text-sm
                         font-semibold
                         capitalize
 
@@ -426,16 +426,16 @@ function ReportsTable({ setSelectedCandidate }) {
                           candidate.result ===
                           "selected"
 
-                          ? "bg-green-100 text-green-700"
+                          ? "bg-green-100 text-success"
 
                           : candidate.result ===
                             "rejected"
 
-                          ? "bg-red-100 text-red-700"
+                          ? "bg-red-100 text-danger"
 
                           : candidate.result === "pending"
-                            ? "bg-gray-100 text-gray-700"
-                            : "bg-gray-100 text-gray-700"
+                            ? "bg-gray-100 text-primary"
+                            : "bg-gray-100 text-primary"
 
                         }
                       `}
@@ -478,8 +478,8 @@ function ReportsTable({ setSelectedCandidate }) {
                     colSpan="5"
                     className="
                       text-center
-                      py-16
-                      text-zinc-500
+                      py-12 sm:py-16
+                      text-secondary
                     "
                   >
 
@@ -495,6 +495,8 @@ function ReportsTable({ setSelectedCandidate }) {
         </tbody>
 
       </table>
+
+      </div>
 
     </div>
   );

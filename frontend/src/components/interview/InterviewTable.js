@@ -347,22 +347,21 @@ function InterviewTable() {
                     setSearch(e.target.value)
                 }
                 className="
-                    bg-white
-                    border
-                    border-zinc-200
+                    card
+                    border-custom
                     rounded-2xl
                     px-5
                     py-3
                     outline-none
                     focus:ring-4
-                    focus:ring-blue-100
-                    focus:border-blue-400
+                    focus:ring-primary/30
+                    focus:border-primary
                     shadow-sm
                     transition-all
                     duration-300
                     w-full
                     md:w-80
-                    text-zinc-800
+                    text-navy
                 "
             />
 
@@ -385,7 +384,7 @@ function InterviewTable() {
                     focus:ring-blue-100
                     focus:border-blue-400
                     shadow-sm
-                    text-zinc-700
+                    text-navy
                 "
             >
 
@@ -403,9 +402,8 @@ function InterviewTable() {
 
         <div
             className="
-                bg-white
-                border
-                border-zinc-200
+                card
+                border-custom
                 rounded-3xl
                 p-6
                 shadow-sm
@@ -418,11 +416,11 @@ function InterviewTable() {
 
                 <div>
 
-                    <h2 className="text-2xl font-bold text-zinc-900">
+                    <h2 className="text-2xl font-bold text-navy">
                         Interviews
                     </h2>
 
-                    <p className="text-zinc-500 text-sm mt-1">
+                    <p className="text-secondary text-sm mt-1">
                         Manage scheduled interviews
                     </p>
 
@@ -431,8 +429,7 @@ function InterviewTable() {
                 <button
                     onClick={navigateToSchedule}
                     className="
-                        bg-blue-600
-                        hover:bg-blue-700
+                        btn-primary
                         text-white
                         px-5
                         py-3
@@ -452,7 +449,7 @@ function InterviewTable() {
 
             {loading ? (
 
-                <div className="py-20 text-center text-zinc-500">
+                <div className="py-20 text-center text-secondary">
                     Loading interviews...
                 </div>
 
@@ -460,11 +457,11 @@ function InterviewTable() {
 
                 <div className="overflow-x-auto">
 
-                    <table className="w-full min-w-[1200px]">
+                    <table className="w-full min-w-[800px]">
 
                         <thead>
 
-                            <tr className="border-b border-zinc-200 text-zinc-500 text-sm">
+                            <tr className="border-b border-custom text-secondary text-sm">
 
                                 <th className="pb-5 text-left font-semibold">
                                     Candidate
@@ -527,7 +524,7 @@ function InterviewTable() {
                                                         h-11
                                                         rounded-2xl
                                                         bg-gradient-to-br
-                                                        from-blue-500
+                                                        from-primary
                                                         to-indigo-500
                                                         flex
                                                         items-center
@@ -545,13 +542,13 @@ function InterviewTable() {
 
                                                 <div>
 
-                                                    <p className="text-zinc-900 font-semibold">
+                                                    <p className="text-navy font-semibold">
                                                         {
                                                             item.candidate?.name
                                                         }
                                                     </p>
 
-                                                    <p className="text-zinc-500 text-sm">
+                                                    <p className="text-secondary text-sm">
                                                         {
                                                             item.candidate?.email
                                                         }
@@ -565,7 +562,7 @@ function InterviewTable() {
 
                                         {/* INTERVIEWER */}
 
-                                        <td className="py-6 text-zinc-700">
+                                        <td className="py-6 text-navy">
 
                                             {
                                                 item.interviewer?.name || "N/A"
@@ -575,7 +572,7 @@ function InterviewTable() {
 
                                         {/* ROLE */}
 
-                                        <td className="py-6 text-zinc-700">
+                                        <td className="py-6 text-navy">
 
                                             {
                                                 item.role || "Developer"
@@ -585,7 +582,7 @@ function InterviewTable() {
 
                                         {/* DATE */}
 
-                                        <td className="py-6 text-zinc-700">
+                                        <td className="py-6 text-navy">
 
                                             {formatDate(item.date)}
 
@@ -593,7 +590,7 @@ function InterviewTable() {
 
                                         {/* TIME */}
 
-                                        <td className="py-6 text-zinc-700">
+                                        <td className="py-6 text-navy">
 
                                             {formatTime(item.time)}
 
@@ -613,13 +610,13 @@ function InterviewTable() {
 
                                                     ${
                                                         item.status === "scheduled"
-                                                            ? "bg-blue-100 text-blue-700"
+                                                            ? "bg-blue-100 text-primary"
 
                                                             : item.status === "ongoing"
                                                             ? "bg-green-100 text-green-700"
 
                                                             : item.status === "completed"
-                                                            ? "bg-zinc-200 text-zinc-700"
+                                                            ? "bg-zinc-200 text-gold"
 
                                                             : "bg-yellow-100 text-yellow-700"
                                                     }
@@ -638,7 +635,7 @@ function InterviewTable() {
 
                                             <div className="flex items-center gap-3">
 
-                                                {/* JOIN BUTTON */}
+                                                {/* JOIN BUTTON 
 
                                                 {(item.status === "scheduled" ||
                                                     item.status === "ongoing") && (
@@ -651,7 +648,7 @@ function InterviewTable() {
                                                         }
                                                         className="
                                                             bg-gradient-to-r
-                                                            from-zinc-900
+                                                            from-navy
                                                             to-zinc-700
                                                             hover:scale-105
                                                             transition-all
@@ -666,11 +663,11 @@ function InterviewTable() {
                                                         "
                                                     >
                                                         Join Interview
-                                                    </button>
+                                                    </button>*
 
-                                                )}
+                                                )}/}
 
-                                                {/* VIEW REPORT */}
+                                                {/* VIEW REPORT 
 
                                                 {item.status === "completed" && (
 
@@ -696,7 +693,7 @@ function InterviewTable() {
                                                         View Report
                                                     </button>
 
-                                                )}
+                                                )}*/}
 
                                                 {/* DELETE */}
 
@@ -716,7 +713,7 @@ function InterviewTable() {
                                                         rounded-2xl
                                                         text-sm
                                                         font-semibold
-                                                        text-red-700
+                                                        text-danger
                                                     "
                                                 >
                                                     Delete
@@ -739,7 +736,7 @@ function InterviewTable() {
                                         className="
                                             text-center
                                             py-20
-                                            text-zinc-500
+                                            text-secondary
                                         "
                                     >
 

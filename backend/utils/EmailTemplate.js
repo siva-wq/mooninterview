@@ -281,6 +281,10 @@ const getInterviewInvitationTemplate = ({
             line-height:2;
           "
         >
+          <li>
+            ⚠️ <strong>Important:</strong> Please join your interview using the latest version of <strong>Google Chrome</strong> on a desktop or laptop.<br />
+            Using other browsers may result in issues with the camera, microphone, screen sharing, or the interview experience.
+          </li>
           <li>Login using your MoonInterview account.</li>
           <li>Ensure your camera and microphone are working properly.</li>
           <li>Use a stable internet connection.</li>
@@ -540,9 +544,106 @@ const getRejectedTemplate = ({
   });
 };
 
+const getDemoRequestTemplate = ({ name, email, organisation }) => {
+  console.log(name, email, organisation)
+  return emailLayout({
+    subtitle: "Demo Request Received",
+    content: `
+      <p>Hi <strong>${name}</strong>,</p>
+
+      <p>Thank you for requesting a demo of <strong>MoonInterview</strong>.</p>
+
+      <p>We've received your request and our team will contact you shortly to schedule a convenient date and time.</p>
+
+      <table style="width:100%; border-collapse:collapse; margin:20px 0;">
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd;"><strong>Name</strong></td>
+          <td style="padding:10px; border:1px solid #ddd;">${name}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd;"><strong>Email</strong></td>
+          <td style="padding:10px; border:1px solid #ddd;">${email}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd;"><strong>Organization</strong></td>
+          <td style="padding:10px; border:1px solid #ddd;">${organisation}</td>
+        </tr>
+      </table>
+
+      <p>During the demo, we'll show you how MoonInterview can help your organization:</p>
+
+      <ul>
+        <li>✔ AI-powered technical interviews</li>
+        <li>✔ Live coding assessments</li>
+        <li>✔ Resume management</li>
+        <li>✔ Real-time collaboration</li>
+        <li>✔ Candidate evaluation & reports</li>
+      </ul>
+
+      <p>We look forward to speaking with you.</p>
+
+      <p>
+        Best Regards,<br/>
+        <strong>MoonInterview Team</strong>
+      </p>
+    `,
+  });
+};
+
+const getDemoRequestTemplateToAd = ({ name, email, organisation }) => {
+  console.log(name," ",email," ",organisation)
+  return emailLayout({
+    subtitle: "🚀 New Demo Request",
+    content: `
+      <p>Hello Admin,</p>
+
+      <p>A new demo request has been submitted.</p>
+
+      <table style="width:100%; border-collapse:collapse; margin:20px 0;">
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd;"><strong>Name</strong></td>
+          <td style="padding:10px; border:1px solid #ddd;">${name}</td>
+        </tr>
+
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd;"><strong>Email</strong></td>
+          <td style="padding:10px; border:1px solid #ddd;">${email}</td>
+        </tr>
+
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd;"><strong>Organization</strong></td>
+          <td style="padding:10px; border:1px solid #ddd;">${organisation}</td>
+        </tr>
+
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd;"><strong>Requested At</strong></td>
+          <td style="padding:10px; border:1px solid #ddd;">
+            ${new Date().toLocaleString()}
+          </td>
+        </tr>
+      </table>
+
+      <p><strong>Action Required:</strong></p>
+
+      <ol>
+        <li>Contact the requester.</li>
+        <li>Schedule a demo meeting.</li>
+        <li>Send the meeting link and time.</li>
+      </ol>
+
+      <p>
+        Regards,<br/>
+        <strong>MoonInterview System</strong>
+      </p>
+    `,
+  });
+};
+
 module.exports = {
   getInterviewInvitationTemplate,
   getSelectedTemplate,
   getHoldTemplate,
   getRejectedTemplate,
+  getDemoRequestTemplate,
+  getDemoRequestTemplateToAd,
 };

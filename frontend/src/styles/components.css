@@ -1,0 +1,98 @@
+
+.btn-primary{
+
+    @apply
+    text-white
+    px-5
+    py-3
+    rounded-xl
+    transition-all
+    duration-200;
+
+    background:var(--primary);
+
+}
+
+.btn-primary:hover{
+
+    background:var(--primary-hover);
+
+}
+
+.btn-gold{
+
+    @apply
+    text-white
+    px-5
+    py-3
+    rounded-xl
+    transition-all
+    duration-200;
+
+    background:var(--gold);
+
+}
+
+.btn-gold:hover{
+
+    background:var(--gold-hover);
+
+}
+
+.card{
+
+    @apply
+    bg-white
+    rounded-2xl
+    border;
+
+    border-color:var(--border);
+
+    box-shadow:var(--shadow-card);
+
+}
+
+.input{
+
+    @apply
+    px-4
+    py-3
+    rounded-xl
+    border
+    w-full;
+
+    border-color:var(--border);
+
+}
+
+.table-header{
+
+    background:var(--navy);
+
+    color:white;
+
+}
+
+.badge-success{
+
+    background:#DCFCE7;
+
+    color:#166534;
+
+}
+
+.badge-warning{
+
+    background:#FEF3C7;
+
+    color:#92400E;
+
+}
+
+.badge-danger{
+
+    background:#FEE2E2;
+
+    color:#991B1B;
+
+}

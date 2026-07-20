@@ -81,7 +81,7 @@ function Navbar() {
 
     // LISTEN NOTIFICATIONS
     socket.on("notification", (data) => {
-      //console.log("Notification received:", data);
+      console.log("Notification received:", data);
 
 
       setNotifications((prev) => [
@@ -119,7 +119,7 @@ function Navbar() {
 
   return (
 
-    <div className="bg-white border-b border-zinc-200 px-8 py-4 flex items-center justify-between shadow-sm">
+    <div className="card border-b border-custom px-8 py-4 flex items-center justify-between shadow-sm">
 
       {/* LEFT */}
 
@@ -127,11 +127,11 @@ function Navbar() {
         <div>
 
 
-          <h1 className="text-2xl font-bold text-zinc-800">
+          <h1 className="text-2xl font-bold text-navy">
             Admin Dashboard
           </h1>
 
-          <p className="text-sm text-zinc-500">
+          <p className="text-sm text-secondary">
             Welcome back 👋
           </p>
         </div>
@@ -168,7 +168,7 @@ function Navbar() {
             setOpenNotification(false);
             setShowCreateCandidate(true);
           }}
-          className="flex items-center gap-2 rounded-xl bg-purple-600 px-4 py-3 text-white transition hover:bg-purple-700"
+          className="btn-primary flex items-center gap-2 rounded-xl px-4 py-3"
         >
           <UserPlus size={18} />
           <span className="hidden md:block">
@@ -193,13 +193,13 @@ function Navbar() {
 
             <Bell
               size={20}
-              className="text-zinc-700"
+              className="text-navy"
             />
 
             {
               notifications.length > 0 && (
 
-                <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+                <span className="absolute top-2 right-2 w-2 h-2 bg-danger rounded-full"></span>
               )
             }
 
@@ -209,11 +209,11 @@ function Navbar() {
 
           {openNotification && (
 
-            <div className="absolute right-0 mt-3 w-80 bg-white border border-zinc-200 rounded-2xl shadow-xl p-4 z-50">
+            <div className="absolute right-0 mt-3 w-80 card border-custom rounded-2xl shadow-xl p-4 z-50">
 
               <div className="flex items-center justify-between mb-4">
 
-                <h2 className="text-lg font-bold text-zinc-800">
+                <h2 className="text-lg font-bold text-navy">
                   Notifications
                 </h2>
 
@@ -246,13 +246,13 @@ function Navbar() {
 
                           <div>
 
-                            <h3 className="text-sm font-semibold text-zinc-800 capitalize">
+                            <h3 className="text-sm font-semibold text-navy capitalize">
 
                               {item.title}
 
                             </h3>
 
-                            <p className="text-xs text-zinc-500 mt-1">
+                            <p className="text-xs text-secondary mt-1">
 
                               {item.message}
 
@@ -266,7 +266,7 @@ function Navbar() {
 
                   ) : (
 
-                    <p className="text-sm text-zinc-500 text-center py-4">
+                    <p className="text-sm text-secondary text-center py-4">
 
                       No Notifications
 
@@ -302,13 +302,13 @@ function Navbar() {
 
             <div className="text-left hidden md:block">
 
-              <h2 className="text-sm font-semibold text-zinc-800">
+              <h2 className="text-sm font-semibold text-navy">
 
                 {user?.name || "User"}
 
               </h2>
 
-              <p className="text-xs text-zinc-500 capitalize">
+              <p className="text-xs text-secondary capitalize">
 
                 {user?.role || "Role"}
 
@@ -330,9 +330,9 @@ function Navbar() {
 
           {openProfile && (
 
-            <div className="absolute right-0 mt-3 w-60 bg-white border border-zinc-200 rounded-2xl shadow-xl p-4 z-50">
+            <div className="absolute right-0 mt-3 w-60 card border-custom rounded-2xl shadow-xl p-4 z-50">
 
-              <div className="flex items-center gap-3 pb-4 border-b border-zinc-100">
+              <div className="flex items-center gap-3 pb-4 border-b border-custom">
 
                 <img
                   src={`https://ui-avatars.com/api/?name=${user?.name}`}
@@ -342,13 +342,13 @@ function Navbar() {
 
                 <div>
 
-                  <h2 className="font-semibold text-zinc-800">
+                  <h2 className="font-semibold text-navy">
 
                     {user?.name}
 
                   </h2>
 
-                  <p className="text-sm text-zinc-500 capitalize">
+                  <p className="text-sm text-secondary capitalize">
 
                     {user?.role}
 
@@ -360,7 +360,7 @@ function Navbar() {
 
               <button
                 onClick={logout}
-                className="mt-4 w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 transition-all"
+                className="mt-4 w-full flex items-center gap-3 px-4 py-3 rounded-xl text-danger hover:bg-red-50 transition-all"
               >
 
                 <LogOut size={18} />

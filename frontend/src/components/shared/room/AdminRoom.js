@@ -902,7 +902,7 @@ function AdminRoom() {
 
   return (
 
-    <div className="h-screen bg-gray-50 text-gray-900 flex flex-col overflow-hidden">
+    <div className="h-screen bg-background text-navy flex flex-col overflow-hidden">
 
       {/* ==========================================
           NAVBAR
@@ -913,7 +913,7 @@ function AdminRoom() {
           h-16
           bg-white
           border-b
-          border-blue-100
+          border-custom
           flex
           items-center
           justify-between
@@ -927,7 +927,7 @@ function AdminRoom() {
 
         <div>
 
-          <h1 className="text-2xl font-bold text-blue-900">
+          <h1 className="text-2xl font-bold text-navy">
 
             Admin Interview Room
 
@@ -943,7 +943,7 @@ function AdminRoom() {
 
           <div
             className="
-              bg-blue-600
+              btn-primary
               px-5
               py-2
               rounded-xl
@@ -995,8 +995,8 @@ function AdminRoom() {
               }
               className="
                 relative
-                bg-gray-100
-                hover:bg-gray-200
+                bg-zinc-100
+                hover:bg-zinc-200
                 transition-all
                 duration-300
                 w-12
@@ -1006,7 +1006,7 @@ function AdminRoom() {
                 items-center
                 justify-center
                 text-xl
-                text-gray-700
+                text-navy
               "
             >
 
@@ -1051,9 +1051,8 @@ function AdminRoom() {
                     top-16
                     right-0
                     w-[340px]
-                    bg-white
-                    border
-                    border-gray-200
+                    card
+                    border-custom
                     rounded-2xl
                     shadow-xl
                     overflow-hidden
@@ -1067,11 +1066,11 @@ function AdminRoom() {
                       px-5
                       py-4
                       border-b
-                      border-gray-200
+                      border-custom
                       flex
                       items-center
                       justify-between
-                      bg-gray-50
+                      bg-zinc-50
                     "
                   >
 
@@ -1087,8 +1086,8 @@ function AdminRoom() {
                       }
                       className="
                         text-sm
-                        text-blue-600
-                        hover:text-blue-700
+                        text-navy
+                        hover:text-navy/200
                         font-medium
                       "
                     >
@@ -1116,7 +1115,7 @@ function AdminRoom() {
                             className="
                               p-6
                               text-center
-                              text-gray-500
+                              text-secondary
                             "
                           >
 
@@ -1134,8 +1133,8 @@ function AdminRoom() {
                                 px-5
                                 py-4
                                 border-b
-                                border-gray-100
-                                hover:bg-gray-50
+                                border-custom
+                                hover:bg-zinc-50
                                 transition-all
                                 flex
                                 items-start
@@ -1172,7 +1171,7 @@ function AdminRoom() {
                                 <p
                                   className="
                                     text-xs
-                                    text-gray-400
+                                    text-secondary
                                     mt-2
                                   "
                                 >
@@ -1215,7 +1214,7 @@ function AdminRoom() {
             w-20
             bg-white
             border-r
-            border-blue-100
+            border-custom
             flex
             flex-col
             items-center
@@ -1241,14 +1240,14 @@ function AdminRoom() {
       transition-all
       shadow-sm
       ${activeTab === "camera"
-                  ? "bg-blue-600 text-white shadow-md"
-                  : "bg-blue-50 text-blue-600 hover:bg-blue-100"
+                  ? "btn-primary text-white shadow-md"
+                  : "bg-blue-50 text-navy hover:bg-blue-100"
                 }
     `}
             >
               <Video size={24} />
             </button>
-            <span className="text-xs text-gray-600 font-medium">Camera</span>
+            <span className="text-xs text-secondary font-medium">Camera</span>
           </div>
 
           {/* SCREEN SHARE */}
@@ -1267,14 +1266,14 @@ function AdminRoom() {
       transition-all
       shadow-sm
       ${activeTab === "screen"
-                  ? "bg-blue-600 text-white shadow-md"
-                  : "bg-blue-50 text-blue-600 hover:bg-blue-100"
+                  ? "btn-primary text-white shadow-md"
+                  : "bg-blue-50 text-navy hover:bg-blue-100"
                 }
     `}
             >
               <Monitor size={24} />
             </button>
-            <span className="text-xs text-gray-600 font-medium">Screen</span>
+            <span className="text-xs text-secondary font-medium">Screen</span>
           </div>
 
           {/* AI COPILOT */}
@@ -1293,14 +1292,14 @@ function AdminRoom() {
       transition-all
       shadow-sm
       ${activeTab === "ai-copilot"
-                  ? "bg-blue-600 text-white shadow-md"
-                  : "bg-blue-50 text-blue-600 hover:bg-blue-100"
+                  ? "btn-primary text-white shadow-md"
+                  : "bg-blue-50 text-navy hover:bg-blue-100"
                 }
     `}
             >
               <MessageSquare size={24} />
             </button>
-            <span className="text-xs text-gray-600 font-medium">AI Copilot</span>
+            <span className="text-xs text-secondary font-medium">AI Copilot</span>
           </div>
 
         </div>
@@ -1319,32 +1318,32 @@ function AdminRoom() {
 
               {/* STATUS INDICATORS */}
 
-              <div className="px-6 py-3 flex items-center gap-4 bg-white border-b border-blue-100">
+              <div className="px-6 py-3 flex items-center gap-4 bg-white border-b border-custom">
 
 
                 <div className="flex items-center gap-8">
 
                   <div>
 
-                    <p className="text-sm text-gray-500">Name</p>
+                    <p className="text-sm text-secondary">Name</p>
 
-                    <p className="font-semibold text-gray-900">{candidate?.name || 'Loading...'}</p>
+                    <p className="font-semibold text-navy">{candidate?.name || 'Loading...'}</p>
 
                   </div>
 
                   <div>
 
-                    <p className="text-sm text-gray-500">Email</p>
+                    <p className="text-sm text-secondary">Email</p>
 
-                    <p className="text-gray-700">{candidate?.email || 'Loading...'}</p>
+                    <p className="text-navy">{candidate?.email || 'Loading...'}</p>
 
                   </div>
 
                   <div className="flex items-center gap-2">
 
-                    <span className={`w-3 h-3 rounded-full ${cameraConnected ? 'bg-green-500' : 'bg-gray-400'}`}></span>
+                    <span className={`w-3 h-3 rounded-full ${cameraConnected ? 'bg-green-500' : 'bg-zinc-400'}`}></span>
 
-                    <span className="text-sm font-medium text-gray-700">{cameraConnected ? 'Live' : 'Offline'}</span>
+                    <span className="text-sm font-medium text-navy">{cameraConnected ? 'Live' : 'Offline'}</span>
 
                   </div>
 
@@ -1366,17 +1365,17 @@ function AdminRoom() {
                       className="max-h-[480px] w-full h-full object-contain"
                     />
                   ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center bg-gray-50 text-center">
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-50 text-center">
                       <CameraOff
                         size={64}
-                        className="text-gray-400 mb-4"
+                        className="text-secondary mb-4"
                       />
 
-                      <h3 className="text-lg font-semibold text-gray-700">
+                      <h3 className="text-lg font-semibold text-navy">
                         Camera is Unavailable
                       </h3>
 
-                      <p className="mt-2 text-sm text-gray-500 max-w-md">
+                      <p className="mt-2 text-sm text-secondary max-w-md">
                         Ask the candidate to on the camera or refresh the page.
                       </p>
                     </div>
@@ -1411,7 +1410,7 @@ function AdminRoom() {
 
               {/* INTERVIEW CONTROLS */}
 
-              <div className="px-6 py-4 bg-gray-50 border-t border-blue-100 flex items-center justify-center gap-4">
+              <div className="px-6 py-4 bg-zinc-50 border-t border-custom flex items-center justify-center gap-4">
 
                 <button
                   onClick={toggleAdminMic}
@@ -1425,12 +1424,12 @@ function AdminRoom() {
                 transition-all
                 ${isMuted
                       ? 'bg-red-500 text-white hover:bg-red-600'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'btn-primary text-white hover:bg-blue-700'
                     }
               `}
                 >
 
-                  {isMuted ? <MicOff size={20} /> : <Mic size={20} />}
+                  {isMuted ? <MicOff size={20} /> : <Mic size={30} />}
 
                 </button>
 
@@ -1465,32 +1464,32 @@ function AdminRoom() {
 
               {/* STATUS INDICATORS */}
 
-              <div className="px-6 py-3 flex items-center gap-4 bg-white border-b border-blue-100">
+              <div className="px-6 py-3 flex items-center gap-4 bg-border border-b border-custom">
 
 
                 <div className="flex items-center gap-8">
 
                   <div>
 
-                    <p className="text-sm text-gray-500">Name</p>
+                    <p className="text-sm text-secondary">Name</p>
 
-                    <p className="font-semibold text-gray-900">{candidate?.name || 'Loading...'}</p>
+                    <p className="font-semibold text-navy">{candidate?.name || 'Loading...'}</p>
 
                   </div>
 
                   <div>
 
-                    <p className="text-sm text-gray-500">Email</p>
+                    <p className="text-sm text-secondary">Email</p>
 
-                    <p className="text-gray-700">{candidate?.email || 'Loading...'}</p>
+                    <p className="text-navy">{candidate?.email || 'Loading...'}</p>
 
                   </div>
 
                   <div className="flex items-center gap-2">
 
-                    <span className={`w-3 h-3 rounded-full ${cameraConnected ? 'bg-green-500' : 'bg-gray-400'}`}></span>
+                    <span className={`w-3 h-3 rounded-full ${cameraConnected ? 'bg-green-500' : 'bg-zinc-400'}`}></span>
 
-                    <span className="text-sm font-medium text-gray-700">{cameraConnected ? 'Live' : 'Offline'}</span>
+                    <span className="text-sm font-medium text-navy">{cameraConnected ? 'Live' : 'Offline'}</span>
 
                   </div>
 
@@ -1500,7 +1499,7 @@ function AdminRoom() {
 
               {/* MAIN VIDEO AREA - CAMERA */}
 
-              <div className="camera-area flex-1 bg-gray-900 flex items-center justify-center">
+              <div className="camera-area flex-1 bg-background flex items-center justify-center">
 
                 <div className="relative w-full h-full">
                   {/* Video element always in DOM to capture stream immediately */}
@@ -1515,17 +1514,17 @@ function AdminRoom() {
                   
                   
                   {!screenSharing && (
-                    <div className="w-full h-full flex flex-col items-center justify-center bg-gray-50 text-center">
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-50 text-center">
                       <MonitorOff
                         size={64}
-                        className="text-gray-400 mb-4"
+                        className="text-secondary mb-4"
                       />
 
-                      <h3 className="text-lg font-semibold text-gray-700">
+                      <h3 className="text-lg font-semibold text-navy">
                         Screen Sharing Unavailable
                       </h3>
 
-                      <p className="mt-2 text-sm text-gray-500 max-w-md">
+                      <p className="mt-2 text-sm text-secondary max-w-md">
                         Ask the candidate to start screen sharing again to continue monitoring their activity.
                       </p>
                     </div>
@@ -1559,7 +1558,7 @@ function AdminRoom() {
 
               {/* INTERVIEW CONTROLS */}
 
-              <div className="px-6 py-4 bg-gray-50 border-t border-blue-100 flex items-center justify-center gap-4">
+              <div className="px-6 py-4 bg-zinc-50 border-t border-custom flex items-center justify-center gap-4">
 
                 <button
                   onClick={toggleAdminMic}
@@ -1573,7 +1572,7 @@ function AdminRoom() {
                 transition-all
                 ${isMuted
                       ? 'bg-red-500 text-white hover:bg-red-600'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'btn-primary text-white hover:bg-blue-700'
                     }
               `}
                 >
@@ -1620,7 +1619,7 @@ function AdminRoom() {
                     bg-white
                     rounded-3xl
                     border
-                    border-blue-200
+                    border-custom
                     shadow-sm
                     flex
                     flex-col
@@ -1632,12 +1631,12 @@ function AdminRoom() {
                     className="
                       p-4
                       border-b
-                      border-blue-200
+                      border-custom
                       bg-gradient-to-r from-blue-50 to-white
                     "
                   >
 
-                    <h2 className="text-xl font-semibold text-blue-900 flex items-center gap-2">
+                    <h2 className="text-xl font-semibold text-navy flex items-center gap-2">
 
                       <FileText size={20} />
 
@@ -1658,7 +1657,7 @@ function AdminRoom() {
 
                     {(!resumeUrl) && (
 
-                      <div className="w-full h-full flex items-center justify-center text-gray-500">
+                      <div className="w-full h-full flex items-center justify-center text-secondary">
 
                         <p>No resume URL provided,<br /> Please Ask the {candidate?.name || "candidate"} to login again and upload the resume</p>
 
@@ -1676,7 +1675,7 @@ function AdminRoom() {
 
               <div className="w-[40%] flex flex-col gap-4 overflow-hidden">
 
-                {/* AI ACTION BUTTONS */}
+                {/* AI ACTION BUTTONS 
 
                 <div className="flex gap-2 flex-wrap">
 
@@ -1684,7 +1683,7 @@ function AdminRoom() {
                     className="
                       px-4
                       py-2
-                      bg-blue-600
+                      btn-primary
                       text-white
                       rounded-xl
                       hover:bg-blue-700
@@ -1753,10 +1752,10 @@ function AdminRoom() {
                     className="
                       px-4
                       py-2
-                      bg-gray-600
+                      bg-zinc-600
                       text-white
                       rounded-xl
-                      hover:bg-gray-700
+                      hover:bg-zinc-700
                       transition-all
                       text-sm
                       font-medium
@@ -1772,7 +1771,7 @@ function AdminRoom() {
 
                   </button>
 
-                </div>
+                </div>/*}
 
                 {/* AI PANEL HEADER */}
 
@@ -1781,7 +1780,7 @@ function AdminRoom() {
                     bg-white
                     rounded-3xl
                     border
-                    border-blue-200
+                    border-custom
                     shadow-sm
                     p-4
                   "
@@ -1791,7 +1790,7 @@ function AdminRoom() {
 
                     <MessageSquare size={20} />
 
-                    AI Interview Copilot
+                    Sample Interview Questions
 
                   </h2>
 
@@ -1805,7 +1804,7 @@ function AdminRoom() {
                     bg-white
                     rounded-3xl
                     border
-                    border-blue-200
+                    border-custom
                     shadow-sm
                     p-4
                     overflow-y-auto
@@ -1816,25 +1815,25 @@ function AdminRoom() {
 
                   <div className="mb-6">
 
-                    <h3 className="text-lg font-semibold text-blue-900 mb-3">Technical Questions</h3>
+                    <h3 className="text-lg font-semibold text-secondary mb-3">Technical Questions</h3>
 
                     <div className="space-y-2">
 
                       <div className="p-3 bg-blue-50 rounded-xl border border-blue-100">
 
-                        <p className="text-sm text-gray-700">Explain React Virtual DOM.</p>
+                        <p className="text-sm text-navy">Explain React Virtual DOM.</p>
 
                       </div>
 
                       <div className="p-3 bg-blue-50 rounded-xl border border-blue-100">
 
-                        <p className="text-sm text-gray-700">What is useEffect?</p>
+                        <p className="text-sm text-navy">What is useEffect?</p>
 
                       </div>
 
                       <div className="p-3 bg-blue-50 rounded-xl border border-blue-100">
 
-                        <p className="text-sm text-gray-700">Explain Context API.</p>
+                        <p className="text-sm text-navy">Explain Context API.</p>
 
                       </div>
 
@@ -1846,25 +1845,25 @@ function AdminRoom() {
 
                   <div className="mb-6">
 
-                    <h3 className="text-lg font-semibold text-blue-900 mb-3">Project Questions</h3>
+                    <h3 className="text-lg font-semibold text-secondary mb-3">Project Questions</h3>
 
                     <div className="space-y-2">
 
                       <div className="p-3 bg-green-50 rounded-xl border border-green-100">
 
-                        <p className="text-sm text-gray-700">Explain your architecture.</p>
+                        <p className="text-sm text-navy">Explain your architecture.</p>
 
                       </div>
 
                       <div className="p-3 bg-green-50 rounded-xl border border-green-100">
 
-                        <p className="text-sm text-gray-700">Biggest challenge?</p>
+                        <p className="text-sm text-navy">Biggest challenge?</p>
 
                       </div>
 
                       <div className="p-3 bg-green-50 rounded-xl border border-green-100">
 
-                        <p className="text-sm text-gray-700">How would you scale it?</p>
+                        <p className="text-sm text-navy">How would you scale it?</p>
 
                       </div>
 
@@ -1876,19 +1875,19 @@ function AdminRoom() {
 
                   <div className="mb-6">
 
-                    <h3 className="text-lg font-semibold text-blue-900 mb-3">HR Questions</h3>
+                    <h3 className="text-lg font-semibold text-secondary mb-3">HR Questions</h3>
 
                     <div className="space-y-2">
 
                       <div className="p-3 bg-purple-50 rounded-xl border border-purple-100">
 
-                        <p className="text-sm text-gray-700">Tell me about yourself.</p>
+                        <p className="text-sm text-navy">Tell me about yourself.</p>
 
                       </div>
 
                       <div className="p-3 bg-purple-50 rounded-xl border border-purple-100">
 
-                        <p className="text-sm text-gray-700">Why should we hire you?</p>
+                        <p className="text-sm text-navy">Why should we hire you?</p>
 
                       </div>
 
@@ -1900,19 +1899,19 @@ function AdminRoom() {
 
                   <div className="mb-6">
 
-                    <h3 className="text-lg font-semibold text-blue-900 mb-3">Follow-up Questions</h3>
+                    <h3 className="text-lg font-semibold text-secondary mb-3">Follow-up Questions</h3>
 
                     <div className="space-y-2">
 
                       <div className="p-3 bg-orange-50 rounded-xl border border-orange-100">
 
-                        <p className="text-sm text-gray-700">Explain JWT in detail.</p>
+                        <p className="text-sm text-navy">Explain JWT in detail.</p>
 
                       </div>
 
                       <div className="p-3 bg-orange-50 rounded-xl border border-orange-100">
 
-                        <p className="text-sm text-gray-700">Difference between session and JWT?</p>
+                        <p className="text-sm text-navy">Difference between session and JWT?</p>
 
                       </div>
 
@@ -1925,17 +1924,20 @@ function AdminRoom() {
                 {/* INTERVIEW NOTES */}
 
                 <div
+                 style={{ display: "none" }}
                   className="
+                  
                     bg-white
                     rounded-3xl
                     border
-                    border-blue-200
+                    border-custom
                     shadow-sm
                     p-4
+                    
                   "
                 >
 
-                  <h3 className="text-lg font-semibold text-blue-900 mb-3 flex items-center gap-2">
+                  <h3 className="text-lg font-semibold text-navy mb-3 flex items-center gap-2">
 
                     <FileText size={18} />
 
@@ -1967,7 +1969,7 @@ function AdminRoom() {
                       w-full
                       px-4
                       py-2
-                      bg-blue-600
+                      btn-primary
                       text-white
                       rounded-xl
                       hover:bg-blue-700

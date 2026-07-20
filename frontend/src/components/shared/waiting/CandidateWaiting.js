@@ -373,17 +373,16 @@ function CandidateWaiting() {
 
   return (
 
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-6">
+    <div className="min-h-screen bg-background flex items-center justify-center px-6">
 
       <div
         className="
           w-full
           max-w-3xl
-          bg-white
+          card
           rounded-3xl
           shadow-xl
-          border
-          border-gray-200
+          border-custom
           p-10
         "
       >
@@ -392,13 +391,13 @@ function CandidateWaiting() {
 
         <div className="text-center">
 
-          <h1 className="text-5xl font-bold text-black">
+          <h1 className="text-5xl font-bold text-navy">
 
             Welcome to Moon Interview
 
           </h1>
 
-          <p className="text-gray-600 mt-5 text-lg leading-relaxed">
+          <p className="text-secondary mt-5 text-lg leading-relaxed">
 
             We are excited to have you at the interview.
 
@@ -408,7 +407,7 @@ function CandidateWaiting() {
 
           </p>
 
-          <div className="mt-6 inline-block bg-blue-100 text-blue-700 px-5 py-3 rounded-2xl font-semibold">
+          <div className="mt-6 inline-block bg-blue-100 text-primary px-5 py-3 rounded-2xl font-semibold">
 
             All The Best For Your Interview 🚀
 
@@ -427,7 +426,7 @@ function CandidateWaiting() {
                 bg-green-100
                 border
                 border-green-200
-                text-green-700
+                text-success
                 rounded-2xl
                 p-5
                 text-center
@@ -443,17 +442,17 @@ function CandidateWaiting() {
 
         {/* USER INFO */}
 
-        <div className="mt-10 bg-zinc-50 border border-zinc-200 rounded-2xl p-6">
+        <div className="mt-10 bg-zinc-50 border border-custom rounded-2xl p-6">
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
             <div>
 
-              <p className="text-zinc-500 text-sm">
+              <p className="text-secondary text-sm">
                 Candidate Name
               </p>
 
-              <h2 className="text-xl font-bold text-zinc-900 mt-2">
+              <h2 className="text-xl font-bold text-navy mt-2">
 
                 {user?.name}
 
@@ -463,11 +462,11 @@ function CandidateWaiting() {
 
             <div>
 
-              <p className="text-zinc-500 text-sm">
+              <p className="text-secondary text-sm">
                 Interview ID
               </p>
 
-              <h2 className="text-xl font-bold text-zinc-900 mt-2">
+              <h2 className="text-xl font-bold text-navy mt-2">
 
                 {roomId}
 
@@ -571,8 +570,7 @@ function CandidateWaiting() {
                 disabled={loading}
                 className="
                   w-full
-                  bg-blue-600
-                  hover:bg-blue-700
+                  btn-primary
                   transition-all
                   duration-300
                   text-white
@@ -605,18 +603,18 @@ function CandidateWaiting() {
                 "
               >
 
-                <h2 className="text-2xl font-bold text-white-700">
+                <h2 className="text-2xl font-bold text-navy">
 
                   Waiting For Approval
 
                 </h2>
 
-                <p className="text-white-600 mt-3 text-lg">
+                <p className="text-secondary mt-3 text-lg">
 
                   Interviewer will allow you shortly.
 
                 </p><br />
-                <p>Note:This is the pre check of the requirements, you must turn-on camera and microphone in the interview room</p>
+                <p className="text-navy">Note:This is the pre check of the requirements, you must turn-on camera and microphone in the interview room</p>
 
               </div>
 
@@ -648,9 +646,9 @@ function PermissionCard({
         flex
         items-center
         justify-between
-        bg-gray-50
+        bg-zinc-50
         border
-        border-gray-200
+        border-custom
         rounded-2xl
         p-5
       "
@@ -658,13 +656,13 @@ function PermissionCard({
 
       <div>
 
-        <h2 className="text-xl font-semibold text-black">
+        <h2 className="text-xl font-semibold text-navy">
 
           {title}
 
         </h2>
 
-        <p className="text-gray-500 mt-1">
+        <p className="text-secondary mt-1">
 
           {description}
 
@@ -677,7 +675,7 @@ function PermissionCard({
         {
           granted ? (
 
-            <span className="bg-green-100 text-green-700 px-4 py-2 rounded-xl font-medium">
+            <span className="bg-green-100 text-success px-4 py-2 rounded-xl font-medium">
 
               Granted
 
@@ -690,22 +688,10 @@ function PermissionCard({
               Pending
 
             </span>
-          )
+          ) 
         }
         {
-  uploading ? (
-    <span className="bg-yellow-100 text-yellow-700 px-4 py-2 rounded-xl font-medium">
-      Uploading...
-    </span>
-  ) : granted ? (
-    <span className="bg-green-100 text-green-700 px-4 py-2 rounded-xl font-medium">
-      Uploaded
-    </span>
-  ) : (
-    <span className="bg-red-100 text-red-700 px-4 py-2 rounded-xl font-medium">
-      Pending
-    </span>
-  )
+  
 }
 
       </div>

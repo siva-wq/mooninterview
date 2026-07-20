@@ -248,7 +248,7 @@ function AdminWaiting() {
 
   return (
 
-    <div className="flex min-h-screen bg-gray-50 text-black">
+    <div className="flex min-h-screen bg-background text-navy">
 
       {/* MAIN */}
 
@@ -270,7 +270,7 @@ function AdminWaiting() {
 
               </h1>
 
-              <p className="text-gray-500 mt-2">
+              <p className="text-secondary mt-2">
 
                 Manage and approve candidates before interview
 
@@ -284,22 +284,22 @@ function AdminWaiting() {
               className="
                 bg-white
                 border
-                border-gray-200
+                border-custom
                 px-6
                 py-5
                 rounded-2xl
                 shadow-sm
-                min-w-[220px]
+                min-w-[230px]
               "
             >
 
-              <p className="text-gray-500 text-sm">
+              <p className="text-secondary text-sm">
 
                 Waiting Candidates
 
               </p>
 
-              <h2 className="text-4xl font-bold text-blue-600 mt-2">
+              <h2 className="text-4xl font-bold text-navy mt-2">
 
                 {candidates.length}
 
@@ -311,19 +311,19 @@ function AdminWaiting() {
 
           {/* WAITING SECTION */}
 
-          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+          <div className="card p-6 rounded-2xl shadow-sm border-custom">
 
             {/* SECTION HEADER */}
 
             <div className="flex items-center justify-between mb-8">
 
-              <h2 className="text-2xl font-bold text-black">
+              <h2 className="text-2xl font-bold text-navy">
 
                 Waiting Candidates
 
               </h2>
 
-              <span className="bg-blue-600 text-white text-sm px-4 py-2 rounded-full">
+              <span className="btn-primary text-white text-sm px-4 py-2 rounded-full">
 
                 {candidates.length} Waiting
 
@@ -336,7 +336,7 @@ function AdminWaiting() {
             {
               loading && (
 
-                <p className="text-gray-500">
+                <p className="text-secondary">
 
                   Loading waiting candidates...
 
@@ -352,13 +352,13 @@ function AdminWaiting() {
 
                 <div className="text-center py-20">
 
-                  <h2 className="text-2xl font-bold text-zinc-700">
+                  <h2 className="text-2xl font-bold text-navy">
 
                     No Candidates Waiting
 
                   </h2>
 
-                  <p className="text-zinc-500 mt-2">
+                  <p className="text-secondary mt-2">
 
                     Waiting room is currently empty
 
@@ -370,7 +370,7 @@ function AdminWaiting() {
 
             {/* CANDIDATES GRID */}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-2 gap-6">
 
               {
                 candidates.map((candidate) => (
@@ -378,12 +378,11 @@ function AdminWaiting() {
                   <div
                     key={candidate._id}
                     className="
-                      bg-white
-                      border
-                      border-gray-200
+                      card
+                      border-custom
                       rounded-2xl
                       p-5
-                      hover:border-blue-500
+                      hover:border-primary
                       hover:shadow-xl
                       transition-all
                       duration-300
@@ -396,7 +395,7 @@ function AdminWaiting() {
 
                       <div>
 
-                        <h3 className="text-xl font-semibold text-black">
+                        <h3 className="text-xl font-semibold text-navy">
 
                           {
                             candidate.candidate?.name
@@ -404,7 +403,7 @@ function AdminWaiting() {
 
                         </h3>
 
-                        <p className="text-gray-600 mt-1">
+                        <p className="text-secondary mt-1">
 
                           {
                             candidate.candidate?.email
@@ -414,7 +413,7 @@ function AdminWaiting() {
 
                       </div>
 
-                      <div className="bg-black px-3 py-1 rounded-lg text-sm text-white">
+                      <div className="bg-navy px-3 py-1 rounded-lg text-sm text-white">
 
                         {
                           formatTime(
@@ -430,7 +429,7 @@ function AdminWaiting() {
 
                     <div className="mt-5 flex gap-2 flex-wrap">
 
-                      <span className="bg-yellow-100 text-yellow-700 text-sm px-3 py-2 rounded-full font-medium capitalize">
+                      <span className="bg-yellow-100 text-warning text-sm px-3 py-2 rounded-full font-medium capitalize">
 
                         {candidate.status}
 
@@ -439,7 +438,7 @@ function AdminWaiting() {
                       {
                         candidate.ready && (
 
-                          <span className="bg-green-100 text-green-700 text-sm px-3 py-2 rounded-full font-medium">
+                          <span className="bg-green-100 text-success text-sm px-3 py-2 rounded-full font-medium">
 
                             Ready
                           </span>
@@ -452,13 +451,13 @@ function AdminWaiting() {
 
                     <div className="mt-4">
 
-                      <p className="text-sm text-zinc-500">
+                      <p className="text-sm text-secondary">
 
                         Room ID
 
                       </p>
 
-                      <h3 className="font-semibold text-zinc-800 mt-1">
+                      <h3 className="font-semibold text-navy mt-1">
 
                         {candidate.roomId}
 
@@ -478,8 +477,8 @@ function AdminWaiting() {
                         }
                         className="
                           flex-1
-                          bg-green-600
-                          hover:bg-green-700
+                          btn-primary
+                          hover:btn-secondary
                           transition-all
                           duration-300
                           py-3

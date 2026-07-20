@@ -1,0 +1,56 @@
+:root{
+
+  /* ========= BRAND ========= */
+
+  --primary:#7C3AED;
+  --primary-hover:#6D28D9;
+
+  /*--navy:#0f172ae1;*/
+  --navy: #0B1F3A;
+
+  --gold:#D4A017;
+  --gold-hover:#B8860B;
+
+  --white:#FFFFFF;
+
+  /* ========= BACKGROUND ========= */
+
+  --background:#F8FAFC;
+
+  --card:#FFFFFF;
+
+  /* ========= TEXT ========= */
+
+  --text-primary:#0B1F3A;
+
+  --text-secondary:#64748B;
+
+  /* ========= BORDER ========= */
+
+  --border: #dfe3e9;
+
+  /* ========= STATUS ========= */
+
+  --success:#16A34A;
+
+  --danger:#DC2626;
+
+  --warning:#D4A017;
+
+  /* ========= SHADOW ========= */
+
+  --shadow-card:
+  0 10px 25px rgba(15,23,42,.08);
+
+  --shadow-button:
+  0 8px 20px rgba(124,58,237,.25);
+
+  /* ========= RADIUS ========= */
+
+  --radius-card:20px;
+
+  --radius-button:12px;
+
+  --radius-input:10px;
+
+}

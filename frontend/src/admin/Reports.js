@@ -322,22 +322,22 @@ function Reports() {
 
   return (
 
-    <div className="flex min-h-screen bg-white text-black">
+    <div className="flex min-h-screen bg-background text-primary">
 
       {/* MAIN */}
 
       <div className="flex-1">
 
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
 
           {/* LOADING */}
 
           {
             loading && (
 
-              <div className="bg-white p-6 rounded-2xl mb-6">
+              <div className="card p-4 sm:p-6 mb-6">
 
-                <p className="text-zinc-500">
+                <p className="text-secondary">
 
                   Loading reports...
 
@@ -355,8 +355,8 @@ function Reports() {
               grid-cols-1
               sm:grid-cols-2
               lg:grid-cols-5
-              gap-6
-              mb-8
+              gap-4 sm:gap-6
+              mb-6 sm:mb-8
             "
           >
 
@@ -365,7 +365,7 @@ function Reports() {
               value={
                 cards?.totalInterviews || 0
               }
-              increase="+12%"
+              //increase="+12%"
             />
 
             <DashboardCard
@@ -373,7 +373,7 @@ function Reports() {
               value={
                 cards?.rejected || 0
               }
-              increase="+5%"
+              //increase="+5%"
             />
 
             <DashboardCard
@@ -381,13 +381,13 @@ function Reports() {
               value={
                 cards?.selected || 0
               }
-              increase="+18%"
+              //increase="+18%"
             />
 
             <DashboardCard
               title="Avg Score"
               value={`${cards?.avgScore || 0}%`}
-              increase="+9%"
+              //increase="+9%"
             />
 
             <DashboardCard
@@ -395,7 +395,7 @@ function Reports() {
               value={
                 cards?.weekInterviews || 0
               }
-              increase="+11%"
+              //increase="+11%"
             />
 
           </div>
@@ -406,9 +406,10 @@ function Reports() {
             className="
               grid
               grid-cols-1
+              md:grid-cols-2
               lg:grid-cols-3
-              gap-6
-              mb-8
+              gap-4 sm:gap-6
+              mb-6 sm:mb-8
             "
           >
 
@@ -416,22 +417,19 @@ function Reports() {
 
             <div
               className="
-                bg-white
+                card
                 rounded-2xl
                 p-5
-                border
-                border-zinc-200
-                shadow-sm
               "
             >
 
-              <h2 className="text-lg font-semibold mb-4">
+              <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-navy">
 
                 Candidate Performance
 
               </h2>
 
-              <div className="w-full h-[300px]">
+              <div className="w-full h-[250px] sm:h-[300px]">
 
                 <ResponsiveContainer>
 
@@ -451,7 +449,7 @@ function Reports() {
 
                     <Bar
                       dataKey="score"
-                      fill="#3B82F6"
+                      fill="var(--text-primary)"
                       radius={[10, 10, 0, 0]}
                     />
 
@@ -467,22 +465,19 @@ function Reports() {
 
             <div
               className="
-                bg-white
+                card
                 rounded-2xl
                 p-5
-                border
-                border-zinc-200
-                shadow-sm
               "
             >
 
-              <h2 className="text-lg font-semibold mb-4">
+              <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-navy">
 
                 Interview Status
 
               </h2>
 
-              <div className="w-full h-[300px]">
+              <div className="w-full h-[250px] sm:h-[300px]">
 
                 <ResponsiveContainer>
 
@@ -527,22 +522,19 @@ function Reports() {
 
             <div
               className="
-                bg-white
+                card
                 rounded-2xl
                 p-5
-                border
-                border-zinc-200
-                shadow-sm
               "
             >
 
-              <h2 className="text-lg font-semibold mb-4">
+              <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-navy">
 
                 Weekly Trend
 
               </h2>
 
-              <div className="w-full h-[300px]">
+              <div className="w-full h-[250px] sm:h-[300px]">
 
                 <ResponsiveContainer>
 
@@ -563,7 +555,7 @@ function Reports() {
                     <Line
                       type="monotone"
                       dataKey="interviews"
-                      stroke="#3B82F6"
+                      stroke="var(--text-primary)"
                       strokeWidth={3}
                     />
 
@@ -579,7 +571,7 @@ function Reports() {
 
           {/* REPORTS TABLE */}
 
-          <div className="mb-8">
+          <div className="mb-6 sm:mb-8">
 
             <ReportsTable
               setSelectedCandidate={
@@ -616,8 +608,8 @@ function Reports() {
               className="
                 relative
                 w-full
-                max-w-6xl
-                max-h-[95vh]
+                max-w-4xl sm:max-w-6xl
+                max-h-[90vh] sm:max-h-[95vh]
                 overflow-y-auto
                 bg-white
                 rounded-2xl
@@ -634,12 +626,11 @@ function Reports() {
                   absolute
                   top-4
                   right-4
-                  w-10
-                  h-10
+                  w-8 h-8 sm:w-10 sm:h-10
                   rounded-full
                   bg-zinc-100
                   hover:bg-zinc-200
-                  text-xl
+                  text-base sm:text-xl
                   z-10
                 "
               >

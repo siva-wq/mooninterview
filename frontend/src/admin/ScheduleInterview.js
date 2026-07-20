@@ -193,7 +193,7 @@ function ScheduleInterview() {
 
   return (
 
-    <div className="flex min-h-screen bg-[#F5F7FB] text-black">
+    <div className="flex min-h-screen bg-background text-primary">
 
       {/* MAIN CONTENT */}
 
@@ -203,19 +203,19 @@ function ScheduleInterview() {
 
         {/* PAGE CONTENT */}
 
-        <div className="p-6">
+        <div className="px-4 py-5 sm:px-6 lg:px-8">
 
           {/* PAGE HEADER */}
 
           <div className="mb-8">
 
-            <h1 className="text-3xl font-bold text-zinc-900">
+            <h1 className="text-2xl sm:text-3xl font-bold text-navy">
 
               Schedule Interview
 
             </h1>
 
-            <p className="text-zinc-500 mt-2">
+            <p className="text-sm sm:text-base text-secondary mt-2">
 
               Create and manage technical interviews
 
@@ -230,7 +230,7 @@ function ScheduleInterview() {
 
               <div
                 className="
-                  bg-white
+                  card
                   p-5
                   rounded-2xl
                   shadow-sm
@@ -238,7 +238,7 @@ function ScheduleInterview() {
                 "
               >
 
-                <p className="text-zinc-500">
+                <p className="text-secondary">
 
                   Loading interview data...
 
@@ -256,8 +256,8 @@ function ScheduleInterview() {
               grid-cols-1
               sm:grid-cols-2
               lg:grid-cols-5
-              gap-6
-              mb-8
+              gap-4 sm:gap-6
+              mb-6 sm:mb-8
             "
           >
 
@@ -266,7 +266,7 @@ function ScheduleInterview() {
               value={
                 stats?.totalCandidates || 0
               }
-              increase="+12%"
+              //increase="+12%"
             />
 
             <DashboardCard
@@ -274,7 +274,7 @@ function ScheduleInterview() {
               value={
                 stats?.scheduled || 0
               }
-              increase="+8%"
+              //increase="+8%"
             />
 
             <DashboardCard
@@ -282,7 +282,7 @@ function ScheduleInterview() {
               value={
                 stats?.completed || 0
               }
-              increase="+18%"
+              //increase="+18%"
             />
 
             <DashboardCard
@@ -290,7 +290,7 @@ function ScheduleInterview() {
               value={
                 stats?.waiting || 0
               }
-              increase="+5%"
+              //increase="+5%"
             />
 
             <DashboardCard
@@ -298,7 +298,7 @@ function ScheduleInterview() {
               value={
                 stats?.ongoing || 0
               }
-              increase="+3%"
+              //increase="+3%"
             />
 
           </div>
@@ -307,9 +307,9 @@ function ScheduleInterview() {
 
           <div
             className="
-              bg-white
+              card
               border
-              border-zinc-200
+              border-custom
               rounded-3xl
               shadow-sm
               p-6
@@ -320,13 +320,13 @@ function ScheduleInterview() {
 
             <div className="mb-6">
 
-              <h2 className="text-2xl font-bold text-zinc-900">
+              <h2 className="text-2xl font-bold text-navy">
 
                 Candidate Management
 
               </h2>
 
-              <p className="text-zinc-500 mt-1">
+              <p className="text-secondary mt-1">
 
                 Select candidates and schedule interviews
 

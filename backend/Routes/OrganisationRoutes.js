@@ -10,20 +10,20 @@ const User =
 const Interview =
     require('../models/Interview');
 
-const authMiddleware =
-    require('../middleware/authMiddleware');
-
-const roleMiddleware =
-    require('../middleware/roleMiddleware');
+const authMiddleware=require('../middleware/authMiddleware');
 
 
+
+console.log("OrganisationRoutes file loaded");
 
 //create organisation
 router.post(
     '/organisations',
     async (req, res) => {
+        
         try {
             const { title } = req.body;
+
 
             const expiryDate = new Date();
             expiryDate.setDate(expiryDate.getDate() + 10); // 10-day trial
@@ -43,13 +43,64 @@ router.post(
             });
         } catch (error) {
             console.log(error);
+
             res.status(500).json({
                 message: 'Server Error'
             });
         }
     }
 );
+// ==========================================
+// UPDATE ORGANISATION
+// ADMIN ONLY
+// ==========================================
+router.put(
+    '/organisations',
+    async (req, res) => {
 
+        try {
+
+            const {
+                title,
+                expiryDate
+            } = req.body;
+
+            const organisation =
+                await Organisation.findByIdAndUpdate(
+                    req.user.organisation,
+                    {
+                        title,
+                        expiryDate
+                    },
+                    {
+                        new: true
+                    }
+                );
+
+            if (!organisation) {
+
+                return res.status(404).json({
+                    message:
+                        'Organisation not found'
+                });
+            }
+
+            res.status(200).json({
+                message:
+                    'Organisation updated successfully',
+                organisation
+            });
+
+        } catch (error) {
+
+            console.log(error);
+
+            res.status(500).json({
+                message: 'Server Error'
+            });
+        }
+    }
+);
 
 // ==========================================
 // GET ALL ORGANISATIONS
@@ -58,8 +109,10 @@ router.post(
 router.get(
     '/organisations',
     async (req, res) => {
+        console.log("INSIDE PUBLIC ORGANISATIONS ROUTE");
 
         try {
+             console.log("INSIDE PUBLIC ORGANISATIONS ROUTE");
 
             const organisations =
                 await Organisation.find({
@@ -78,7 +131,7 @@ router.get(
 
         } catch (error) {
 
-            console.log(error);
+            console.log("from /organisations \n"+error);
 
             res.status(500).json({
                 message: 'Server Error'
@@ -180,64 +233,13 @@ router.get(
 );
 
 
-// ==========================================
-// UPDATE ORGANISATION
-// ADMIN ONLY
-// ==========================================
-router.put(
-    '/organisations',
-    async (req, res) => {
-
-        try {
-
-            const {
-                title,
-                expiryDate
-            } = req.body;
-
-            const organisation =
-                await Organisation.findByIdAndUpdate(
-                    req.user.organisation,
-                    {
-                        title,
-                        expiryDate
-                    },
-                    {
-                        new: true
-                    }
-                );
-
-            if (!organisation) {
-
-                return res.status(404).json({
-                    message:
-                        'Organisation not found'
-                });
-            }
-
-            res.status(200).json({
-                message:
-                    'Organisation updated successfully',
-                organisation
-            });
-
-        } catch (error) {
-
-            console.log(error);
-
-            res.status(500).json({
-                message: 'Server Error'
-            });
-        }
-    }
-);
-
 //get status
 router.get(
   "/organisation-status",
   authMiddleware,
   async (req, res) => {
     try {
+        console.log(req.user)
       const organisation =
         await Organisation.findById(
           req.user.organisation
@@ -268,6 +270,7 @@ router.get(
           organisation.expiryDate,
       });
     } catch (error) {
+        console.log(error)
       res.status(500).json({
         message: error.message,
       });

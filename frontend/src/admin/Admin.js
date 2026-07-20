@@ -198,13 +198,13 @@ function Admin() {
 
       <div className="mb-8">
 
-        <h1 className="text-3xl font-bold text-zinc-800">
+        <h1 className="text-3xl font-bold text-navy">
 
           Dashboard Overview
 
         </h1>
 
-        <p className="text-zinc-500 mt-1">
+        <p className="text-secondary mt-1">
 
           Monitor interviews, candidates, and reports in real-time.
 
@@ -217,9 +217,9 @@ function Admin() {
       {
         loading && (
 
-          <div className="bg-white p-6 rounded-2xl shadow-sm mb-6">
+          <div className="card p-6 mb-6">
 
-            <p className="text-zinc-500">
+            <p className="text-secondary">
 
               Loading dashboard...
 
@@ -231,14 +231,19 @@ function Admin() {
 
       {/* STATS CARDS */}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+      <div className="grid
+              grid-cols-1
+              sm:grid-cols-2
+              lg:grid-cols-5
+              gap-6
+              mb-8">
 
         <DashboardCard
           title="Total Interviews"
           value={
             cards?.totalInterviews || 0
           }
-          increase="+12%"
+          //increase="+12%"
         />
 
         <DashboardCard
@@ -246,7 +251,7 @@ function Admin() {
           value={
             cards?.scheduled || 0
           }
-          increase="+5%"
+         // increase="+5%"
         />
 
         <DashboardCard
@@ -254,7 +259,7 @@ function Admin() {
           value={
             cards?.ongoing || 0
           }
-          increase="+7%"
+         // increase="+7%"
         />
 
         <DashboardCard
@@ -262,15 +267,7 @@ function Admin() {
           value={
             cards?.completed || 0
           }
-          increase="+18%"
-        />
-
-        <DashboardCard
-          title="Candidates"
-          value={
-            cards?.totalCandidates || 0
-          }
-          increase="+9%"
+          //increase="+18%"
         />
 
         <DashboardCard
@@ -278,32 +275,9 @@ function Admin() {
           value={
             cards?.selected || 0
           }
-          increase="+12%"
+         // increase="+12%"
         />
 
-        <DashboardCard
-          title="Rejected Candidates"
-          value={
-            cards?.rejected || 0
-          }
-          increase="+12%"
-        />
-
-        <DashboardCard
-          title="Interviewers"
-          value={
-            cards?.totalInterviewers || 0
-          }
-          increase="+4%"
-        />
-
-        <DashboardCard
-          title="Admins"
-          value={
-            cards?.totalAdmins || 0
-          }
-          increase="+2%"
-        />
 
       </div>
 
