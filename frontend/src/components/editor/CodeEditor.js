@@ -158,7 +158,6 @@ int main() {
 
     return (
 
-        <div className="w-full h-screen bg-white text-black flex flex-col">
         <div className="w-full h-screen bg-background text-navy flex flex-col">
 
             {/* ======================================== */}

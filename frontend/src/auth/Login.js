@@ -160,7 +160,6 @@ function Login() {
         formData.password;
 
     return (
-  <div className="min-h-screen bg-[#0F172A] flex">
   <div className="min-h-screen bg-background text-navy flex">
 
     {/* LEFT SIDE */}
