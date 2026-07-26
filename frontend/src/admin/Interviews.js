@@ -206,7 +206,7 @@ function Interviews() {
 
                 {/* CONTENT */}
 
-                <div className="flex-1 overflow-y-auto p-6">
+                <div className="flex-1 overflow-y-auto p-4 sm:p-6">
 
                     <div className="space-y-6">
 
@@ -216,7 +216,7 @@ function Interviews() {
 
                             <div>
 
-                                <h1 className="text-3xl font-bold text-navy">
+                                <h1 className="text-2xl sm:text-3xl font-bold text-navy">
 
                                     Interviews Dashboard
 
@@ -237,7 +237,7 @@ function Interviews() {
                         {
                             loading && (
 
-                                <div className="card p-5">
+                                <div className="card p-4 sm:p-5">
 
                                     <p className="text-secondary">
 
@@ -257,8 +257,8 @@ function Interviews() {
                                 grid-cols-1
                                 sm:grid-cols-2
                                 lg:grid-cols-5
-                                gap-6
-                                mb-8
+                                gap-4 sm:gap-6
+                                mb-6 sm:mb-8
                             "
                         >
 
@@ -310,7 +310,7 @@ function Interviews() {
                             className="
                                 card
                                 rounded-3xl
-                                p-6
+                                p-4 sm:p-6
                             "
                         >
 
@@ -320,7 +320,7 @@ function Interviews() {
 
                                 <div>
 
-                                    <h2 className="text-xl font-bold text-navy">
+                                    <h2 className="text-lg sm:text-xl font-bold text-navy">
 
                                         Upcoming Interviews
 

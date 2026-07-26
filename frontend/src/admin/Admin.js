@@ -198,7 +198,7 @@ function Admin() {
 
       <div className="mb-8">
 
-        <h1 className="text-3xl font-bold text-navy">
+        <h1 className="text-2xl sm:text-3xl font-bold text-navy">
 
           Dashboard Overview
 
@@ -235,8 +235,8 @@ function Admin() {
               grid-cols-1
               sm:grid-cols-2
               lg:grid-cols-5
-              gap-6
-              mb-8">
+              gap-4 sm:gap-6
+              mb-6 sm:mb-8">
 
         <DashboardCard
           title="Total Interviews"

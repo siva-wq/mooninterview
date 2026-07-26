@@ -112,7 +112,7 @@ function Result() {
         items-center
         justify-center
       ">
-        <p className="text-lg">
+        <p className="text-base sm:text-lg">
           Loading...
         </p>
       </div>
@@ -135,7 +135,7 @@ function Result() {
         mb-6
       ">
         <h1 className="
-          text-3xl
+          text-2xl sm:text-3xl
           font-bold
           text-navy
         ">
@@ -147,7 +147,7 @@ function Result() {
         grid
         grid-cols-1
         lg:grid-cols-3
-        gap-6
+        gap-4 sm:gap-6
       ">
 
         {/* Resume Section */}
@@ -160,7 +160,7 @@ function Result() {
             rounded-2xl
             shadow-md
             overflow-hidden
-            h-[600px] lg:h-[800px]
+            h-[400px] sm:h-[500px] lg:h-[600px] xl:h-[800px]
           ">
             {resume ? (
               <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
@@ -190,31 +190,31 @@ function Result() {
             card
             rounded-2xl
             shadow-md
-            p-6
+            p-4 sm:p-6
           ">
             <h2 className="
-              text-xl
+              text-lg sm:text-xl
               font-semibold
-              mb-6
+              mb-4 sm:mb-6
               text-navy
             ">
               Candidate Details
             </h2>
 
             <div className="
-              space-y-5
+              space-y-3 sm:space-y-5
             ">
 
               <div>
                 <p className="
-                  text-sm
+                  text-xs sm:text-sm
                   text-secondary
                 ">
                   Name
                 </p>
 
                 <p className="
-                  text-lg
+                  text-base sm:text-lg
                   font-medium
                 ">
                   {candidate?.name}
@@ -223,14 +223,14 @@ function Result() {
 
               <div>
                 <p className="
-                  text-sm
+                  text-xs sm:text-sm
                   text-secondary
                 ">
                   Email
                 </p>
 
                 <p className="
-                  text-lg
+                  text-base sm:text-lg
                   font-medium
                   break-all
                 ">
@@ -240,7 +240,7 @@ function Result() {
 
               <div>
                 <p className="
-                  text-sm
+                  text-xs sm:text-sm
                   text-secondary
                 ">
                   Status
@@ -259,7 +259,8 @@ function Result() {
                     border
                     border-custom
                     rounded-xl
-                    p-3
+                    p-2 sm:p-3
+                    text-sm sm:text-base
                     focus:outline-none
                     focus:ring-2
                     focus:ring-primary
@@ -289,7 +290,8 @@ function Result() {
                 className="
                   btn-primary
                   w-full
-                  py-3
+                  py-2 sm:py-3
+                  text-sm sm:text-base
                   font-semibold
                   disabled:opacity-50
                 "

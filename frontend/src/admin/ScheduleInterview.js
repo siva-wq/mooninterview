@@ -312,7 +312,7 @@ function ScheduleInterview() {
               border-custom
               rounded-3xl
               shadow-sm
-              p-6
+              p-4 sm:p-6
             "
           >
 
@@ -320,7 +320,7 @@ function ScheduleInterview() {
 
             <div className="mb-6">
 
-              <h2 className="text-2xl font-bold text-navy">
+              <h2 className="text-xl sm:text-2xl font-bold text-navy">
 
                 Candidate Management
 
