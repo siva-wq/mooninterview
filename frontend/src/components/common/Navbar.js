@@ -139,7 +139,7 @@ function Navbar() {
           {organisationStatus && (
 
             <div
-              className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
+              className={`hidden md:block inline-flex items-center px-3 py-1 rounded-full text-xs font-medium
       ${organisationStatus.expired
                   ? "bg-red-100 text-red-600"
                   : organisationStatus.daysLeft <= 7
@@ -180,7 +180,8 @@ function Navbar() {
             NOTIFICATIONS
         ========================================== */}
 
-        <div className="relative">
+        
+<div className="relative hidden md:block">
 
           <button
             onClick={() =>
@@ -188,7 +189,7 @@ function Navbar() {
                 !openNotification
               )
             }
-            className="relative bg-zinc-100 p-3 rounded-xl hover:bg-zinc-200 transition"
+            className="relative bg-zinc-100 p-2 md:p-3 rounded-xl md:block sm:block"
           >
 
             <Bell

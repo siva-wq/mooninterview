@@ -15,14 +15,20 @@ function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const isMobile = window.innerWidth < 768;
+
   const [open, setOpen] = useState(() => {
+    if (isMobile) return false;
+
     const saved = localStorage.getItem("sidebarOpen");
     return saved !== null ? JSON.parse(saved) : true;
   });
 
   useEffect(() => {
-    localStorage.setItem("sidebarOpen", JSON.stringify(open));
-  }, [open]);
+    if (!isMobile) {
+      localStorage.setItem("sidebarOpen", JSON.stringify(open));
+    }
+  }, [open, isMobile]);
 
   const menu = [
     {
@@ -65,12 +71,22 @@ function Sidebar() {
         flex
         flex-col
 
-        ${open ? "w-72" : "w-24"}
+        ${
+          isMobile
+            ? "w-16"
+            : open
+            ? "w-72"
+            : "w-24"
+        }
       `}
     >
       {/* Top */}
-      <div className="flex items-center justify-between p-5">
-        {open && (
+      <div
+        className={`flex items-center ${
+          isMobile ? "justify-center p-3" : "justify-between p-5"
+        }`}
+      >
+        {!isMobile && open && (
           <div
             onClick={() => navigate("/")}
             className="cursor-pointer select-none"
@@ -86,16 +102,20 @@ function Sidebar() {
           </div>
         )}
 
-        <button
-          onClick={() => setOpen(!open)}
-          className="p-2 rounded-xl text-navy hover:bg-zinc-100 transition"
-        >
-          {open ? <X size={22} /> : <Menu size={22} />}
-        </button>
+        {!isMobile && (
+          <button
+            onClick={() => setOpen(!open)}
+            className="p-2 rounded-xl text-navy hover:bg-zinc-100 transition"
+          >
+            {open ? <X size={22} /> : <Menu size={22} />}
+          </button>
+        )}
+
+        {isMobile && <Menu size={26} className="text-navy" />}
       </div>
 
       {/* Menu */}
-      <div className="flex-1 px-3 mt-8 flex flex-col gap-3">
+      <div className="flex-1 px-2 mt-8 flex flex-col gap-3">
         {menu.map((item, index) => {
           const active = location.pathname === item.path;
 
@@ -105,10 +125,18 @@ function Sidebar() {
               to={item.path}
               className={`
                 flex items-center
-                ${open ? "justify-start gap-4 px-5" : "justify-center"}
-                py-4 rounded-2xl
-                transition-all duration-300
-                font-medium group
+                ${
+                  isMobile
+                    ? "justify-center py-3"
+                    : open
+                    ? "justify-start gap-4 px-5 py-4"
+                    : "justify-center py-4"
+                }
+                rounded-2xl
+                transition-all
+                duration-300
+                font-medium
+                group
 
                 ${
                   active
@@ -118,26 +146,22 @@ function Sidebar() {
               `}
             >
               <div
-                className={`
-                  ${
-                    active
-                      ? "text-white"
-                      : "text-secondary group-hover:text-gold"
-                  }
-                `}
+                className={`${
+                  active
+                    ? "text-white"
+                    : "text-secondary group-hover:text-gold"
+                }`}
               >
                 {item.icon}
               </div>
 
-              {open && (
+              {!isMobile && open && (
                 <span
-                  className={`
-                    ${
-                      active
-                        ? "text-white"
-                        : "text-secondary group-hover:text-navy"
-                    }
-                  `}
+                  className={`${
+                    active
+                      ? "text-white"
+                      : "text-secondary group-hover:text-navy"
+                  }`}
                 >
                   {item.name}
                 </span>
@@ -147,12 +171,18 @@ function Sidebar() {
         })}
       </div>
 
-      {/* Bottom Brand */}
-      <div className="border-t border-custom p-6 flex flex-col items-center">
+      {/* Bottom */}
+      <div className="border-t border-custom p-4 flex justify-center" onClick={()=>(navigate('/'))}>
         <img
           src="/main_icon.png"
           alt="MoonInterview"
-          className={`${open ? "w-24 h-24" : "w-12 h-12"} object-contain`}
+          className={`object-contain ${
+            isMobile
+              ? "w-8 h-8"
+              : open
+              ? "w-20 h-20"
+              : "w-12 h-12"
+          }`}
         />
       </div>
     </div>
