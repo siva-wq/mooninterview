@@ -544,8 +544,8 @@ const getRejectedTemplate = ({
   });
 };
 
-const getDemoRequestTemplate = ({ name, email, organisation }) => {
-  console.log(name, email, organisation)
+const getDemoRequestTemplate = ({ name, email, organisation, avtime }) => {
+  console.log(name, email, organisation, avtime)
   return emailLayout({
     subtitle: "Demo Request Received",
     content: `
@@ -568,12 +568,16 @@ const getDemoRequestTemplate = ({ name, email, organisation }) => {
           <td style="padding:10px; border:1px solid #ddd;"><strong>Organization</strong></td>
           <td style="padding:10px; border:1px solid #ddd;">${organisation}</td>
         </tr>
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd;"><strong>Available Time</strong></td>
+          <td style="padding:10px; border:1px solid #ddd;">${avtime}</td>
+        </tr>
       </table>
 
       <p>During the demo, we'll show you how MoonInterview can help your organization:</p>
 
       <ul>
-        <li>✔ AI-powered technical interviews</li>
+        <li>✔ Flow of technical interviews</li>
         <li>✔ Live coding assessments</li>
         <li>✔ Resume management</li>
         <li>✔ Real-time collaboration</li>
@@ -590,8 +594,9 @@ const getDemoRequestTemplate = ({ name, email, organisation }) => {
   });
 };
 
-const getDemoRequestTemplateToAd = ({ name, email, organisation }) => {
-  console.log(name," ",email," ",organisation)
+
+const getDemoRequestTemplateToAd = ({ name, email, organisation, avtime }) => {
+  console.log(name," ",email," ",organisation," ",avtime)
   return emailLayout({
     subtitle: "🚀 New Demo Request",
     content: `
@@ -613,6 +618,10 @@ const getDemoRequestTemplateToAd = ({ name, email, organisation }) => {
         <tr>
           <td style="padding:10px; border:1px solid #ddd;"><strong>Organization</strong></td>
           <td style="padding:10px; border:1px solid #ddd;">${organisation}</td>
+        </tr>
+         <tr>
+          <td style="padding:10px; border:1px solid #ddd;"><strong>Available TIme</strong></td>
+          <td style="padding:10px; border:1px solid #ddd;">${avtime}</td>
         </tr>
 
         <tr>
@@ -639,6 +648,154 @@ const getDemoRequestTemplateToAd = ({ name, email, organisation }) => {
   });
 };
 
+const getPricingRequestTemplate = ({ name, email, organisation, pricing }) => {
+  return emailLayout({
+    subtitle: "Pricing Request Received",
+    content: `
+      <p>Hi <strong>${name}</strong>,</p>
+
+      <p>
+        Thank you for choosing <strong>MoonInterview</strong>.
+      </p>
+
+      <p>
+        We've successfully received your request for the
+        <strong>${pricing}</strong>.
+      </p>
+
+      <p>
+        Our team will review your request and contact you shortly with the
+        next steps.
+      </p>
+
+      <table style="width:100%; border-collapse:collapse; margin:20px 0;">
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd;"><strong>Contact Person</strong></td>
+          <td style="padding:10px; border:1px solid #ddd;">${name}</td>
+        </tr>
+
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd;"><strong>Email</strong></td>
+          <td style="padding:10px; border:1px solid #ddd;">${email}</td>
+        </tr>
+
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd;"><strong>Organization</strong></td>
+          <td style="padding:10px; border:1px solid #ddd;">${organisation}</td>
+        </tr>
+
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd;"><strong>Selected Plan</strong></td>
+          <td style="padding:10px; border:1px solid #ddd;">${pricing}</td>
+        </tr>
+      </table>
+
+      ${
+        pricing === "One-Time Trial"
+          ? `
+          <p>
+            Your organization will be registered for a
+            <strong>one-time 10-day free trial</strong>.
+            Once the registration is completed, you'll receive your login
+            credentials via email.
+          </p>
+          `
+          : `
+          <p>
+            Our team will contact you to complete the subscription process.
+            Once confirmed, your organization will be activated and you'll
+            receive your login credentials via email.
+          </p>
+          `
+      }
+
+      <p>
+        If you have any questions, simply reply to this email and our team
+        will be happy to assist you.
+      </p>
+
+      <p>
+        Best Regards,<br/>
+        <strong>MoonInterview Team</strong>
+      </p>
+    `,
+  });
+};
+
+const getPricingRequestTemplateToAd = ({
+  name,
+  email,
+  organisation,
+  pricing,
+}) => {
+  return emailLayout({
+    subtitle: "🚀 New Pricing Request",
+    content: `
+      <p>Hello Admin,</p>
+
+      <p>
+        A new organization has submitted a <strong>${pricing}</strong> request
+        through the MoonInterview pricing page.
+      </p>
+
+      <table style="width:100%; border-collapse:collapse; margin:20px 0;">
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd;"><strong>Contact Person</strong></td>
+          <td style="padding:10px; border:1px solid #ddd;">${name}</td>
+        </tr>
+
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd;"><strong>Email</strong></td>
+          <td style="padding:10px; border:1px solid #ddd;">${email}</td>
+        </tr>
+
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd;"><strong>Organization</strong></td>
+          <td style="padding:10px; border:1px solid #ddd;">${organisation}</td>
+        </tr>
+
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd;"><strong>Selected Plan</strong></td>
+          <td style="padding:10px; border:1px solid #ddd;">${pricing}</td>
+        </tr>
+
+        <tr>
+          <td style="padding:10px; border:1px solid #ddd;"><strong>Requested At</strong></td>
+          <td style="padding:10px; border:1px solid #ddd;">
+            ${new Date().toLocaleString()}
+          </td>
+        </tr>
+      </table>
+
+      <p><strong>Next Steps:</strong></p>
+
+      <ol>
+        ${
+          pricing === "One-Time Trial"
+            ? `
+              <li>Verify the organization details.</li>
+              <li>Create the organization account.</li>
+              <li>Activate the 10-day free trial.</li>
+              <li>Send the login credentials by email.</li>
+            `
+            : `
+              <li>Contact the organization.</li>
+              <li>Share the payment details or payment link.</li>
+              <li>Confirm the payment.</li>
+              <li>Create the organization account.</li>
+              <li>Send the login credentials by email.</li>
+            `
+        }
+      </ol>
+
+      <p>
+        Regards,<br/>
+        <strong>MoonInterview System</strong>
+      </p>
+    `,
+  });
+};
+
 module.exports = {
   getInterviewInvitationTemplate,
   getSelectedTemplate,
@@ -646,4 +803,6 @@ module.exports = {
   getRejectedTemplate,
   getDemoRequestTemplate,
   getDemoRequestTemplateToAd,
+  getPricingRequestTemplate,
+  getPricingRequestTemplateToAd,
 };

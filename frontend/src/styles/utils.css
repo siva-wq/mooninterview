@@ -29,4 +29,9 @@
   .border-custom {
     border-color: var(--border);
   }
+  
+  .border-card {
+    border-color: var(--border-card);
+  }
+  
 

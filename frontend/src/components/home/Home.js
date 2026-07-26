@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Demo from './Demo';
+import Pricing from "./Pricing";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -31,6 +32,13 @@ function Home() {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showDemo, setShowDemo] = useState(false);
+  const [showPricing, setShowPricing] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState("");
+
+  const openPricing = (plan) => {
+    setSelectedPlan(plan);
+    setShowPricing(true);
+  };
 
   const motionVariants = {
     fadeUp: {
@@ -375,7 +383,7 @@ function Home() {
                 </motion.div>
               </motion.div>
             </div>
-           
+
 
             <motion.div
               initial="hidden"
@@ -477,24 +485,52 @@ function Home() {
               variants={motionVariants.staggerContainer}
               className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6"
             >
-              <motion.div variants={motionVariants.fadeUp} whileHover={{ y: -6 }} transition={{ duration: 0.18, ease: "easeOut" }} className="bg-[#1E293B] rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border border-custom text-center hover:border-primary hover:bg-[#334155] transition-all duration-200 group">
+              <motion.div
+                variants={motionVariants.fadeUp}
+                whileHover={{ y: -6 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
+                className="bg-background rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border border-card text-center hover:border-primary hover:shadow-lg transition-all duration-200 group"
+              >
                 <Building2 className="mx-auto mb-2 sm:mb-3 text-gold" size={20} />
-                <p className="text-white font-medium text-sm sm:text-base">Colleges</p>
+                <p className="text-navy font-medium text-sm sm:text-base">
+                  Colleges
+                </p>
               </motion.div>
 
-              <motion.div variants={motionVariants.fadeUp} whileHover={{ y: -6 }} transition={{ duration: 0.18, ease: "easeOut" }} className="bg-[#1E293B] rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border border-custom text-center hover:border-primary hover:bg-[#334155] transition-all duration-200 group">
+              <motion.div
+                variants={motionVariants.fadeUp}
+                whileHover={{ y: -6 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
+                className="bg-background rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border border-card text-center hover:border-primary hover:shadow-lg transition-all duration-200 group"
+              >
                 <Users className="mx-auto mb-2 sm:mb-3 text-gold" size={20} />
-                <p className="text-white font-medium text-sm sm:text-base">Recruiters</p>
+                <p className="text-navy font-medium text-sm sm:text-base">
+                  Recruiters
+                </p>
               </motion.div>
 
-              <motion.div variants={motionVariants.fadeUp} whileHover={{ y: -6 }} transition={{ duration: 0.18, ease: "easeOut" }} className="bg-[#1E293B] rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border border-custom text-center hover:border-primary hover:bg-[#334155] transition-all duration-200 group">
+              <motion.div
+                variants={motionVariants.fadeUp}
+                whileHover={{ y: -6 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
+                className="bg-background rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border border-card text-center hover:border-primary hover:shadow-lg transition-all duration-200 group"
+              >
                 <ShieldCheck className="mx-auto mb-2 sm:mb-3 text-gold" size={20} />
-                <p className="text-white font-medium text-sm sm:text-base">Organizations</p>
+                <p className="text-navy font-medium text-sm sm:text-base">
+                  Organizations
+                </p>
               </motion.div>
 
-              <motion.div variants={motionVariants.fadeUp} whileHover={{ y: -6 }} transition={{ duration: 0.18, ease: "easeOut" }} className="bg-[#1E293B] rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border border-custom text-center hover:border-primary hover:bg-[#334155] transition-all duration-200 group">
+              <motion.div
+                variants={motionVariants.fadeUp}
+                whileHover={{ y: -6 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
+                className="bg-background rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 border border-card text-center hover:border-primary hover:shadow-lg transition-all duration-200 group"
+              >
                 <GraduationCap className="mx-auto mb-2 sm:mb-3 text-gold" size={20} />
-                <p className="text-white font-medium text-sm sm:text-base">Training Institutes</p>
+                <p className="text-navy font-medium text-sm sm:text-base">
+                  Training Institutes
+                </p>
               </motion.div>
             </motion.div>
           </div>
@@ -573,7 +609,7 @@ function Home() {
                       key={index}
                       variants={motionVariants.fadeUp}
                       whileHover={{ y: -6, transition: { duration: 0.18, ease: "easeOut" } }}
-                      className="bg-[#1E293B] border border-custom rounded-2xl p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-lg hover:border-primary hover:bg-[#334155] transition-all duration-200 group"
+                      className="bg-background border border-card rounded-2xl p-4 sm:p-5 md:p-6 shadow-sm hover:shadow-lg hover:border-primary hover:bg-secondary transition-all duration-200 group"
                     >
                       <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.18, ease: "easeOut" }}>
                         <Icon
@@ -582,13 +618,13 @@ function Home() {
                         />
                       </motion.div>
 
-                      <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-white">
+                      <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-3 text-navy">
                         {
                           feature.title
                         }
                       </h3>
 
-                      <p className="text-secondary text-sm sm:text-base">
+                      <p className="text-secondary text-sm sm:text-base leading-relaxed">
                         {
                           feature.description
                         }
@@ -616,7 +652,59 @@ function Home() {
             Choose Your Plan
           </motion.h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+            {/*free plan */}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={motionVariants.fadeUp}
+              className="bg-[#1E293B] border border-custom rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 lg:p-10 text-center shadow-xl hover:border-primary hover:shadow-[0_0_30px_rgba(124,58,237,0.2)] transition-all duration-200"
+            >
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4 text-white">
+                One-Time Trial
+              </h2>
+
+              <p className="text-5xl sm:text-6xl font-bold">
+                <span className="text-gold">
+                  ₹0
+                </span>
+                <span className="text-xl text-white">
+                  /10 days
+                </span>
+              </p>
+
+              <p className="mt-2 text-secondary">
+                Available once per organization.
+              </p>
+
+              <div className="grid grid-cols-1 gap-3 mt-6 sm:mt-8 text-left text-white">
+                {[
+                  "Full Platform Access",
+                  "Unlimited Interviews",
+                  "Unlimited Candidates",
+                  "Valid for 10 Days",
+                  "No Credit Card Required",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="flex items-center gap-2"
+                  >
+                    <CheckCircle className="text-gold" size={18} />
+                    {item}
+                  </div>
+                ))}
+              </div>
+
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.18, ease: "easeOut" }}
+                className="btn-primary mt-6 sm:mt-8 px-6 sm:px-8 py-3 sm:py-4 font-semibold"
+                onClick={() => openPricing("One-Time Trial")}
+              >
+                Start Free Trial
+              </motion.button>
+            </motion.div>
             {/* Daily Plan */}
             <motion.div
               initial="hidden"
@@ -634,7 +722,7 @@ function Home() {
                   ₹99
                 </span>
                 <span className="text-xl text-white">
-                  /day
+                  /1 Day
                 </span>
               </p>
 
@@ -644,13 +732,11 @@ function Home() {
 
               <div className="grid grid-cols-1 gap-3 mt-6 sm:mt-8 text-left text-white">
                 {[
+                  "Full Platform Access",
                   "Unlimited Interviews",
                   "Unlimited Candidates",
-                  "Live Video Interviews",
-                  "Screen Sharing",
-                  "Coding Assessment",
-                  "Resume Management",
-                  "Email Automation",
+                  "Valid for 24 Hours",
+                  "Instant Activation"
                 ].map((item) => (
                   <div
                     key={item}
@@ -666,9 +752,9 @@ function Home() {
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.18, ease: "easeOut" }}
                 className="btn-primary mt-6 sm:mt-8 px-6 sm:px-8 py-3 sm:py-4 font-semibold"
-                onClick={() => navigate("/register")}
+                onClick={() => openPricing("Daily Plan")}
               >
-                Get Started
+                Get Daily Access
               </motion.button>
             </motion.div>
 
@@ -693,7 +779,7 @@ function Home() {
                   ₹599
                 </span>
                 <span className="text-xl text-white">
-                  /month
+                  /30 Days
                 </span>
               </p>
 
@@ -703,13 +789,11 @@ function Home() {
 
               <div className="grid grid-cols-1 gap-3 mt-6 sm:mt-8 text-left text-white">
                 {[
+                  "Full Platform Access",
                   "Unlimited Interviews",
                   "Unlimited Candidates",
-                  "Live Video Interviews",
-                  "Screen Sharing",
-                  "Coding Assessment",
-                  "Resume Management",
-                  "Email Automation",
+                  "Priority Support",
+                  "Valid for 30 Days"
                 ].map((item) => (
                   <div
                     key={item}
@@ -725,9 +809,9 @@ function Home() {
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.18, ease: "easeOut" }}
                 className="btn-primary mt-6 sm:mt-8 px-6 sm:px-8 py-3 sm:py-4 font-semibold"
-                onClick={() => navigate("/register")}
+                onClick={() => openPricing("Professional Plan")}
               >
-                Start Free Trial for 10 days
+                Choose Professional
               </motion.button>
             </motion.div>
           </div>
@@ -768,13 +852,13 @@ function Home() {
                     variants={motionVariants.fadeUp}
                     whileHover={{ y: -4 }}
                     transition={{ duration: 0.18, ease: "easeOut" }}
-                    className="bg-[#1E293B] border border-custom rounded-2xl p-4 sm:p-5 md:p-6 hover:border-primary hover:bg-[#334155] transition-all duration-200"
+                    className="bg-background border border-card rounded-2xl p-4 sm:p-5 md:p-6 hover:border-primary hover:bg-background transition-all duration-200"
                   >
-                    <h3 className="font-semibold text-base sm:text-lg text-white">
+                    <h3 className="font-semibold text-base sm:text-lg text-navy">
                       {faq.q}
                     </h3>
 
-                    <p className="mt-1.5 sm:mt-2 text-white text-sm sm:text-base">
+                    <p className="mt-1.5 sm:mt-2 text-secondary text-sm sm:text-base">
                       {faq.a}
                     </p>
                   </motion.div>
@@ -818,7 +902,6 @@ function Home() {
           </div>
         </section>
 
-        {/* FOOTER */}
         {/* FOOTER */}
         <footer className="border-t border-custom bg-background">
           <motion.div
@@ -920,6 +1003,12 @@ function Home() {
           </motion.div>
         </footer>
       </div>
+      {showPricing && (
+        <Pricing
+          price={selectedPlan}
+          onClose={() => setShowPricing(false)}
+        />
+      )}
 
     </>
   );

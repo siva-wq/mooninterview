@@ -15,12 +15,21 @@ const {
   getHoldTemplate,
   getRejectedTemplate,
   getDemoRequestTemplate,
-  getDemoRequestTemplateToAd
+  getDemoRequestTemplateToAd,
+  getPricingRequestTemplate,
+  getPricingRequestTemplateToAd
 } = require('../utils/EmailTemplate');
 
 router.post("/demo", async (req, res) => {
   try {
-    const { name, email, organisation } = req.body;
+    const {
+      name,
+      email,
+      organisation,
+      avtime,
+      pricing,
+      type,
+    } = req.body;
 
     if (!name || !email || !organisation) {
       return res.status(400).json({
@@ -28,45 +37,87 @@ router.post("/demo", async (req, res) => {
         message: "All fields are required",
       });
     }
-    console.log(name," ",email," ",organisation)
 
-    await Demo.create({
-      name,
-      email,
-      organisation,
-    });
+    // Save only demo bookings
+    if (type === "demo") {
+      if (!avtime) {
+        return res.status(400).json({
+          success: false,
+          message: "Available time is required",
+        });
+      }
 
-    const subject = "Demo Request Received";
+      await Demo.create({
+        name,
+        email,
+        organisation,
+        avtime,
+      });
+    }
 
-    // Email to user
-    const userHtml = getDemoRequestTemplate({
-  name,
-  email,
-  organisation,
-});
+    let subject = "";
+    let userHtml = "";
+    let adminHtml = "";
 
+    // ---------------- DEMO ----------------
+
+    if (type === "demo") {
+      subject = "Demo Request Received";
+
+      userHtml = getDemoRequestTemplate({
+        name,
+        email,
+        organisation,
+        avtime,
+      });
+
+      adminHtml = getDemoRequestTemplateToAd({
+        name,
+        email,
+        organisation,
+        avtime,
+      });
+    }
+
+    // ---------------- PRICING ----------------
+
+    if (type === "pricing") {
+      subject = "Pricing Request Received";
+
+      userHtml = getPricingRequestTemplate({
+        name,
+        email,
+        organisation,
+        pricing,
+      });
+
+      adminHtml = getPricingRequestTemplateToAd({
+        name,
+        email,
+        organisation,
+        pricing,
+      });
+    }
+
+    // Send email to user
     await sendEmail(email, subject, userHtml);
 
-    // Email to admin
+    // Send email to admin
     const adminEmail = process.env.ADMIN_EMAIL;
 
     if (adminEmail) {
-     const adminHtml = getDemoRequestTemplateToAd({
-  name,
-  email,
- organisation,
-});
-
       await sendEmail(adminEmail, subject, adminHtml);
     }
 
     return res.status(200).json({
       success: true,
-      message: "Demo request submitted successfully",
+      message:
+        type === "demo"
+          ? "Demo request submitted successfully"
+          : "Pricing request submitted successfully",
     });
-
   } catch (error) {
-    console.error("Error submitting demo request:", error);
+    console.error(error);
 
     return res.status(500).json({
       success: false,
