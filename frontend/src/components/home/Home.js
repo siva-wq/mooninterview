@@ -670,7 +670,7 @@ function Home() {
                   ₹0
                 </span>
                 <span className="text-xl text-white">
-                  /10 days
+                  /3 days
                 </span>
               </p>
 
@@ -683,7 +683,7 @@ function Home() {
                   "Full Platform Access",
                   "Unlimited Interviews",
                   "Unlimited Candidates",
-                  "Valid for 10 Days",
+                  "Valid for 3 Days",
                   "No Credit Card Required",
                 ].map((item) => (
                   <div
@@ -792,8 +792,8 @@ function Home() {
                   "Full Platform Access",
                   "Unlimited Interviews",
                   "Unlimited Candidates",
+                  "Valid for 30 Days",
                   "Priority Support",
-                  "Valid for 30 Days"
                 ].map((item) => (
                   <div
                     key={item}
