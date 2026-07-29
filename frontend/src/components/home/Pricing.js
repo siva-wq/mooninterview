@@ -36,7 +36,7 @@ function Pricing({ onClose, price }) {
   const getDescription = () => {
     switch (price) {
       case "One-Time Trial":
-        return "Register your organization to activate your one-time 10-day trial.";
+        return "Register your organization to activate your one-time 3-day trial.";
       case "Daily Plan":
         return "Fill in your organization details to request 24-hour access.";
       case "Professional Plan":
