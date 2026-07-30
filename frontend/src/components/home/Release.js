@@ -142,7 +142,7 @@ function Release() {
                         </h1>
 
                         <p className="text-xl md:text-2xl font-medium text-primary mb-5">
-                            Initial Public Release · August 1, 2026
+                            Initial Public Release · Coming Soon
                         </p>
 
                         <p className="max-w-3xl mx-auto text-secondary text-lg leading-8">

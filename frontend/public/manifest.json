@@ -3,19 +3,14 @@
   "name": "MoonInterview - Technical Interview Platform",
   "icons": [
     {
-      "src": "icon.png",
+      "src": "main_icon.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/png"
     },
     {
-      "src": "white.png",
+      "src": "main_logo.png",
       "type": "image/png",
       "sizes": "192x192"
-    },
-    {
-      "src": "black.png",
-      "type": "image/png",
-      "sizes": "512x512"
     }
   ],
   "start_url": ".",

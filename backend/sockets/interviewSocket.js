@@ -245,6 +245,13 @@ const interviewSocket = (io) => {
             });
         });
 
+        //admin toggled code editor
+        socket.on("toggle_code_editor", ({ roomId, enabled }) => {
+            socket.to(roomId).emit("toggle_code_editor", {
+                enabled: enabled,
+            });
+        });
+
 
         // ==========================================
         // END INTERVIEW

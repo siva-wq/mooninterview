@@ -11,7 +11,7 @@ import API from "../../../api/axios";
 
 import { ErrorHandler } from "../../errors/ErrorHandler";
 
-import { Camera, CameraOff, Bell, Video, Monitor, MonitorOff, Mic, MicOff, PhoneOff, MessageSquare, FileText, RefreshCw, Save,Speech } from "lucide-react";
+import { Camera, CameraOff, Bell, Video, Monitor, MonitorOff, Mic, MicOff, PhoneOff, MessageSquare, FileText, RefreshCw, Save,Speech, Code2 } from "lucide-react";
 
 function AdminRoom() {
 
@@ -55,6 +55,23 @@ function AdminRoom() {
   const [timer,
     setTimer] =
     useState(0);
+
+  const [codeEditorEnabled, setCodeEditorEnabled] =
+    useState(false);
+
+  // ==========================================
+  // TOGGLE CODE EDITOR
+  // ==========================================
+  const toggleCodeEditor = () => {
+    const newStatus = !codeEditorEnabled;
+    setCodeEditorEnabled(newStatus);
+    
+    // Emit socket event to notify candidate
+    socket.emit("toggle_code_editor", {
+      roomId,
+      enabled: newStatus
+    });
+  };
   //admin audio
   const adminStreamRef = useRef(null);
   //candidate audio for screen share
@@ -910,14 +927,14 @@ function AdminRoom() {
 
       <div
         className="
-          h-16
+          h-14 sm:h-16
           bg-white
           border-b
           border-custom
           flex
           items-center
           justify-between
-          px-6
+          px-4 sm:px-6
           z-50
           shadow-sm
         "
@@ -927,7 +944,7 @@ function AdminRoom() {
 
         <div>
 
-          <h1 className="text-2xl font-bold text-navy">
+          <h1 className="text-lg sm:text-2xl font-bold text-navy">
 
             Admin Interview Room
 
@@ -937,19 +954,43 @@ function AdminRoom() {
 
         {/* RIGHT */}
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 sm:gap-6">
+
+          {/* CODE EDITOR TOGGLE */}
+
+          <button
+            onClick={toggleCodeEditor}
+            className={`
+              relative
+              transition-all
+              duration-300
+              w-10 h-10 sm:w-12 sm:h-12
+              rounded-xl
+              flex
+              items-center
+              justify-center
+              text-xl
+              ${codeEditorEnabled
+                ? "btn-primary text-white shadow-md"
+                : "bg-zinc-100 hover:bg-zinc-200 text-navy"
+              }
+            `}
+          >
+            <Code2 size={20} />
+          </button>
 
           {/* TIMER */}
 
           <div
             className="
               btn-primary
-              px-5
-              py-2
+              px-3 sm:px-5
+              py-1.5 sm:py-2
               rounded-xl
               font-semibold
               text-white
               shadow-md
+              text-sm sm:text-base
             "
           >
 
@@ -962,8 +1003,8 @@ function AdminRoom() {
                 bg-red-600
                 hover:bg-red-700
                 text-white
-                px-5
-                py-2
+                px-3 sm:px-5
+                py-1.5 sm:py-2
                 rounded-xl
                 font-semibold
                 shadow-md
@@ -972,10 +1013,11 @@ function AdminRoom() {
                 items-center
                 justify-center
                 gap-2
+                text-sm sm:text-base
               "
           >
             <PhoneOff size={18} />
-            End Interview
+            <span className="hidden sm:inline">End Interview</span>
           </button>
 
           {/* NOTIFICATIONS */}
@@ -1211,32 +1253,31 @@ function AdminRoom() {
 
         <div
           className="
-            w-20
+            w-14 sm:w-20
             bg-white
             border-r
             border-custom
             flex
             flex-col
             items-center
-            py-6
-            gap-6
+            py-4 sm:py-6
+            gap-4 sm:gap-6
             shadow-sm
           "
         >
 
           {/* CAMERA */}
 
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center gap-1 sm:gap-2">
             <button
               onClick={() => setActiveTab("camera")}
               className={`
-      w-14
-      h-14
+      w-10 h-10 sm:w-14 sm:h-14
       flex
       items-center
       justify-center
       rounded-2xl
-      text-2xl
+      text-xl sm:text-2xl
       transition-all
       shadow-sm
       ${activeTab === "camera"
@@ -1247,22 +1288,21 @@ function AdminRoom() {
             >
               <Video size={24} />
             </button>
-            <span className="text-xs text-secondary font-medium">Camera</span>
+            <span className="text-[10px] sm:text-xs text-secondary font-medium">Camera</span>
           </div>
 
           {/* SCREEN SHARE */}
 
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center gap-1 sm:gap-2">
             <button
               onClick={() => setActiveTab("screen")}
               className={`
-      w-14
-      h-14
+      w-10 h-10 sm:w-14 sm:h-14
       flex
       items-center
       justify-center
       rounded-2xl
-      text-2xl
+      text-xl sm:text-2xl
       transition-all
       shadow-sm
       ${activeTab === "screen"
@@ -1273,22 +1313,21 @@ function AdminRoom() {
             >
               <Monitor size={24} />
             </button>
-            <span className="text-xs text-secondary font-medium">Screen</span>
+            <span className="text-[10px] sm:text-xs text-secondary font-medium">Screen</span>
           </div>
 
           {/* AI COPILOT */}
 
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center gap-1 sm:gap-2">
             <button
               onClick={() => setActiveTab("ai-copilot")}
               className={`
-      w-14
-      h-14
+      w-10 h-10 sm:w-14 sm:h-14
       flex
       items-center
       justify-center
       rounded-2xl
-      text-2xl
+      text-xl sm:text-2xl
       transition-all
       shadow-sm
       ${activeTab === "ai-copilot"
@@ -1299,7 +1338,7 @@ function AdminRoom() {
             >
               <MessageSquare size={24} />
             </button>
-            <span className="text-xs text-secondary font-medium">AI Copilot</span>
+            <span className="text-[10px] sm:text-xs text-secondary font-medium">AI Copilot</span>
           </div>
 
         </div>
@@ -1318,24 +1357,24 @@ function AdminRoom() {
 
               {/* STATUS INDICATORS */}
 
-              <div className="px-6 py-3 flex items-center gap-4 bg-white border-b border-custom">
+              <div className="px-4 sm:px-6 py-2 sm:py-3 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 bg-white border-b border-custom">
 
 
-                <div className="flex items-center gap-8">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
 
                   <div>
 
-                    <p className="text-sm text-secondary">Name</p>
+                    <p className="text-xs sm:text-sm text-secondary">Name</p>
 
-                    <p className="font-semibold text-navy">{candidate?.name || 'Loading...'}</p>
+                    <p className="font-semibold text-sm sm:text-base text-navy">{candidate?.name || 'Loading...'}</p>
 
                   </div>
 
                   <div>
 
-                    <p className="text-sm text-secondary">Email</p>
+                    <p className="text-xs sm:text-sm text-secondary">Email</p>
 
-                    <p className="text-navy">{candidate?.email || 'Loading...'}</p>
+                    <p className="text-xs sm:text-sm text-navy">{candidate?.email || 'Loading...'}</p>
 
                   </div>
 
@@ -1343,7 +1382,7 @@ function AdminRoom() {
 
                     <span className={`w-3 h-3 rounded-full ${cameraConnected ? 'bg-green-500' : 'bg-zinc-400'}`}></span>
 
-                    <span className="text-sm font-medium text-navy">{cameraConnected ? 'Live' : 'Offline'}</span>
+                    <span className="text-xs sm:text-sm font-medium text-navy">{cameraConnected ? 'Live' : 'Offline'}</span>
 
                   </div>
 
@@ -1362,27 +1401,27 @@ function AdminRoom() {
                       ref={candidateVideoRef}
                       autoPlay
                       playsInline
-                      className="max-h-[480px] w-full h-full object-contain"
+                      className="max-h-[300px] sm:max-h-[480px] w-full h-full object-contain"
                     />
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center bg-zinc-50 text-center">
                       <CameraOff
                         size={64}
-                        className="text-secondary mb-4"
+                        className="text-secondary mb-3 sm:mb-4"
                       />
 
-                      <h3 className="text-lg font-semibold text-navy">
+                      <h3 className="text-base sm:text-lg font-semibold text-navy">
                         Camera is Unavailable
                       </h3>
 
-                      <p className="mt-2 text-sm text-secondary max-w-md">
+                      <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-secondary max-w-md">
                         Ask the candidate to on the camera or refresh the page.
                       </p>
                     </div>
                   )}
 
 
-                  <div className="absolute top-3 left-3 flex flex-col gap-3 bg-black/40 p-2 rounded-lg">
+                  <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex flex-col gap-2 sm:gap-3 bg-black/40 p-1.5 sm:p-2 rounded-lg">
                     {cameraConnected ? (
                       <Camera className="text-green-400" size={22} />
                     ) : (
@@ -1410,13 +1449,12 @@ function AdminRoom() {
 
               {/* INTERVIEW CONTROLS */}
 
-              <div className="px-6 py-4 bg-zinc-50 border-t border-custom flex items-center justify-center gap-4">
+              <div className="px-4 sm:px-6 py-3 sm:py-4 bg-zinc-50 border-t border-custom flex items-center justify-center gap-3 sm:gap-4">
 
                 <button
                   onClick={toggleAdminMic}
                   className={`
-                w-12
-                h-12
+                w-10 h-10 sm:w-12 sm:h-12
                 rounded-full
                 flex
                 items-center
@@ -1429,15 +1467,14 @@ function AdminRoom() {
               `}
                 >
 
-                  {isMuted ? <MicOff size={20} /> : <Mic size={30} />}
+                  {isMuted ? <MicOff size={20} /> : <Mic size={20} />}
 
                 </button>
 
                 <button
                   onClick={toggleCandidateMic}
                   className={`
-                    w-12
-                    h-12
+                    w-10 h-10 sm:w-12 sm:h-12
                     rounded-full
                     text-white
                     flex
@@ -1467,21 +1504,21 @@ function AdminRoom() {
               <div className="px-6 py-3 flex items-center gap-4 bg-border border-b border-custom">
 
 
-                <div className="flex items-center gap-8">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
 
                   <div>
 
-                    <p className="text-sm text-secondary">Name</p>
+                    <p className="text-xs sm:text-sm text-secondary">Name</p>
 
-                    <p className="font-semibold text-navy">{candidate?.name || 'Loading...'}</p>
+                    <p className="font-semibold text-sm sm:text-base text-navy">{candidate?.name || 'Loading...'}</p>
 
                   </div>
 
                   <div>
 
-                    <p className="text-sm text-secondary">Email</p>
+                    <p className="text-xs sm:text-sm text-secondary">Email</p>
 
-                    <p className="text-navy">{candidate?.email || 'Loading...'}</p>
+                    <p className="text-xs sm:text-sm text-navy">{candidate?.email || 'Loading...'}</p>
 
                   </div>
 
@@ -1489,7 +1526,7 @@ function AdminRoom() {
 
                     <span className={`w-3 h-3 rounded-full ${cameraConnected ? 'bg-green-500' : 'bg-zinc-400'}`}></span>
 
-                    <span className="text-sm font-medium text-navy">{cameraConnected ? 'Live' : 'Offline'}</span>
+                    <span className="text-xs sm:text-sm font-medium text-navy">{cameraConnected ? 'Live' : 'Offline'}</span>
 
                   </div>
 
@@ -1520,17 +1557,17 @@ function AdminRoom() {
                         className="text-secondary mb-4"
                       />
 
-                      <h3 className="text-lg font-semibold text-navy">
+                      <h3 className="text-base sm:text-lg font-semibold text-navy">
                         Screen Sharing Unavailable
                       </h3>
 
-                      <p className="mt-2 text-sm text-secondary max-w-md">
+                      <p className="mt-1 sm:mt-2 text-xs sm:text-sm text-secondary max-w-md">
                         Ask the candidate to start screen sharing again to continue monitoring their activity.
                       </p>
                     </div>
                   )}
 
-                  <div className="absolute top-3 left-3 flex flex-col gap-3 bg-black/40 p-2 rounded-lg">
+                  <div className="absolute top-2 left-2 sm:top-3 sm:left-3 flex flex-col gap-2 sm:gap-3 bg-black/40 p-1.5 sm:p-2 rounded-lg">
                     {cameraConnected ? (
                       <Camera className="text-green-400" size={22} />
                     ) : (
@@ -1558,13 +1595,12 @@ function AdminRoom() {
 
               {/* INTERVIEW CONTROLS */}
 
-              <div className="px-6 py-4 bg-zinc-50 border-t border-custom flex items-center justify-center gap-4">
+              <div className="px-4 sm:px-6 py-3 sm:py-4 bg-zinc-50 border-t border-custom flex items-center justify-center gap-3 sm:gap-4">
 
                 <button
                   onClick={toggleAdminMic}
                   className={`
-                w-12
-                h-12
+                w-10 h-10 sm:w-12 sm:h-12
                 rounded-full
                 flex
                 items-center
@@ -1584,8 +1620,7 @@ function AdminRoom() {
                 <button
                   onClick={toggleCandidateMic}
                   className={`
-                    w-12
-                    h-12
+                    w-10 h-10 sm:w-12 sm:h-12
                     rounded-full
                     text-white
                     flex
@@ -1608,11 +1643,11 @@ function AdminRoom() {
 
           {activeTab === "ai-copilot" && (
 
-            <div className="flex-1 flex gap-6 p-6 overflow-hidden">
+            <div className="flex-1 flex flex-col lg:flex-row gap-4 sm:gap-6 p-4 sm:p-6 overflow-hidden">
 
               {/* LEFT SIDE - RESUME VIEWER (60%) */}
 
-              <div className="w-[60%] flex flex-col">
+              <div className="w-full lg:w-[60%] flex flex-col">
 
                 <div
                   className="
@@ -1629,14 +1664,14 @@ function AdminRoom() {
 
                   <div
                     className="
-                      p-4
+                      p-3 sm:p-4
                       border-b
                       border-custom
                       bg-gradient-to-r from-blue-50 to-white
                     "
                   >
 
-                    <h2 className="text-xl font-semibold text-navy flex items-center gap-2">
+                    <h2 className="text-lg sm:text-xl font-semibold text-navy flex items-center gap-2">
 
                       <FileText size={20} />
 

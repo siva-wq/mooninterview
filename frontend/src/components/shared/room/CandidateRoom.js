@@ -82,6 +82,9 @@ function CandidateRoom() {
   const [screenSharing,
     setScreenSharing] =
     useState(false);
+
+  const [codeEditorEnabled, setCodeEditorEnabled] =
+    useState(false);
   const rtcConfig = {
   iceServers: [
       {
@@ -599,6 +602,16 @@ function CandidateRoom() {
       }
     });
 
+    socket.on("toggle_code_editor", ({ enabled }) => {
+      setCodeEditorEnabled(enabled);
+      if (enabled) {
+        toast.success("Code editor enabled by admin");
+      } else {
+        setActiveTab("video")
+        toast("Code editor disabled by admin");
+      }
+    });
+
     return () => {
 
       socket.off(
@@ -610,6 +623,7 @@ function CandidateRoom() {
         "ice_candidate"
       );
       socket.off("candidateMicToggled");
+      socket.off("toggle_code_editor");
       cameraPeer.current?.close();
       screenPeer.current?.close();
 
@@ -834,15 +848,15 @@ function CandidateRoom() {
 
       <div
         className="
-          w-20
+          w-14 sm:w-20
           bg-white
           border-r
           border-custom
           flex
           flex-col
           items-center
-          py-6
-          gap-5
+          py-4 sm:py-6
+          gap-3 sm:gap-5
           shadow-sm
         "
       >
@@ -850,8 +864,7 @@ function CandidateRoom() {
         <button
           onClick={() => setActiveTab("video")}
           className={`
-    w-14
-    h-14
+    w-10 h-10 sm:w-14 sm:h-14
     rounded-2xl
     flex
     items-center
@@ -866,24 +879,25 @@ function CandidateRoom() {
           <Video size={24} />
         </button>
 
-        <button
-          onClick={() => setActiveTab("code")}
-          className={`
-            w-14
-            h-14
-            rounded-2xl
-            flex
-            items-center
-            justify-center
-            transition-all
-            ${activeTab === "code"
-              ? "btn-primary text-white shadow-lg"
-              : "bg-zinc-100 text-secondary"
-            }
-          `}
-        >
-          <Code2 size={24} />
-        </button>
+        {codeEditorEnabled && (
+          <button
+            onClick={() => setActiveTab("code")}
+            className={`
+              w-10 h-10 sm:w-14 sm:h-14
+              rounded-2xl
+              flex
+              items-center
+              justify-center
+              transition-all
+              ${activeTab === "code"
+                ? "btn-primary text-white shadow-lg"
+                : "bg-zinc-100 text-secondary"
+              }
+            `}
+          >
+            <Code2 size={24} />
+          </button>
+        )}
 
       </div>
 
@@ -895,11 +909,11 @@ function CandidateRoom() {
 
         <div
           className="
-            h-16
+            h-14 sm:h-16
             bg-white
             border-b
             border-custom
-            px-6
+            px-4 sm:px-6
             flex
             items-center
             justify-between
@@ -909,36 +923,36 @@ function CandidateRoom() {
 
           <div>
 
-            <h1 className="text-lg font-bold text-navy">
+            <h1 className="text-base sm:text-lg font-bold text-navy">
               MoonInterview
             </h1>
 
-            <p className="text-sm text-secondary">
+            <p className="text-xs sm:text-sm text-secondary">
               AI Interview Session
             </p>
 
           </div>
 
         </div>
-        <div><p>Note:Refresh if you do not see your camera</p></div>
+        <div><p className="text-xs sm:text-sm">Note:Refresh if you do not see your camera</p></div>
 
         {/* VIDEO TAB */}
 
         <div
           className={
             activeTab === "video"
-              ? "flex-1 p-6 overflow-hidden"
+              ? "flex-1 p-4 sm:p-6 overflow-hidden"
               : "hidden"
           }
         >
 
-          <div className="grid grid-cols-3 gap-6 h-full">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 h-full">
 
             {/* SCREEN SHARE */}
 
             <div
               className="
-                  col-span-2
+                  col-span-1 lg:col-span-2
                   card
                   rounded-3xl
                   border-custom
@@ -951,8 +965,8 @@ function CandidateRoom() {
 
               <div
                 className="
-                    px-6
-                    py-4
+                    px-4 sm:px-6
+                    py-3 sm:py-4
                     border-b
                     border-custom
                     flex
@@ -961,7 +975,7 @@ function CandidateRoom() {
                   "
               >
 
-                <h2 className="font-bold text-navy">
+                <h2 className="font-bold text-sm sm:text-base text-navy">
                   Screen Share
                 </h2>
 
@@ -971,9 +985,10 @@ function CandidateRoom() {
                       bg-purple-600
                       hover:bg-purple-700
                       text-white
-                      px-4
-                      py-2
+                      px-3 sm:px-4
+                      py-1.5 sm:py-2
                       rounded-xl
+                      text-xs sm:text-sm
                     "
                 >
 
@@ -1018,14 +1033,14 @@ function CandidateRoom() {
 
               <div
                 className="
-                    px-6
-                    py-4
+                    px-4 sm:px-6
+                    py-3 sm:py-4
                     border-b
                     border-custom
                   "
               >
 
-                <h2 className="font-bold text-navy">
+                <h2 className="font-bold text-sm sm:text-base text-navy">
                   Candidate Camera
                 </h2>
 
@@ -1041,13 +1056,13 @@ function CandidateRoom() {
                   "
               />
 
-              <div className="p-4 border-t border-zinc-200 flex justify-center gap-4">
+              <div className="p-3 sm:p-4 border-t border-zinc-200 flex justify-center gap-3 sm:gap-4">
 
                 {/* Camera Button */}
                 <button
                   onClick={toggleCamera}
                   className={`
-                    w-12 h-12 rounded-full flex items-center justify-center
+                    w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center
                     transition-all
                     ${cameraEnabled
                       ? "btn-primary hover:bg-blue-700 text-white"
@@ -1067,7 +1082,7 @@ function CandidateRoom() {
                 <button
                   onClick={toggleMic}
                   className={`
-                    w-12 h-12 rounded-full flex items-center justify-center
+                    w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center
                     transition-all
                     ${micEnabled
                       ? "bg-emerald-600 hover:bg-emerald-700 text-white"
