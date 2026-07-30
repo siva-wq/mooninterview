@@ -24,7 +24,7 @@ function Release() {
             icon: CalendarDays,
             title: "Interview Management",
             description:
-                "Schedule and manage technical interviews from one streamlined workspace.",
+                "Schedule and manage virtual interviews from one streamlined workspace.",
         },
         {
             icon: Users,
@@ -48,7 +48,7 @@ function Release() {
             icon: MonitorUp,
             title: "Screen Sharing",
             description:
-                "Share screens during interviews for technical discussions and evaluation.",
+                "Share screens during interviews for virtual discussions and evaluation.",
         },
         {
             icon: Code2,
@@ -147,7 +147,7 @@ function Release() {
 
                         <p className="max-w-3xl mx-auto text-secondary text-lg leading-8">
                             The first official chapter of MoonInterview, built to make
-                            technical interviews more organized, collaborative, and
+                            virtual interviews more organized, collaborative, and
                             efficient for organizations and candidates.
                         </p>
 
@@ -166,7 +166,7 @@ function Release() {
                         <div className="h-px flex-1 bg-primary/20" />
 
                         <span className="text-sm text-secondary">
-                            Current Release
+                            Upcoming Release
                         </span>
 
                     </div>
@@ -184,7 +184,7 @@ function Release() {
 
                         <p className="text-secondary mt-4 max-w-2xl leading-7">
                             V0.1 brings together the essential tools needed to manage and
-                            conduct technical interviews through a unified platform.
+                            conduct virtual interviews through a unified platform.
                         </p>
                     </div>
 
@@ -268,7 +268,7 @@ function Release() {
                                     We're building toward a more intelligent interview
                                     experience. Future releases will expand MoonInterview with
                                     AI-powered capabilities, smarter workflows, and new
-                                    experiences designed to transform how technical interviews
+                                    experiences designed to transform how virtual interviews
                                     are conducted.
                                 </p>
 
@@ -319,7 +319,7 @@ function Release() {
                                             </h4>
 
                                             <p className="text-gray-400 text-sm leading-6">
-                                                Intelligent features designed to make technical
+                                                Intelligent features designed to make Virtual
                                                 interviewing smarter and more efficient.
                                             </p>
                                         </div>
@@ -377,7 +377,7 @@ function Release() {
                     <p className="text-secondary max-w-2xl mx-auto leading-7 mb-8">
                         MoonInterview will continue evolving with every release.
                         Follow our journey as we build a better way to conduct
-                        technical interviews.
+                        virtual interviews.
                     </p>
 
                     <button

@@ -131,30 +131,38 @@ function Home() {
     <>
       <Helmet>
         <title>
-          MoonInterview - Technical Interview Platform for Organizations
+          MoonInterview - Virtual Interview Platform for Organizations
         </title>
 
         <meta
           name="description"
-          content="MoonInterview is a technical interview platform for organizations. Schedule interviews, conduct live coding interviews, manage candidates, and streamline the hiring process."
+          content="MoonInterview is a virtual interview platform for organizations. Schedule interviews, review resumes, conduct live interviews, enable coding assessments when needed, and streamline your hiring process."
         />
 
         <meta
           name="keywords"
-          content="MoonInterview, Interview Platform, Technical Interview Software, Coding Interview Platform, Online Interview Platform, Interview Management System, Technical Hiring"
+          content="MoonInterview,
+Virtual Interview Platform,
+Online Interview Platform,
+Interview Management Software,
+Recruitment Platform,
+Hiring Platform,
+Coding Interview Platform,
+Resume Review,
+Live Interview Platform"
         />
 
         <meta property="og:title" content="MoonInterview" />
 
         <meta
           property="og:description"
-          content="Technical interview platform for organizations."
+          content="Virtual interview platform for organizations."
         />
 
         <meta property="og:type" content="website" />
         <meta
           property="og:image"
-          content="https://mooninterview-yukx.vercel.app/logo2.png"
+          content="https://mooninterview-yukx.vercel.app/main_logo.png"
         />
         <meta
           property="og:url"
@@ -164,12 +172,12 @@ function Home() {
 
         <meta
           name="twitter:title"
-          content="MoonInterview - Technical Interview Platform"
+          content="MoonInterview - Virtual Interview Platform"
         />
 
         <meta
           name="twitter:description"
-          content="Technical interview platform for organizations."
+          content="Virtual interview platform for organizations."
         />
 
         <link rel="canonical" href="https://mooninterview-yukx.vercel.app/" />
@@ -334,7 +342,7 @@ function Home() {
                 transition={{ delay: 0.1 }}
                 className="mt-6 sm:mt-8 text-2xl sm:text-3xl md:text-4xl lg:text-6xl xl:text-7xl font-bold leading-tight"
               >
-                Conduct Technical Interviews
+                Conduct Interviews
                 <span className="text-gold">
                   {" "}Smarter
                 </span>
@@ -347,10 +355,7 @@ function Home() {
                 transition={{ delay: 0.2 }}
                 className="mt-4 sm:mt-6 text-sm sm:text-base lg:text-lg text-secondary max-w-xl mx-auto lg:mx-0"
               >
-                Schedule interviews, review resumes,
-                monitor screen sharing, conduct live
-                coding assessments and evaluate
-                candidates from one centralized platform.
+                Schedule interviews, review resumes, monitor screen sharing, conduct live coding assessments when needed, and evaluate candidates, all from one centralized platform.
               </motion.p>
 
               <motion.div
@@ -586,7 +591,7 @@ function Home() {
               variants={motionVariants.fadeUp}
               className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-12 sm:mb-16 text-navy drop-shadow-[0_0_10px_rgba(212,160,23,0.3)]"
             >
-              Everything Needed For Technical Interviews
+              Everything Needed for Smarter Interviews
             </motion.h2>
 
             <motion.div
@@ -670,7 +675,7 @@ function Home() {
                   ₹0
                 </span>
                 <span className="text-xl text-white">
-                  /3 days
+                  /10 days
                 </span>
               </p>
 
@@ -683,7 +688,7 @@ function Home() {
                   "Full Platform Access",
                   "Unlimited Interviews",
                   "Unlimited Candidates",
-                  "Valid for 3 Days",
+                  "Valid for 10 Days",
                   "No Credit Card Required",
                 ].map((item) => (
                   <div
@@ -792,8 +797,8 @@ function Home() {
                   "Full Platform Access",
                   "Unlimited Interviews",
                   "Unlimited Candidates",
-                  "Valid for 30 Days",
                   "Priority Support",
+                  "Valid for 30 Days"
                 ].map((item) => (
                   <div
                     key={item}
@@ -882,8 +887,7 @@ function Home() {
               </h2>
 
               <p className="mt-3 sm:mt-4 text-sm sm:text-base lg:text-lg text-secondary">
-                Start conducting professional
-                technical interviews with MoonInterview.
+                Start conducting professional interviews with MoonInterview.
               </p>
 
               <motion.div
@@ -923,7 +927,7 @@ function Home() {
 
 
                 <p className="mt-3 sm:mt-4 text-xs sm:text-sm text-secondary">
-                  technical interview platform for organizations,
+                  interview platform for organizations,
                   recruiters, colleges, and training institutes.
                 </p>
               </div>
