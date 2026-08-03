@@ -7,6 +7,7 @@ function Demo({ onClose }) {
     name: "",
     email: "",
     organisation: "",
+    avtime:"",
     type: "demo",
   });
 
@@ -38,6 +39,7 @@ function Demo({ onClose }) {
           name: "",
           email: "",
           organisation: "",
+          avtime:"",
         });
 
         onClose?.();
@@ -102,6 +104,15 @@ function Demo({ onClose }) {
             name="organisation"
             placeholder="Organization Name"
             value={data.organisation}
+            onChange={handleChange}
+            className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-primary"
+            required
+          />
+          <input
+            type="text"
+            name="avtime"
+            placeholder="Please Mention your Available Date & Time"
+            value={data.avtime}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-lg p-3 outline-none focus:ring-2 focus:ring-primary"
             required
